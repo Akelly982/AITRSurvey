@@ -67,10 +67,50 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Login.aspx" />
+    <Content Include="SampleSurveyCB.aspx" />
+    <Content Include="SampleSurveyRB.aspx" />
+    <Content Include="SampleSurveyTB.aspx" />
+    <Content Include="StaffSearch.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleSurveyCB.aspx.cs">
+      <DependentUpon>SampleSurveyCB.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SampleSurveyCB.aspx.designer.cs">
+      <DependentUpon>SampleSurveyCB.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SampleSurveyRB.aspx.cs">
+      <DependentUpon>SampleSurveyRB.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SampleSurveyRB.aspx.designer.cs">
+      <DependentUpon>SampleSurveyRB.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SampleSurveyTB.aspx.cs">
+      <DependentUpon>SampleSurveyTB.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SampleSurveyTB.aspx.designer.cs">
+      <DependentUpon>SampleSurveyTB.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaffSearch.aspx.cs">
+      <DependentUpon>StaffSearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaffSearch.aspx.designer.cs">
+      <DependentUpon>StaffSearch.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
