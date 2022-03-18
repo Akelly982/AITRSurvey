@@ -22,8 +22,12 @@ namespace AITRSurvey
             // post back is false only the first time the page loads
             if (!IsPostBack)
             {
-                
 
+                initMemberRadioButton();
+                initGenderRadioButton();
+                initNewspapersCheckBox();
+                initBanksCheckBox();
+                initBankServicesCheckBox();
             }
         }
 
@@ -41,12 +45,13 @@ namespace AITRSurvey
                 li.Value = i.ToString();    // value has to be in the form of a String
 
                 MemberRadioButtonList.Items.Add(li);
+                MemberRadioButtonList.SelectedIndex = 0;
             }
         }
 
         void initGenderRadioButton()
         {
-            String[] arr = { "Male", "Female", "other" };
+            String[] arr = { "Other", "Male", "Female" };
 
 
             // Add all items to the selection list
@@ -57,8 +62,59 @@ namespace AITRSurvey
                 li.Value = i.ToString();    // value has to be in the form of a String
 
                 GenderRadioButtonList.Items.Add(li);
+                GenderRadioButtonList.SelectedIndex = 0;
             }
         }
+
+        void initBanksCheckBox()
+        {
+            String[] arr = { "CentralWealth", "BankNorth", "EastPac" };
+
+
+            // Add all items to the selection list
+            for (int i = 0; i < arr.Length; i++)
+            {
+                ListItem li = new ListItem();
+                li.Text = arr[i];
+                li.Value = i.ToString();    // value has to be in the form of a String
+
+                BanksCheckBoxList.Items.Add(li);
+            }
+        }
+
+        void initBankServicesCheckBox()
+        {
+            String[] arr = { "Loans", "Mortage", "Credit Cards" };
+
+
+            // Add all items to the selection list
+            for (int i = 0; i < arr.Length; i++)
+            {
+                ListItem li = new ListItem();
+                li.Text = arr[i];
+                li.Value = i.ToString();    // value has to be in the form of a String
+
+                BankServicesCheckBoxList.Items.Add(li);
+            }
+        }
+
+        void initNewspapersCheckBox()
+        {
+            String[] arr = { "Daily News", "Morning Rise News", "Open Source News" };
+
+
+            // Add all items to the selection list
+            for (int i = 0; i < arr.Length; i++)
+            {
+                ListItem li = new ListItem();
+                li.Text = arr[i];
+                li.Value = i.ToString();    // value has to be in the form of a String
+
+                NewspapersCheckBoxList.Items.Add(li);
+            }
+        }
+
+
 
 
         void initDb()
@@ -116,7 +172,7 @@ namespace AITRSurvey
 
                 if (firstLoop)
                 {
-                    Response.Write("Field count == " + myReader.FieldCount.ToString());
+                    
                     for (int i = 0; i < myReader.FieldCount; i++)
                     {
                         dt.Columns.Add(myReader.GetName(i), System.Type.GetType("System.String"));
