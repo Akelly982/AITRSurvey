@@ -13,5 +13,27 @@ namespace AITRSurvey
         {
 
         }
+
+        protected void LoginSubmitButton_Click(object sender, EventArgs e)
+        {
+            
+            if (EmailREV.IsValid)     // regular expression validator for EmailTextBox
+            {
+                // validate user inputs
+                String passText = PasswordTextbox.Text;
+                String emailText = EmailTextBox.Text;
+
+                userDbCheck(emailText,passText);
+            }
+
+        }
+
+
+
+         void userDbCheck(String username, String password)
+        {
+
+        }
+
     }
 }
