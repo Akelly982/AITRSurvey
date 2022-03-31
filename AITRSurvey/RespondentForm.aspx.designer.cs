@@ -11,7 +11,7 @@ namespace AITRSurvey
 {
 
 
-    public partial class StaffSearch
+    public partial class RespondentForm
     {
 
         /// <summary>
@@ -24,6 +24,15 @@ namespace AITRSurvey
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// titleLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label titleLabel;
+
+        /// <summary>
         /// Label1 control.
         /// </summary>
         /// <remarks>
@@ -33,85 +42,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// StaffUsername control.
+        /// GenderRBList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label StaffUsername;
-
-        /// <summary>
-        /// StaffFirstName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label StaffFirstName;
-
-        /// <summary>
-        /// StaffLastName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label StaffLastName;
-
-        /// <summary>
-        /// StaffEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label StaffEmail;
-
-        /// <summary>
-        /// LogoutBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button LogoutBtn;
-
-        /// <summary>
-        /// Label6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label6;
-
-        /// <summary>
-        /// MemberRadioButtonList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList MemberRadioButtonList;
-
-        /// <summary>
-        /// Label2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
-
-        /// <summary>
-        /// FirstNameTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox FirstNameTextBox;
+        protected global::System.Web.UI.WebControls.RadioButtonList GenderRBList;
 
         /// <summary>
         /// Label3 control.
@@ -123,13 +60,31 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
-        /// LastNameTextBox control.
+        /// AgeRangeRBList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox LastNameTextBox;
+        protected global::System.Web.UI.WebControls.RadioButtonList AgeRangeRBList;
+
+        /// <summary>
+        /// Label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
+
+        /// <summary>
+        /// PostCodeTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox PostCodeTextBox;
 
         /// <summary>
         /// Label4 control.
@@ -141,13 +96,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label4;
 
         /// <summary>
-        /// StateTextBox control.
+        /// SuburbTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox StateTextBox;
+        protected global::System.Web.UI.WebControls.TextBox SuburbTextBox;
 
         /// <summary>
         /// Label5 control.
@@ -159,13 +114,49 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label5;
 
         /// <summary>
-        /// GenderRadioButtonList control.
+        /// StateTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList GenderRadioButtonList;
+        protected global::System.Web.UI.WebControls.TextBox StateTextBox;
+
+        /// <summary>
+        /// Label6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label6;
+
+        /// <summary>
+        /// IsMemberRBList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList IsMemberRBList;
+
+        /// <summary>
+        /// isMemberTrueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label isMemberTrueLabel;
+
+        /// <summary>
+        /// MemberDataSection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl MemberDataSection;
 
         /// <summary>
         /// Label7 control.
@@ -177,13 +168,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label7;
 
         /// <summary>
-        /// Suburb control.
+        /// FirstNameTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Suburb;
+        protected global::System.Web.UI.WebControls.TextBox FirstNameTextBox;
 
         /// <summary>
         /// Label8 control.
@@ -195,13 +186,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label8;
 
         /// <summary>
-        /// PostCode control.
+        /// LastNameTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PostCode;
+        protected global::System.Web.UI.WebControls.TextBox LastNameTextBox;
 
         /// <summary>
         /// Label9 control.
@@ -213,13 +204,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label9;
 
         /// <summary>
-        /// TextBox1 control.
+        /// PhoneNumberTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox PhoneNumberTextBox;
 
         /// <summary>
         /// Label10 control.
@@ -231,13 +222,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label10;
 
         /// <summary>
-        /// BanksCheckBoxList control.
+        /// DateOfBirthTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList BanksCheckBoxList;
+        protected global::System.Web.UI.WebControls.TextBox DateOfBirthTextBox;
 
         /// <summary>
         /// Label11 control.
@@ -249,13 +240,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label11;
 
         /// <summary>
-        /// BankServicesCheckBoxList control.
+        /// EmailTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList BankServicesCheckBoxList;
+        protected global::System.Web.UI.WebControls.TextBox EmailTextBox;
 
         /// <summary>
         /// Label12 control.
@@ -267,21 +258,21 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label Label12;
 
         /// <summary>
-        /// NewspapersCheckBoxList control.
+        /// StreetAddressTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList NewspapersCheckBoxList;
+        protected global::System.Web.UI.WebControls.TextBox StreetAddressTextBox;
 
         /// <summary>
-        /// DataGridView control.
+        /// SubmitBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView DataGridView;
+        protected global::System.Web.UI.WebControls.Button SubmitBtn;
     }
 }

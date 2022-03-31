@@ -10,18 +10,22 @@
     <form id="form1" runat="server">
         <div>
             <div style="text-align: center">
-            <asp:Label ID="TitleLabel" runat="server" style="font-weight: 700; " Text="Staff Login"></asp:Label>
+                <asp:Label ID="TitleLabel" runat="server" style="font-weight: 700; " Text="Staff Login"></asp:Label>
+            </div>
+            <div>
+                <asp:Button ID="ReturnBtn" runat="server" Text="Return" OnClick="ReturnBtn_Click" />
             </div>
             <br />
-            <asp:Label ID="EmailLabel" runat="server" Text="Email:"></asp:Label>
-            <asp:TextBox ID="EmailTextBox" runat="server"></asp:TextBox>
-            <asp:RegularExpressionValidator ID="EmailREV" runat="server" ErrorMessage=" - Invalid Email" ControlToValidate="EmailTextBox" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
+            <asp:Label ID="UsernameLabel" runat="server" Text="Username:"></asp:Label>
+            <asp:TextBox ID="UsernameTextBox" runat="server"></asp:TextBox>
             <br />
             <asp:Label ID="PasswordLabel" runat="server" Text="Password:"></asp:Label>
             <asp:TextBox ID="PasswordTextbox" runat="server"></asp:TextBox>
             <br />
             <br />
             <asp:Button ID="LoginSubmitButton" runat="server" Text="Submit" Width="191px" OnClick="LoginSubmitButton_Click" />
+            <br />
+            <asp:Label ID="ErrMsg" runat="server" Text=""></asp:Label>
         </div>
     </form>
 </body>

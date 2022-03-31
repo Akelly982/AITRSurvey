@@ -33,31 +33,31 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label TitleLabel;
 
         /// <summary>
-        /// EmailLabel control.
+        /// ReturnBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label EmailLabel;
+        protected global::System.Web.UI.WebControls.Button ReturnBtn;
 
         /// <summary>
-        /// EmailTextBox control.
+        /// UsernameLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox EmailTextBox;
+        protected global::System.Web.UI.WebControls.Label UsernameLabel;
 
         /// <summary>
-        /// EmailREV control.
+        /// UsernameTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator EmailREV;
+        protected global::System.Web.UI.WebControls.TextBox UsernameTextBox;
 
         /// <summary>
         /// PasswordLabel control.
@@ -85,5 +85,14 @@ namespace AITRSurvey
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button LoginSubmitButton;
+
+        /// <summary>
+        /// ErrMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ErrMsg;
     }
 }

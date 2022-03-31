@@ -17,6 +17,16 @@ namespace AITRSurvey
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            //update staff user labels
+
+            Staff st = AppSession.getStaff();
+            StaffUsername.Text = st.Username;
+            StaffFirstName.Text = st.FirstName;
+            StaffLastName.Text = st.LastName;
+            StaffEmail.Text = st.Email;
+
+
             initDb();
 
             // post back is false only the first time the page loads
@@ -29,6 +39,8 @@ namespace AITRSurvey
                 initBanksCheckBox();
                 initBankServicesCheckBox();
             }
+
+
         }
 
 
@@ -205,5 +217,10 @@ namespace AITRSurvey
             
         }
 
+        protected void LogoutBtn_Click(object sender, EventArgs e)
+        {
+            AppSession.clearStaff();  // reset staff from session
+            Response.Redirect("Login.aspx");
+        }
     }
 }

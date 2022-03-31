@@ -11,6 +11,13 @@
         <div style="text-align: center">
                <asp:Label ID="Label1" runat="server" Text="Staff Search"></asp:Label>
         </div>
+        <div style="text-align: center">
+                <asp:Label ID="StaffUsername" runat="server" Text="user"></asp:Label>
+                <asp:Label ID="StaffFirstName" runat="server" Text="first"></asp:Label>
+                <asp:Label ID="StaffLastName" runat="server" Text="last"></asp:Label>
+                <asp:Label ID="StaffEmail" runat="server" Text="email"></asp:Label>
+                <asp:Button ID="LogoutBtn" runat="server" Text="Log Out" OnClick="LogoutBtn_Click" />
+        </div>
         <br />
         <div>
             <asp:Label ID="Label6" runat="server" Text="Members: "></asp:Label>
