@@ -141,15 +141,6 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.RadioButtonList IsMemberRBList;
 
         /// <summary>
-        /// isMemberTrueLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label isMemberTrueLabel;
-
-        /// <summary>
         /// MemberDataSection control.
         /// </summary>
         /// <remarks>
@@ -157,6 +148,15 @@ namespace AITRSurvey
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl MemberDataSection;
+
+        /// <summary>
+        /// isMemberTrueLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label isMemberTrueLabel;
 
         /// <summary>
         /// Label7 control.
@@ -231,6 +231,15 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.TextBox DateOfBirthTextBox;
 
         /// <summary>
+        /// RegularExpressionValidator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator2;
+
+        /// <summary>
         /// Label11 control.
         /// </summary>
         /// <remarks>
@@ -247,6 +256,15 @@ namespace AITRSurvey
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox EmailTextBox;
+
+        /// <summary>
+        /// RegularExpressionValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
 
         /// <summary>
         /// Label12 control.
@@ -274,5 +292,14 @@ namespace AITRSurvey
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button SubmitBtn;
+
+        /// <summary>
+        /// ErrMsgLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ErrMsgLabel;
     }
 }

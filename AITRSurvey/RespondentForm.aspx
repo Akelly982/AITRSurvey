@@ -32,16 +32,19 @@
                 <asp:Label ID="Label5" runat="server" Text="State:"></asp:Label>
                 <asp:TextBox ID="StateTextBox" runat="server"></asp:TextBox>
             </div>
-
-
             <%-- If wants to be member --%>
             <div>
                 <asp:Label ID="Label6" runat="server" Text="Do you wish to participate as a member?"></asp:Label>
                 <asp:RadioButtonList ID="IsMemberRBList" runat="server" OnSelectedIndexChanged="IsMemberRBList_SelectedIndexChanged" AutoPostBack="True"></asp:RadioButtonList>
-                <asp:Label ID="isMemberTrueLabel" runat="server" Text=""></asp:Label>
             </div>
 
+
+            <br />
+            <%-- Member data fields --%>
             <div id="MemberDataSection" runat="server">
+                <div>
+                    <asp:Label ID="isMemberTrueLabel" runat="server" Text="Thank you for your membership:"></asp:Label>
+                </div>
                 <div>
                     <asp:Label ID="Label7" runat="server" Text="First Name:"></asp:Label>
                     <asp:TextBox ID="FirstNameTextBox" runat="server"></asp:TextBox>
@@ -57,10 +60,12 @@
                 <div>
                     <asp:Label ID="Label10" runat="server" Text="Date Of Birth:"></asp:Label>
                     <asp:TextBox ID="DateOfBirthTextBox" runat="server"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="DateOfBirthTextBox" ErrorMessage="Invalid (dd-mm-yyyy)" ValidationExpression="[0-9]{2}-[0-9]{2}-[0-9]{4}"></asp:RegularExpressionValidator>
                 </div>
                 <div>
                     <asp:Label ID="Label11" runat="server" Text="Email:"></asp:Label>
                     <asp:TextBox ID="EmailTextBox" runat="server"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="EmailTextBox" ErrorMessage="Invalid email" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
                 </div>
                 <div>
                     <asp:Label ID="Label12" runat="server" Text="Street Address:"></asp:Label>
@@ -70,8 +75,13 @@
 
 
             <%-- Submit --%>
+            <br />
             <div>
                 <asp:Button ID="SubmitBtn" runat="server" Text="Submit" OnClick="SubmitBtn_Click" />
+            </div>
+            <br />
+            <div>
+                <asp:Label ID="ErrMsgLabel" runat="server" Text=""></asp:Label>
             </div>
         </div>
     </form>
