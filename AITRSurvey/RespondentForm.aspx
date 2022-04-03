@@ -60,7 +60,7 @@
                 <div>
                     <asp:Label ID="Label10" runat="server" Text="Date Of Birth:"></asp:Label>
                     <asp:TextBox ID="DateOfBirthTextBox" runat="server"></asp:TextBox>
-                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="DateOfBirthTextBox" ErrorMessage="Invalid (dd-mm-yyyy)" ValidationExpression="[0-9]{2}-[0-9]{2}-[0-9]{4}"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="DateOfBirthTextBox" ErrorMessage="Invalid (yyyy-mm-dd)" ValidationExpression="[0-9]{4}-[0-9]{2}-[0-9]{2}"></asp:RegularExpressionValidator>
                 </div>
                 <div>
                     <asp:Label ID="Label11" runat="server" Text="Email:"></asp:Label>

@@ -136,7 +136,7 @@ namespace AITRSurvey
                 ErrMsgLabel.Text = result;  //relay issue back to user
                 return;
             }
-
+            
             //Test
             //ErrMsgLabel.Text = SUCCESSFULL + " member data check";
 
@@ -149,56 +149,71 @@ namespace AITRSurvey
             string state = StateTextBox.Text;
             string suburb = SuburbTextBox.Text;
             string postcode = PostCodeTextBox.Text;
+            string firstName = FirstNameTextBox.Text; // is set for member users
 
-            string firstName = FirstNameTextBox.Text;
             string lastName = LastNameTextBox.Text;
             string phoneNumber = PhoneNumberTextBox.Text;
             string dob = DateOfBirthTextBox.Text;
             string streetAddress = StreetAddressTextBox.Text;
+            string email = EmailTextBox.Text;
 
+
+            //Db Insert Member Data
+              // lastaName, phoneNumber, dateOfBirth, streetAddress, email
+            SqlConnection myConn = new SqlConnection();
+            myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
+            myConn.Open(); // establish the connection to the db
+
+            SqlCommand myCommand;
+            myCommand = new SqlCommand("INSERT INTO Member (lastName,phoneNumber,dateOfBirth,streetAddress,email)" +
+                                        " OUTPUT INSERTED.MID" +
+                                        " VALUES(@lastName, @phoneNumber, @dateOfBirth, @streetAddress, @email)", myConn);
+
+            myCommand.Parameters.AddWithValue("@lastName", lastName);
+            myCommand.Parameters.AddWithValue("@phoneNumber", phoneNumber);
+            myCommand.Parameters.AddWithValue("@dateOfBirth", dob);
+            myCommand.Parameters.AddWithValue("@streetAddress", streetAddress);
+            myCommand.Parameters.AddWithValue("@email", email);
+            
+            //sql query Output INSERTED.id returns a dataset holding 1 row stating the value of given column 
+            int mid = (int)myCommand.ExecuteScalar(); //must cast what the object should be
+            ErrMsgLabel.Text = "member db insert succesfull / id:" + mid.ToString();
+
+
+
+
+            //Db Insert Respondent Data
+                // due to member we need the MID_FK and FirstName set as well.
+            myCommand = new SqlCommand("INSERT INTO Respondent(firstName, postcode, gender, ageRange, suburb, state, MID_FK)" +
+                                        " OUTPUT INSERTED.RID" +
+                                        " VALUES(@firstName, @postcode, @gender, @ageRange, @suburb, @state, @MID_FK)", myConn);
+
+            myCommand.Parameters.AddWithValue("@MID_FK", mid);
+            myCommand.Parameters.AddWithValue("@firstName", firstName);
+            myCommand.Parameters.AddWithValue("@postcode", postcode);
+            myCommand.Parameters.AddWithValue("@gender", gender);
+            myCommand.Parameters.AddWithValue("@ageRange", ageRange);
+            myCommand.Parameters.AddWithValue("@suburb", suburb);
+            myCommand.Parameters.AddWithValue("@state", state);
+
+
+            //sql query Output INSERTED.id returns a dataset holding 1 row stating the value of given column 
+            int resId = (int)myCommand.ExecuteScalar(); //must cast what the object should be
+
+
+
+
+            //close db connection
+            myConn.Close();
 
             //Test
-            ErrMsgLabel.Text = ageRange + "/" + gender + "/" + state + "/" + suburb + "/" + postcode;
-
-            ////Db Insert Member Data
-            //SqlConnection myConn = new SqlConnection();
-
-            //myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
-
-            //myConn.Open(); // establish the connection to the db
-
-            //SqlCommand myCommand;
-            //myCommand = new SqlCommand("INSERT INTO Respondent (postcode,gender,ageRange,suburb,state) " +
-            //    "OUTPUT INSERTED.RID " +
-            //    "VALUES (@postcode,@gender,@ageRange,@suburb,@state)", myConn);
-
-            //myCommand.Parameters.AddWithValue("@postcode", postcode);
-            //myCommand.Parameters.AddWithValue("@gender", gender);
-            //myCommand.Parameters.AddWithValue("@ageRange", ageRange);
-            //myCommand.Parameters.AddWithValue("@suburb", suburb);
-            //myCommand.Parameters.AddWithValue("@state", state);
-
-
-            ////sql query Output INSERTED.id returns a dataset holding 1 row stating the value of given column 
-            //int ResId = (int)myCommand.ExecuteScalar(); //must cast what the object should be
-
-
-
-
-
-
-
-
-            ////close db connection
-            //myConn.Close();
-
-            //ErrMsgLabel.Text = "member db insert succesfull / id:" + ResId.ToString();
+            ErrMsgLabel.Text = "member db insert succesfull / resId:" + resId.ToString() + " / memberId: " + mid.ToString();
 
             //update session with respondent
-            //AppSession.setRespondentId(ResId);
+            AppSession.setRespondentId(resId);
 
             //launch Survey
-            //startSurvey();
+            startSurvey();
         }
 
 
@@ -206,8 +221,6 @@ namespace AITRSurvey
         public void anonymousRespondent()
         {
             
-
-
             //check data fields
             string result = checkAnonymousDataFields();
             if(result != SUCCESSFULL)
@@ -220,7 +233,6 @@ namespace AITRSurvey
             //ErrMsgLabel.Text = SUCCESSFULL + " anonymous data check";
 
             
-
             // Retrieve User inputs
             //In SQL Table firstName and MID_FK (member id foreign key) default to 
             //   firstname default = "anonymous"
@@ -234,7 +246,7 @@ namespace AITRSurvey
             //Test
             //ErrMsgLabel.Text = ageRange + "/" + gender + "/" + state + "/" + suburb + "/" + postcode;
 
-            //TODO anonymous Insert db
+            // anonymous Insert db
             SqlConnection myConn = new SqlConnection();
 
             myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
@@ -254,15 +266,15 @@ namespace AITRSurvey
 
 
             //sql query Output INSERTED.id returns a dataset holding 1 row stating the value of given column 
-            int ResId = (int)myCommand.ExecuteScalar(); //must cast what the object should be
+            int resId = (int)myCommand.ExecuteScalar(); //must cast what the object should be
 
             //close db connection
             myConn.Close();
 
-            ErrMsgLabel.Text = "Anonymous db insert succesfull / id:" + ResId.ToString();
+            ErrMsgLabel.Text = "Anonymous db insert succesfull / id:" + resId.ToString();
 
             //update session with respondent
-            AppSession.setRespondentId(ResId);
+            AppSession.setRespondentId(resId);
 
 
             //launch Survey
@@ -282,7 +294,7 @@ namespace AITRSurvey
 
         public void startSurvey()
         {
-            Response.Redirect("dynamicSurvey.aspx");
+            Response.Redirect("DynamicSurvey.aspx");
         }
 
 

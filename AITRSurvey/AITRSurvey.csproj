@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="DynamicSurvey.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="RespondentForm.aspx" />
     <Content Include="SampleSurveyCB.aspx" />
@@ -85,6 +86,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicSurvey.aspx.cs">
+      <DependentUpon>DynamicSurvey.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DynamicSurvey.aspx.designer.cs">
+      <DependentUpon>DynamicSurvey.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
