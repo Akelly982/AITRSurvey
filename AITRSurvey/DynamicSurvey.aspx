@@ -13,7 +13,7 @@
             <asp:Label ID="TitleLbl" runat="server" Text="Survey"></asp:Label>
         </div>
         <div id="DevConsole" runat="server">
-            <asp:Label ID="DevConsoleLbl" runat="server" Text=""></asp:Label>
+            <asp:Label ID="DevMessageLbl" runat="server"></asp:Label>
             <asp:GridView ID="devQuestionGridView" runat="server"></asp:GridView>
             <asp:GridView ID="devQuestionValuesGridView" runat="server"></asp:GridView>
         </div>

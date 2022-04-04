@@ -18,8 +18,16 @@ namespace AITRSurvey
         }
 
 
-        // by removal of rows 
-        // this is simpler than trying to generate a ne dt based of off the held data
+        
+        public DataTable Dt { get => dt; set => dt = value; }
+
+
+        // -------------------------
+        // ------ Methods ----------
+        // -------------------------
+
+        // get a dt from the dt 
+            //for example where columnName == "QID_FK" and value = "200"
         public DataTable getRowsByColumnNameAndIntValue(string columnName, int value)
         {
 
@@ -35,6 +43,7 @@ namespace AITRSurvey
             //        tempDt.Rows.Remove(row);
             //    }
             //}
+
 
             //V2
             // error here is that the index changes as you remove rows from the Data table
@@ -57,7 +66,7 @@ namespace AITRSurvey
             //V3
                 //copy data table and clear all rows
                 // we should have a dt with the same column names but empty
-            DataTable tempDt = this.dt.Copy();
+            DataTable tempDt = this.dt.Copy();   //saying dtable == other datatable does not seem to disconnect them may be used like a pointer
             tempDt.Rows.Clear();
 
 
@@ -74,15 +83,41 @@ namespace AITRSurvey
                         currentRow[i] = row[i];
                     }
 
-                    //append row to tempDt
+                    //append copied row to tempDt
                     tempDt.Rows.Add(currentRow);
                     
-                            
                 }
             }
 
 
             return tempDt;
+        }
+
+        
+
+        // get a singluar row from dt 
+            // for example where columnName == "QID" and value == "100" 
+        public DataRow getRowByColumnNameAndIntValue(string columnName, int value)
+        {
+
+            DataRow tempRow = this.dt.NewRow();
+
+            foreach (DataRow row in this.dt.Rows)   //foreach row of the host
+            {
+                if ((int)row[columnName] == value)  // find the ones with our value
+                {
+                    // A row item array is a mix of String and Int32 datatypes hence not a for loop
+                    // copy row
+                    for (int i = 0; i < row.ItemArray.Length; i++)
+                    {
+                        tempRow[i] = row[i];
+                    }
+
+                }
+            }
+
+            //return row
+            return tempRow;
         }
 
 

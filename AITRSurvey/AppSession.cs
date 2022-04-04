@@ -8,8 +8,7 @@ namespace AITRSurvey
     public static class AppSession
     {
 
-        
-
+       
         public static Staff getStaff()
         {
             return (Staff)HttpContext.Current.Session["Staff"];
@@ -25,9 +24,6 @@ namespace AITRSurvey
         {
             HttpContext.Current.Session["Staff"] = null;
         }
-
-
-
 
 
         public static void setRespondentId(int respondentID)

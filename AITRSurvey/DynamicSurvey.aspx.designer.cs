@@ -51,13 +51,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DevConsole;
 
         /// <summary>
-        /// DevConsoleLbl control.
+        /// DevMessageLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label DevConsoleLbl;
+        protected global::System.Web.UI.WebControls.Label DevMessageLbl;
 
         /// <summary>
         /// devQuestionGridView control.
