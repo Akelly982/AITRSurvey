@@ -60,12 +60,21 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label DevConsoleLbl;
 
         /// <summary>
-        /// activeQuestion control.
+        /// devQuestionGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl activeQuestion;
+        protected global::System.Web.UI.WebControls.GridView devQuestionGridView;
+
+        /// <summary>
+        /// devQuestionValuesGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView devQuestionValuesGridView;
     }
 }

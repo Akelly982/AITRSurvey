@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="AppConstants.cs" />
     <Compile Include="AppSession.cs" />
+    <Compile Include="DataTableHandler.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

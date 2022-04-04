@@ -9,14 +9,13 @@
 <body>
     <form id="form1" runat="server">
         <div style="text-align: center">
-            <asp:Label ID="QuestiionNumLbl" runat="server" Text="Q-1"></asp:Label>
+            <asp:Label ID="QuestiionNumLbl" runat="server" Text="Q99"></asp:Label>
             <asp:Label ID="TitleLbl" runat="server" Text="Survey"></asp:Label>
         </div>
         <div id="DevConsole" runat="server">
             <asp:Label ID="DevConsoleLbl" runat="server" Text=""></asp:Label>
-        </div>
-        <div id="activeQuestion" runat="server">
-            
+            <asp:GridView ID="devQuestionGridView" runat="server"></asp:GridView>
+            <asp:GridView ID="devQuestionValuesGridView" runat="server"></asp:GridView>
         </div>
     </form>
 </body>

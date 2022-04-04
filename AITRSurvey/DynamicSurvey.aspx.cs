@@ -15,6 +15,7 @@ namespace AITRSurvey
     {
         bool devConsoleVisibility = true;
 
+        int currentQuestion = -1;
         int terminator = -1;
         int questionGap = -1;
 
@@ -23,6 +24,7 @@ namespace AITRSurvey
 
             if (!IsPostBack)
             {
+                //testing console
                 DevConsole.Visible = devConsoleVisibility;
 
                 // ----------------------------------------------------------
@@ -37,18 +39,18 @@ namespace AITRSurvey
                 myConn.Open(); // establish the connection to the db
 
                 SqlCommand myCommand;
-                myCommand = new SqlCommand("SELECT TOP 1 QID,QTID_FK,questionText,NextQID FROM Questions", myConn);
+                myCommand = new SqlCommand("SELECT QID,QTID_FK,questionText,NextQID FROM Questions", myConn);
 
                 SqlDataReader myReader;
                 myReader = myCommand.ExecuteReader();   //capture your data 
 
                 // prepare your data table 
-                DataTable dt = new DataTable();
+                DataTable questionDT = new DataTable();
 
-                dt.Columns.Add("QID", System.Type.GetType("System.Int32"));
-                dt.Columns.Add("QTID_FK", System.Type.GetType("System.Int32"));
-                dt.Columns.Add("questionText", System.Type.GetType("System.String"));
-                dt.Columns.Add("NextQID", System.Type.GetType("System.Int32"));
+                questionDT.Columns.Add("QID", System.Type.GetType("System.Int32"));
+                questionDT.Columns.Add("QTID_FK", System.Type.GetType("System.Int32"));
+                questionDT.Columns.Add("questionText", System.Type.GetType("System.String"));
+                questionDT.Columns.Add("NextQID", System.Type.GetType("System.Int32"));
 
 
 
@@ -56,7 +58,7 @@ namespace AITRSurvey
                 DataRow currentRow;
                 while (myReader.Read())
                 {
-                    currentRow = dt.NewRow();
+                    currentRow = questionDT.NewRow();
 
                     // can use column name or index
                     currentRow["QID"] = myReader["QID"];
@@ -64,7 +66,7 @@ namespace AITRSurvey
                     currentRow["questionText"] = myReader["questionText"].ToString();
                     currentRow["NextQID"] = myReader["NextQID"];
 
-                    dt.Rows.Add(currentRow);
+                    questionDT.Rows.Add(currentRow);
                 }
 
                 //close db connection
@@ -72,23 +74,106 @@ namespace AITRSurvey
 
 
 
-                // ------------------------------------
-                // PHASE 2 --- get Terminator value ---
-                // ------------------------------------
+
+                // -----------------------------------------------------------------------
+                // PHASE 2 --- get Terminator value, first Question ID and QuestionGap ---
+                // -----------------------------------------------------------------------
 
                 // data table class docs
                 // https://docs.microsoft.com/en-us/dotnet/api/system.data.datatable?view=net-6.0
 
-                terminator = (int)dt.Rows[0]["QID"];
-                questionGap = (int)dt.Rows[0]["NextQID"];
+                terminator = (int)questionDT.Rows[0]["QID"];
+                questionGap = (int)questionDT.Rows[0]["NextQID"];
+                currentQuestion = questionGap;
 
                 DevConsoleLbl.Text = "terminator: " + terminator.ToString() + "  /  questionGap: " + questionGap.ToString();
+
+
+
+
+                // -----------------------------------------------------------------------
+                // PHASE 3 --- get our last dataTable questionValues     ---------------
+                // -----------------------------------------------------------------------
+
+                //get the questionValues table from the db
+                myConn.Open(); // establish the connection to the db
+
+                myCommand = new SqlCommand("SELECT QVID, QID_FK, text, NextQID FROM QuestionValues", myConn);
+                myReader = myCommand.ExecuteReader();   //capture your data 
+
+                // prepare your data table 
+                DataTable questionValuesDT = new DataTable();
+
+                questionValuesDT.Columns.Add("QVID", System.Type.GetType("System.Int32"));
+                questionValuesDT.Columns.Add("QID_FK", System.Type.GetType("System.Int32"));
+                questionValuesDT.Columns.Add("text", System.Type.GetType("System.String"));
+                questionValuesDT.Columns.Add("NextQID", System.Type.GetType("System.Int32"));
+
+
+
+                // row by row add to the data table 
+
+                //currentRow already set above
+                while (myReader.Read())
+                {
+                    currentRow = questionValuesDT.NewRow();
+
+                    // can use column name or index
+                    currentRow["QVID"] = myReader["QVID"];
+                    currentRow["QID_FK"] = myReader["QID_FK"];
+                    currentRow["text"] = myReader["text"].ToString();
+                    currentRow["NextQID"] = myReader["NextQID"];
+
+                    questionValuesDT.Rows.Add(currentRow);
+                }
+
+                //close db connection
+                myConn.Close();  // dont forget to close your db
+
+
+                // send to dev console
+                if(devConsoleVisibility != false) 
+                {
+                    devQuestionGridView.DataSource = questionDT;
+                    devQuestionValuesGridView.DataSource = questionValuesDT;
+                    devQuestionGridView.DataBind();        // on bind the grid view object is refreshed to show the data
+                    devQuestionValuesGridView.DataBind();
+
+                    //testing my datatable class
+                    DataTableHandler dth = new DataTableHandler(questionValuesDT);
+                    DataTable testDt = dth.getRowsByColumnNameAndIntValue("QID_FK", 200);
+                    devQuestionValuesGridView.DataSource = testDt;
+                    devQuestionValuesGridView.DataBind();
+                }
+               
+
 
 
 
             }
 
 
+            //while(currentQuestion != terminator)
+            //{
+            //    runQuestion();
+            //    currentQuestion = 
+
+
+            //}
+
+
         }
+
+
+
+        public void runQuestion() 
+        {
+            
+        
+        }
+
+
+
+
     }
 }
