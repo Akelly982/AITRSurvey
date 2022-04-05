@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 
 using System.Data;            // needed for dataTable class
+using System.Web.UI.WebControls;
 
 namespace AITRSurvey
 {
@@ -28,7 +29,7 @@ namespace AITRSurvey
 
         // get a dt from the dt 
             //for example where columnName == "QID_FK" and value = "200"
-        public DataTable getRowsByColumnNameAndIntValue(string columnName, int value)
+        public DataTable getDataTableByColumnNameAndIntValue(string columnName, int value)
         {
 
             //DataTable tempDt = this.dt.Copy(); 
@@ -118,6 +119,31 @@ namespace AITRSurvey
 
             //return row
             return tempRow;
+        }
+
+
+
+
+
+
+        public ListItemCollection getListItemCollectionByColumnNameAndIntValue(string columnName, int value)
+        {
+            ListItemCollection lic = new ListItemCollection();
+
+            //using our other method grab the dt set we need 
+            DataTable tempDt = getDataTableByColumnNameAndIntValue(columnName, value);
+
+            // loop through dt getting our listItems
+            foreach (DataRow row in tempDt.Rows)
+            {
+                ListItem li = new ListItem();
+                li.Text = (string)row["text"];
+                li.Value = ((int)row["NextQID"]).ToString();    // value has to be in the form of a String
+
+                lic.Add(li);
+            }
+
+            return lic;
         }
 
 

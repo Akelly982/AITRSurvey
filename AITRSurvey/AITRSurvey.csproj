@@ -139,6 +139,7 @@
     <Compile Include="StaffSearch.aspx.designer.cs">
       <DependentUpon>StaffSearch.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SurveyHandler.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

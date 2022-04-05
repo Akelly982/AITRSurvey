@@ -15,20 +15,21 @@ namespace AITRSurvey
     {
         bool devConsoleVisibility = true;
 
-        int currentQuestionId = -1;
-        int terminator = -1;
-        int questionGap = -1;
-
-        DataTableHandler questionDth;
-        DataTableHandler questionValuesDth;
+        //int currentQuestionId = -1;
+        //int terminator = -1;
+        //DataTableHandler questionDth;
+        //DataTableHandler questionValuesDth;
+        //DataRow activeQuestionRow;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            
 
             if (!IsPostBack)
             {
                 //testing console
                 DevConsole.Visible = devConsoleVisibility;
+                SurveyQuestionHolder.Visible = false;  // hide my template survey questions
 
                 // ----------------------------------------------------------
                 // PHASE 1 --- get our questionsGap and Terminator values ---
@@ -79,18 +80,20 @@ namespace AITRSurvey
 
 
                 // -----------------------------------------------------------------------
-                // PHASE 2 --- get Terminator value, first Question ID and QuestionGap ---
+                // PHASE 2 --- get Terminator value, first Question ID -------------------
                 // -----------------------------------------------------------------------
 
                 // data table class docs
                 // https://docs.microsoft.com/en-us/dotnet/api/system.data.datatable?view=net-6.0
 
-                terminator = (int)questionDt.Rows[0]["QID"];
-                questionGap = (int)questionDt.Rows[0]["NextQID"];
-                currentQuestionId = questionGap;
+                int tempTerminator = (int)questionDt.Rows[0]["QID"];
+                int tempCurrentQuestionId = (int)questionDt.Rows[0]["NextQID"];
 
-                DevMessageLbl.Text = "terminator: " + terminator.ToString() + "  /  questionGap: " + questionGap.ToString();
+                DevMessageLbl.Text = "terminator: " + tempTerminator.ToString();
 
+                //set to static survey handler
+                SurveyHandler.Terminator = tempTerminator;
+                SurveyHandler.CurrentQuestionId = tempCurrentQuestionId;
 
 
 
@@ -114,8 +117,7 @@ namespace AITRSurvey
 
 
 
-                // row by row add to the data table 
-
+                // row by row add to the data table
                 //currentRow already set above
                 while (myReader.Read())
                 {
@@ -151,30 +153,11 @@ namespace AITRSurvey
 
 
                 //set datatables to the DynamicSurvey class
-                this.questionDth = new DataTableHandler(questionDt);
-                this.questionValuesDth = new DataTableHandler(questionValuesDt);
+                SurveyHandler.QuestionDth = new DataTableHandler(questionDt);
+                SurveyHandler.QuestionValuesDth = new DataTableHandler(questionValuesDt);
 
-            }
-
-
-            // -----------------------------------------------------
-            // PHASE 4 -- Start the gameplay loop    ---------------
-            // -----------------------------------------------------
-
-            // create our gameplay loop
-            while (currentQuestionId != terminator)
-            {
-
-                //get current question dt row
-                DataRow currentRow = questionDth.getRowByColumnNameAndIntValue("QID", currentQuestionId);
-
-                //run question
-                runQuestion(currentRow);
-
-                //increment to NextQID based on current row
-                currentQuestionId = (int)currentRow["NextQID"];
-
-
+                // Survey handler further setup
+                SurveyHandler.RunningChildQuestions = false;
             }
 
 
@@ -182,17 +165,77 @@ namespace AITRSurvey
 
 
 
-        public void runQuestion(DataRow activeQuestionRow) 
+        //happens after button load
+        protected void Page_LoadComplete(object sender, EventArgs e)
         {
+            // -----------------------------------------------------
+            // PHASE 4 -- Start the gameplay loop    ---------------
+            // -----------------------------------------------------
+
+            //setup data from our static class
+            //on first run these will be set in firstLoop
+            int currentQuestionId = SurveyHandler.CurrentQuestionId;
+            int terminator = SurveyHandler.Terminator;
+            DataTableHandler questionDth = SurveyHandler.QuestionDth;
+            DataTableHandler questionValuesDth = SurveyHandler.QuestionValuesDth;
+            bool runningChildQuestions = SurveyHandler.RunningChildQuestions;
+
+            // create our gameplay loop
+            if (!runningChildQuestions)
+            {
+                if (currentQuestionId != terminator)
+                {
+
+                    //get current question dt row
+                    DataRow currentRow = questionDth.getRowByColumnNameAndIntValue("QID", currentQuestionId);
+
+                    //run question
+                    runQuestion(currentRow);
+
+                    SurveyHandler.CurrentQuestionId = (int)currentRow["NextQID"];
+
+                }
+                else
+                {
+                    // end survey
+
+                    //temp placeholder 
+                    DevMessageLbl.Text = " END OF SURVEY / " + currentQuestionId.ToString();
+                    hideAllQuestions(); // hide the previous question
+                }
+            }
+            
+            
+
+        }
+
+
+
+        public void runQuestion(DataRow currentRow) 
+        {
+            devConsoleGridUpdate(currentRow);
+
+            //set asctiveQuestionRow  both in our static class and for use here
+            SurveyHandler.ActiveQuestionRow = currentRow;
+            DataRow activeQuestionRow = currentRow;
+
+            //hide previous question whatever it may be
+            hideAllQuestions();
+
+            //set questionText and questiong number (QID)
+            // this data uses shared controls / elements so it is always visable
+            string qText = (string)activeQuestionRow["questionText"];
+            int qId = (int)activeQuestionRow["QID"];
+            assignQuestionTitles(qText, qId);
 
             //QTID
-            // Question Type ID
+            // Determin Question Type ID
                 //1 == TextBox
                 //2 == RadioBtn
                 //3 == CheckBox
 
             //Determine question Type
-            switch ((int)activeQuestionRow["QTID"])
+            switch ((int)activeQuestionRow["QTID_FK"])
             {
                 case 1:
                     //TextBox
@@ -218,23 +261,181 @@ namespace AITRSurvey
         
         }
 
+        public void hideAllQuestions()
+        {
+            ItemTextBox.Visible = false;
+            ItemRadioBtn.Visible = false;
+            ItemCheckBox.Visible = false;
+        }
+
+        public void devConsoleGridUpdate(DataRow activeRow)
+        {
+            
+            int qid = (int)activeRow["QID"];
+            //update
+            devQuestionGridView.DataSource = SurveyHandler.QuestionDth.getDataTableByColumnNameAndIntValue("QID", qid);
+            devQuestionValuesGridView.DataSource = SurveyHandler.QuestionValuesDth.getDataTableByColumnNameAndIntValue("QID_FK", qid);
+            //bind
+            devQuestionGridView.DataBind();
+            devQuestionValuesGridView.DataBind();
+        }
+
+        public void assignQuestionTitles(string questionText, int questionId)
+        {
+            QuestionNumLbl.Text = "Q" + questionId.ToString();
+            //assign questText to QestionTextLabel
+            QuestionTextLbl.Text = questionText;
+        }
+
+
+
+
+        //Build question to be shown within the SurveyContainer
         public void viewTextBox(DataRow activeQuestionRow)
         {
-
+            //show question
+            ItemTextBox.Visible = true;
         }
 
         public void viewRadioButton(DataRow activeQuestionRow)
         {
+            //clear previous data 
+            userSelectionRB.Items.Clear();
 
+            //set question internal data
+            //get data 
+            int qId = (int)activeQuestionRow["QID"];
+            ListItemCollection lic = SurveyHandler.QuestionValuesDth.getListItemCollectionByColumnNameAndIntValue("QID_FK", qId);
+            //add data
+            foreach (ListItem li in lic)
+            {
+                userSelectionRB.Items.Add(li);
+            }
+
+            //show question
+            ItemRadioBtn.Visible = true;
         }
 
         public void viewCheckBox(DataRow activeQuestionRow)
         {
             
+            //clear previous data 
+            userSelectionCB.Items.Clear();
+
+            //set question internal data
+                //get data 
+            int qId = (int)activeQuestionRow["QID"];
+            ListItemCollection lic = SurveyHandler.QuestionValuesDth.getListItemCollectionByColumnNameAndIntValue("QID_FK", qId);
+                //add data
+            foreach (ListItem li in lic){
+                userSelectionCB.Items.Add(li);
+            }
+
+            //show question
+            ItemCheckBox.Visible = true;
+        }
+
+
+        // ---------------------------------
+        // ---- EVENTS ---------------------
+        // ---------------------------------
+        protected void SubmitButtonTB_Click(object sender, EventArgs e)
+        {
+            //validate user response
+
+            //submit activeQuestionRow 
+
+            //nextQuestionCheck();
+        }
+
+        protected void SubmitButtonCB_Click(object sender, EventArgs e)
+        {
+            //validate user response
+
+            //submit activeQuestionRow 
+
+
+            //get the data we require
+            DataRow activeQuestionRow = SurveyHandler.ActiveQuestionRow;
+            int terminator = SurveyHandler.Terminator;
+            int activeQID = (int)activeQuestionRow["QID"];
+            DataTableHandler questionDth = SurveyHandler.QuestionDth;
+
+            //turn on running child rows
+            SurveyHandler.RunningChildQuestions = true;
+            // loop though the users choices
+            foreach (ListItem item in userSelectionCB.Items)
+            {
+                if (item.Selected)
+                {
+                    int nextQid = Int32.Parse(item.Value);
+                    //V1
+                    //check our active row to see if it has any child questions
+                    if (nextQid != terminator)
+                    {
+                        // Get our next data row
+                        DataRow nextRow = questionDth.getRowByColumnNameAndIntValue("QID", nextQid);
+                        //Recursion --> start this proccess again --> FEED THE BEAST
+                        runQuestion(nextRow);
+                    }
+                    else
+                    {
+                        //continue 
+                    }
+                }
+            }
+
+            //turn off runningChildQuestion
+            SurveyHandler.RunningChildQuestions = false;
+
+            //OLD
+            //nextQuestionCheck();
+
+        }
+
+        protected void SubmitButtonRB_Click(object sender, EventArgs e)
+        {
+            //validate user response
+
+            //submit activeQuestionRow 
+
+            nextQuestionCheck();
         }
 
 
 
 
+        // check to see if we can move to a new question within the current question
+        public void nextQuestionCheck()
+        {
+            //get the data we require
+            DataRow activeQuestionRow = SurveyHandler.ActiveQuestionRow;
+            int terminator = SurveyHandler.Terminator;
+            DataTableHandler questionDth = SurveyHandler.QuestionDth;
+
+            //V1
+            //check our active row to see if it has any child questions
+            if ((int)activeQuestionRow["NextQID"] != terminator)
+            {
+                // Get our next data row
+                int nextQid = (int)activeQuestionRow["NextQID"];
+                DataRow nextRow = questionDth.getRowByColumnNameAndIntValue("QID", nextQid);
+                //Recursion --> start this proccess again --> FEED THE BEAST
+                runQuestion(nextRow);
+            }
+            else
+            {
+                //continue 
+            }
+
+
+            ////V2
+            //// setup for the next loop
+            //SurveyHandler.CurrentQuestionId = (int)activeQuestionRow["NextQID"];  //move to next question
+            ////TEST
+            //DevMessageLbl.Text = "CurrentQuestionID: " + ((int)activeQuestionRow["NextQID"]).ToString();
+
+
+        }
     }
 }
