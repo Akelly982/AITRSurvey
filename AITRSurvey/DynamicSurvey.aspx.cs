@@ -93,7 +93,8 @@ namespace AITRSurvey
 
                 //set to static survey handler
                 SurveyHandler.Terminator = tempTerminator;
-                SurveyHandler.CurrentQuestionId = tempCurrentQuestionId;
+                //SurveyHandler.CurrentQuestionId = tempCurrentQuestionId;
+                SurveyHandler.ParentQuestionId = tempCurrentQuestionId;
 
 
 
@@ -157,7 +158,10 @@ namespace AITRSurvey
                 SurveyHandler.QuestionValuesDth = new DataTableHandler(questionValuesDt);
 
                 // Survey handler further setup
-                SurveyHandler.RunningChildQuestions = false;
+                //SurveyHandler.RunningChildQuestions = false;
+                List<List<int>> childQuestionList = new List<List<int>>();
+                SurveyHandler.ChildQuestionsList = childQuestionList;
+     
             }
 
 
@@ -174,25 +178,26 @@ namespace AITRSurvey
 
             //setup data from our static class
             //on first run these will be set in firstLoop
-            int currentQuestionId = SurveyHandler.CurrentQuestionId;
+            int parentQuestionId = SurveyHandler.ParentQuestionId;
             int terminator = SurveyHandler.Terminator;
             DataTableHandler questionDth = SurveyHandler.QuestionDth;
             DataTableHandler questionValuesDth = SurveyHandler.QuestionValuesDth;
-            bool runningChildQuestions = SurveyHandler.RunningChildQuestions;
+            //bool runningChildQuestions = SurveyHandler.RunningChildQuestions;
+            List<List<int>> childQuestionList = SurveyHandler.ChildQuestionsList;
 
             // create our gameplay loop
-            if (!runningChildQuestions)
+            if (childQuestionList.Count == 0)
             {
-                if (currentQuestionId != terminator)
+                if (parentQuestionId != terminator)
                 {
 
                     //get current question dt row
-                    DataRow currentRow = questionDth.getRowByColumnNameAndIntValue("QID", currentQuestionId);
+                    DataRow currentRow = questionDth.getRowByColumnNameAndIntValue("QID", parentQuestionId);
 
                     //run question
                     runQuestion(currentRow);
 
-                    SurveyHandler.CurrentQuestionId = (int)currentRow["NextQID"];
+                    SurveyHandler.ParentQuestionId = (int)currentRow["NextQID"];
 
                 }
                 else
@@ -200,9 +205,60 @@ namespace AITRSurvey
                     // end survey
 
                     //temp placeholder 
-                    DevMessageLbl.Text = " END OF SURVEY / " + currentQuestionId.ToString();
+                    DevMessageLbl.Text = " END OF SURVEY / " + parentQuestionId.ToString();
                     hideAllQuestions(); // hide the previous question
                 }
+
+            }
+            else
+            {
+                //Run Child Question's
+                // If the question is here their should be no terminator values
+
+                //find the last child of questionGroup - List<int>
+                int questionGroupIndex = childQuestionList.Count -1; //-1 will give us the index
+                // if childQuestionGroup == 0 || -1 it will be cought above and below should never be out of range. 
+                List<int> questionGroup = childQuestionList[questionGroupIndex];
+
+                //find the last child of the question group - int/qid
+                int questionIndex = questionGroup.Count - 1;
+
+                if(questionIndex == -1) //no questions left (index 0 - 1 == -1)
+                {
+                    //Pop/Remove questionGroup
+                    SurveyHandler.ChildQuestionsList.RemoveAt(questionGroupIndex);
+
+                    //FIX No question is run on the final pop  -> requires double clicking submit
+                    if (parentQuestionId != terminator)
+                    {
+                        //get current question dt row
+                        DataRow currentRow = questionDth.getRowByColumnNameAndIntValue("QID", parentQuestionId);
+                        //run question
+                        runQuestion(currentRow);
+                        SurveyHandler.ParentQuestionId = (int)currentRow["NextQID"];
+                    }
+                    else
+                    {
+                        // end survey
+                        //temp placeholder 
+                        DevMessageLbl.Text = " END OF SURVEY / " + parentQuestionId.ToString();
+                        hideAllQuestions(); // hide the previous question
+                    }
+
+                }
+                else
+                {
+                    int childQid = questionGroup[questionIndex];
+
+                    //run question
+                    //get current question dt row
+                    DataRow childRow = questionDth.getRowByColumnNameAndIntValue("QID", childQid);
+                    runQuestion(childRow);
+
+                    //Pop/Remove question from questionGroup
+                    SurveyHandler.ChildQuestionsList[questionGroupIndex].RemoveAt(questionIndex);
+                }
+
             }
             
             
@@ -210,6 +266,10 @@ namespace AITRSurvey
         }
 
 
+        public void runParentQuestion()
+        {
+            
+        }
 
         public void runQuestion(DataRow currentRow) 
         {
@@ -336,16 +396,21 @@ namespace AITRSurvey
         }
 
 
+
+
+
+
         // ---------------------------------
         // ---- EVENTS ---------------------
         // ---------------------------------
+
         protected void SubmitButtonTB_Click(object sender, EventArgs e)
         {
             //validate user response
 
             //submit activeQuestionRow 
 
-            //nextQuestionCheck();
+            
         }
 
         protected void SubmitButtonCB_Click(object sender, EventArgs e)
@@ -355,28 +420,55 @@ namespace AITRSurvey
             //submit activeQuestionRow 
 
 
-            //get the data we require
-            DataRow activeQuestionRow = SurveyHandler.ActiveQuestionRow;
-            int terminator = SurveyHandler.Terminator;
-            int activeQID = (int)activeQuestionRow["QID"];
-            DataTableHandler questionDth = SurveyHandler.QuestionDth;
 
-            //turn on running child rows
-            SurveyHandler.RunningChildQuestions = true;
+            ////V1
+            //nextQuestionCheck();
+
+
+            ////V2
+            ////get the data we require
+            //DataRow activeQuestionRow = SurveyHandler.ActiveQuestionRow;
+            //int terminator = SurveyHandler.Terminator;
+            //int activeQID = (int)activeQuestionRow["QID"];
+            //DataTableHandler questionDth = SurveyHandler.QuestionDth;
+            //// loop though the users choices
+            //foreach (ListItem item in userSelectionCB.Items)
+            //{
+            //    if (item.Selected)
+            //    {
+            //        int nextQid = Int32.Parse(item.Value);
+            //        //V1
+            //        //check our active row to see if it has any child questions
+            //        if (nextQid != terminator)
+            //        {
+            //            // Get our next data row
+            //            DataRow nextRow = questionDth.getRowByColumnNameAndIntValue("QID", nextQid);
+            //            //Recursion --> start this proccess again --> FEED THE BEAST
+            //            runQuestion(nextRow);
+            //        }
+            //        else
+            //        {
+            //            //continue 
+            //        }
+            //    }
+            //}
+
+
+            //V3
+            //get the data we require
+            int terminator = SurveyHandler.Terminator;
+
+            List<int> childQuestionGroup = new List<int>();
             // loop though the users choices
             foreach (ListItem item in userSelectionCB.Items)
             {
-                if (item.Selected)
+                if (item.Selected)  //add question / questions to childQuestionList
                 {
                     int nextQid = Int32.Parse(item.Value);
-                    //V1
                     //check our active row to see if it has any child questions
-                    if (nextQid != terminator)
+                    if (nextQid != terminator)  //check for terminators
                     {
-                        // Get our next data row
-                        DataRow nextRow = questionDth.getRowByColumnNameAndIntValue("QID", nextQid);
-                        //Recursion --> start this proccess again --> FEED THE BEAST
-                        runQuestion(nextRow);
+                        childQuestionGroup.Add(nextQid);  //add method adds at end of list 
                     }
                     else
                     {
@@ -385,11 +477,21 @@ namespace AITRSurvey
                 }
             }
 
-            //turn off runningChildQuestion
-            SurveyHandler.RunningChildQuestions = false;
+            //Add our list of childQuestions to the Su
+            SurveyHandler.ChildQuestionsList.Add(childQuestionGroup);
 
-            //OLD
-            //nextQuestionCheck();
+            //Test
+            // display to devConsole message
+            string devStr = "";
+            foreach (List<int> questionGroup in SurveyHandler.ChildQuestionsList)  //list
+            {
+                foreach(int question in questionGroup) // integer
+                {
+                    devStr += " /" + question.ToString();
+                }
+            }
+            DevMessageLbl.Text = devStr;
+
 
         }
 
@@ -399,34 +501,39 @@ namespace AITRSurvey
 
             //submit activeQuestionRow 
 
-            nextQuestionCheck();
+            
         }
 
 
 
 
+
+
+
+
         // check to see if we can move to a new question within the current question
+        // this is handled by the parent loop in most cases
         public void nextQuestionCheck()
         {
-            //get the data we require
-            DataRow activeQuestionRow = SurveyHandler.ActiveQuestionRow;
-            int terminator = SurveyHandler.Terminator;
-            DataTableHandler questionDth = SurveyHandler.QuestionDth;
+            ////get the data we require
+            //DataRow activeQuestionRow = SurveyHandler.ActiveQuestionRow;
+            //int terminator = SurveyHandler.Terminator;
+            //DataTableHandler questionDth = SurveyHandler.QuestionDth;
 
-            //V1
-            //check our active row to see if it has any child questions
-            if ((int)activeQuestionRow["NextQID"] != terminator)
-            {
-                // Get our next data row
-                int nextQid = (int)activeQuestionRow["NextQID"];
-                DataRow nextRow = questionDth.getRowByColumnNameAndIntValue("QID", nextQid);
-                //Recursion --> start this proccess again --> FEED THE BEAST
-                runQuestion(nextRow);
-            }
-            else
-            {
-                //continue 
-            }
+            ////V1
+            ////check our active row to see if it has any child questions
+            //if ((int)activeQuestionRow["NextQID"] != terminator)
+            //{
+            //    // Get our next data row
+            //    int nextQid = (int)activeQuestionRow["NextQID"];
+            //    DataRow nextRow = questionDth.getRowByColumnNameAndIntValue("QID", nextQid);
+            //    //Recursion --> start this proccess again --> FEED THE BEAST
+            //    runQuestion(nextRow);
+            //}
+            //else
+            //{
+            //    //continue 
+            //}
 
 
             ////V2
@@ -436,6 +543,11 @@ namespace AITRSurvey
             //DevMessageLbl.Text = "CurrentQuestionID: " + ((int)activeQuestionRow["NextQID"]).ToString();
 
 
+        }
+
+        protected void HiddenSubmit_Click(object sender, EventArgs e)
+        {
+            // hidden submit
         }
     }
 }
