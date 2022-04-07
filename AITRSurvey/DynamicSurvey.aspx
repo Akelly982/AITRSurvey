@@ -56,7 +56,6 @@
             <asp:Label ID="DevMessageLbl" runat="server"></asp:Label>
             <asp:GridView ID="devQuestionGridView" runat="server"></asp:GridView>
             <asp:GridView ID="devQuestionValuesGridView" runat="server"></asp:GridView>
-            <asp:Button ID="HiddenSubmit" runat="server" OnClick="HiddenSubmit_Click" Text="HiddenSubmit" />
         </div>
         <div id="SurveyQuestionHolder" runat="server">
             
