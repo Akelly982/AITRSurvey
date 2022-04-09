@@ -28,22 +28,6 @@ namespace AITRSurvey
         }
 
 
-        public static void setRespondentId(int respondentID)
-        {
-            HttpContext.Current.Session["RespondentId"] = respondentID;
-        }
-
-
-        public static int getRespondentId()
-        {
-            return (int)HttpContext.Current.Session["RespondentId"];
-        }
-
-        public static void clearRespondentId()
-        {
-            HttpContext.Current.Session["RespondentId"] = null;
-        } 
-
 
 
 

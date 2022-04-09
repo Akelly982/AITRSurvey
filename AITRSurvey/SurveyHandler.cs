@@ -10,9 +10,10 @@ namespace AITRSurvey
 {
     public static class SurveyHandler
     {
-        static bool runningChildQuestions;
-        static int parentQuestionId;
-        static List<List<int>> childQuestionsList; 
+        static int respondentId;                    //active respondent id
+        static int parentQuestionId;                //curent parentQuestion Id
+        static List<List<int>> childQuestionsList;  //list holding list of questions id's as int's 
+        static string ipAddress;                    //user IpAddress
 
         static int terminator;                       // our question terminator value
         static DataTableHandler questionDth;         // question dth
@@ -25,8 +26,9 @@ namespace AITRSurvey
         public static DataRow ActiveQuestionRow { get => activeQuestionRow; set => activeQuestionRow = value; }
         public static DataTableHandler QuestionValuesDth { get => questionValuesDth; set => questionValuesDth = value; }
         public static DataTableHandler QuestionDth { get => questionDth; set => questionDth = value; }
-        public static bool RunningChildQuestions { get => runningChildQuestions; set => runningChildQuestions = value; }
         public static int ParentQuestionId { get => parentQuestionId; set => parentQuestionId = value; }
         public static List<List<int>> ChildQuestionsList { get => childQuestionsList; set => childQuestionsList = value; }
+        public static int RespondentId { get => respondentId; set => respondentId = value; }
+        public static string IpAddress { get => ipAddress; set => ipAddress = value; }
     }
 }

@@ -210,7 +210,7 @@ namespace AITRSurvey
             ErrMsgLabel.Text = "member db insert succesfull / resId:" + resId.ToString() + " / memberId: " + mid.ToString();
 
             //update session with respondent
-            AppSession.setRespondentId(resId);
+            //AppSession.setRespondentId(resId);
 
             //launch Survey
             startSurvey();
@@ -274,7 +274,7 @@ namespace AITRSurvey
             ErrMsgLabel.Text = "Anonymous db insert succesfull / id:" + resId.ToString();
 
             //update session with respondent
-            AppSession.setRespondentId(resId);
+            //AppSession.setRespondentId(resId);
 
 
             //launch Survey

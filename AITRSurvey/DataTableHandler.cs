@@ -8,6 +8,13 @@ using System.Web.UI.WebControls;
 
 namespace AITRSurvey
 {
+
+    //manages data tables regardless of the number of columns or rows
+    // allows basic querying returning multiple rows as a seperate dt
+    // or a single data row
+
+    // Additionally added functionality to get my ListItemCollections for Radio buttons and Check Boxes
+
     public class DataTableHandler
     {
 

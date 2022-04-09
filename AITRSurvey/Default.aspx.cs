@@ -16,7 +16,7 @@ namespace AITRSurvey
 
         protected void RunSurveyBtn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("RespondentForm.aspx");
+            Response.Redirect("DynamicSurvey.aspx");
         }
 
         protected void AdminLoginBtn_Click(object sender, EventArgs e)

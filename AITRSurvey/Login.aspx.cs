@@ -28,11 +28,8 @@ namespace AITRSurvey
 
             //connect to db
             SqlConnection myConn = new SqlConnection();
-
             // connection using a standard const 
             myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
-
-
             myConn.Open(); // establish the connection to the db
 
             string cmdStr = String.Format("SELECT *" +
