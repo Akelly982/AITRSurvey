@@ -75,6 +75,7 @@
     <Content Include="SampleSurveyRB.aspx" />
     <Content Include="SampleSurveyTB.aspx" />
     <Content Include="StaffSearch.aspx" />
+    <Content Include="SurveyEnd.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,13 @@
     </Compile>
     <Compile Include="StaffSearch.aspx.designer.cs">
       <DependentUpon>StaffSearch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SurveyEnd.aspx.cs">
+      <DependentUpon>SurveyEnd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SurveyEnd.aspx.designer.cs">
+      <DependentUpon>SurveyEnd.aspx</DependentUpon>
     </Compile>
     <Compile Include="SurveyHandler.cs" />
     <Compile Include="User.cs" />

@@ -52,8 +52,8 @@ C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\bin\roslyn\VBCSCompiler.exe
 C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\obj\Debug\AITRSurvey.csprojAssemblyReference.cache
 C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\obj\Debug\AITRSurvey.csproj.CoreCompileInputs.cache
 C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\obj\Debug\AITRSurvey.csproj.CopyComplete
 C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\obj\Debug\AITRSurvey.dll
 C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\obj\Debug\AITRSurvey.pdb
+C:\Users\Akell\Desktop\repo\AITRSurvey\AITRSurvey\obj\Debug\AITRSurvey.csprojAssemblyReference.cache

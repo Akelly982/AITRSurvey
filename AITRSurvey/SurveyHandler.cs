@@ -19,6 +19,7 @@ namespace AITRSurvey
         static DataTableHandler questionDth;         // question dth
         static DataTableHandler questionValuesDth;   // question values dth
         static DataRow activeQuestionRow;            //the active question being displayed
+        static List<string> radioButtonNextQidList;  //helps us get around the Radio button value issue where they cant be the same
 
 
 
@@ -30,5 +31,6 @@ namespace AITRSurvey
         public static List<List<int>> ChildQuestionsList { get => childQuestionsList; set => childQuestionsList = value; }
         public static int RespondentId { get => respondentId; set => respondentId = value; }
         public static string IpAddress { get => ipAddress; set => ipAddress = value; }
+        public static List<string> RadioButtonNextQidList { get => radioButtonNextQidList; set => radioButtonNextQidList = value; }
     }
 }

@@ -43,7 +43,7 @@
             <%-- Radio Button item --%>
             <div id="ItemRadioBtn" runat="server">
                 <div>
-                    <asp:RadioButtonList ID="userSelectionRB" runat="server" style="text-align: left"></asp:RadioButtonList>
+                    <asp:RadioButtonList ID="userSelectionRB" runat="server" style="text-align: left" OnSelectedIndexChanged="userSelectionRB_SelectedIndexChanged"></asp:RadioButtonList>
                 </div>
                 <br />
                 <div>
@@ -51,14 +51,15 @@
                 </div>
             </div>
         </div>
-
+        <div style="text-align: center">
+            <asp:RequiredFieldValidator ID="textBoxRequiredFieldValidator" runat="server" ControlToValidate="userResultTB" Enabled="False" ErrorMessage="Input field is empty"></asp:RequiredFieldValidator>
+            <br />
+            <br />
+        </div>
         <div id="DevConsole" runat="server">
             <asp:Label ID="DevMessageLbl" runat="server"></asp:Label>
             <asp:GridView ID="devQuestionGridView" runat="server"></asp:GridView>
             <asp:GridView ID="devQuestionValuesGridView" runat="server"></asp:GridView>
-        </div>
-        <div id="SurveyQuestionHolder" runat="server">
-            
         </div>
     </form>
 </body>

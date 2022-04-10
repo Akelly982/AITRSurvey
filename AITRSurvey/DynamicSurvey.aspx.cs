@@ -16,17 +16,16 @@ namespace AITRSurvey
         //Show DEV TEST CONSOLE
         bool devConsoleVisibility = true;
 
-        
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
 
             if (!IsPostBack)
             {
                 //testing console
                 DevConsole.Visible = devConsoleVisibility;
-                SurveyQuestionHolder.Visible = false;  // hide my template survey questions
 
 
                 //setup connection for db
@@ -49,7 +48,7 @@ namespace AITRSurvey
 
                 //sql query Output INSERTED.id returns a dataset holding 1 row stating the value of given column 
                 int rid = (int)myCommand.ExecuteScalar(); //must cast what the object should be
-                
+
                 //save generated 
                 SurveyHandler.RespondentId = rid;
 
@@ -59,7 +58,7 @@ namespace AITRSurvey
                 //testing
                 DevMessageLbl.Text = "new respondent id: " + rid.ToString();
 
-                
+
 
 
                 // ----------------------------------------------------------
@@ -84,8 +83,8 @@ namespace AITRSurvey
                 questionDt.Columns.Add("QTID_FK", System.Type.GetType("System.Int32"));
                 questionDt.Columns.Add("questionText", System.Type.GetType("System.String"));
                 questionDt.Columns.Add("NextQID", System.Type.GetType("System.Int32"));
-                questionDt.Columns.Add("isParent", System.Type.GetType("System.String"));  
-           
+                questionDt.Columns.Add("isParent", System.Type.GetType("System.String"));
+
 
                 // row by row add to the data table 
                 DataRow currentRow;
@@ -168,7 +167,7 @@ namespace AITRSurvey
 
 
                 // send to dev console
-                if(devConsoleVisibility != false) 
+                if (devConsoleVisibility != false)
                 {
                     devQuestionGridView.DataSource = questionDt;
                     devQuestionValuesGridView.DataSource = questionValuesDt;
@@ -188,7 +187,7 @@ namespace AITRSurvey
                 SurveyHandler.QuestionValuesDth = new DataTableHandler(questionValuesDt);
 
                 // ----------------------------------------------------------------
-                // -----------  PHASE 3.5  Additional Updates --------------------- 
+                // -----------  PHASE 3.5  Additional Handler Updates --------------------- 
                 // ----------------------------------------------------------------
 
                 //init child question list of lists
@@ -246,21 +245,21 @@ namespace AITRSurvey
                 // If the question is here their should be no terminator values
 
                 //find the last child of questionGroup - List<int>
-                int questionGroupIndex = childQuestionList.Count -1; //-1 will give us the index
+                int questionGroupIndex = childQuestionList.Count - 1; //-1 will give us the index
                 // if childQuestionGroup == 0 || -1 it will be cought above and below should never be out of range. 
                 List<int> questionGroup = childQuestionList[questionGroupIndex];
 
                 //find the last child of the question group - int/qid
                 int questionIndex = questionGroup.Count - 1;
 
-                if(questionIndex == -1) //no questions left (index 0 - 1 == -1)
+                if (questionIndex == -1) //no questions left (index 0 - 1 == -1)
                 {
                     //Pop/Remove questionGroup
                     SurveyHandler.ChildQuestionsList.RemoveAt(questionGroupIndex);
 
                     //their are no child questions left so run the next parent question
                     runParentQuestion(parentQuestionId, terminator, questionDth);
-                   
+
                 }
                 else
                 {
@@ -280,8 +279,8 @@ namespace AITRSurvey
                 //devStrChildUpdate();
 
             }
-            
-            
+
+
 
         }
 
@@ -294,7 +293,7 @@ namespace AITRSurvey
 
         public void runParentQuestion(int parentQuestionId, int terminator, DataTableHandler questionDth)
         {
-            
+
             if (parentQuestionId != terminator)
             {
                 //get current question dt row
@@ -306,15 +305,20 @@ namespace AITRSurvey
             else
             {
                 // end survey
+
+                Response.Redirect("SurveyEnd.aspx");
+
                 //temp placeholder 
-                assignQuestionTitles("END OF SURVEY", parentQuestionId);
-                DevMessageLbl.Text = " END OF SURVEY / " + parentQuestionId.ToString();
-                hideAllQuestionsAndClear(); // hide the previous question
+                //assignQuestionTitles("END OF SURVEY", parentQuestionId);
+                //DevMessageLbl.Text = " END OF SURVEY / " + parentQuestionId.ToString();
+                //hideAllQuestionsAndClear(); // hide the previous question
+
+
             }
         }
 
 
-        public void runQuestion(DataRow currentRow) 
+        public void runQuestion(DataRow currentRow)
         {
             devConsoleGridUpdate(currentRow);
 
@@ -325,6 +329,9 @@ namespace AITRSurvey
             //hide previous question whatever it may be
             hideAllQuestionsAndClear();
 
+            //turn off all validator controls from the designer
+            turnOffAllValidators();
+
             //set questionText and questiong number (QID)
             // this data uses shared controls / elements so it is always visable
             string qText = (string)activeQuestionRow["questionText"];
@@ -333,9 +340,9 @@ namespace AITRSurvey
 
             //QTID
             // Determin Question Type ID
-                //1 == TextBox
-                //2 == RadioBtn
-                //3 == CheckBox
+            //1 == TextBox
+            //2 == RadioBtn
+            //3 == CheckBox
 
             //Determine question Type
             switch ((int)activeQuestionRow["QTID_FK"])
@@ -359,7 +366,7 @@ namespace AITRSurvey
                     DevMessageLbl.Text = "ERROR / QID : " + ((int)activeQuestionRow["QTID"]).ToString() + "/ QTID : " + ((int)activeQuestionRow["QTID"]).ToString();
                     break;
             }
-        
+
         }
 
         public void hideAllQuestionsAndClear()
@@ -373,9 +380,14 @@ namespace AITRSurvey
             userSelectionRB.Items.Clear();
         }
 
+        public void turnOffAllValidators()
+        {
+            textBoxRequiredFieldValidator.Enabled = false;
+        }
+
         public void devConsoleGridUpdate(DataRow activeRow)
         {
-            
+
             int qid = (int)activeRow["QID"];
             //update
             devQuestionGridView.DataSource = SurveyHandler.QuestionDth.getDataTableByColumnNameAndIntValue("QID", qid);
@@ -401,7 +413,10 @@ namespace AITRSurvey
             //show question
             ItemTextBox.Visible = true;
 
+            //turn on validator
+            textBoxRequiredFieldValidator.Enabled = true;
         }
+
 
         public void viewRadioButton(DataRow activeQuestionRow)
         {
@@ -410,27 +425,85 @@ namespace AITRSurvey
             //get data 
             int qId = (int)activeQuestionRow["QID"];
             ListItemCollection lic = SurveyHandler.QuestionValuesDth.getListItemCollectionByColumnNameAndIntValue("QID_FK", qId);
+
+
+
+            // ADD DATA ERROR HANDELING   
+                // below testing is important as it displays an issue within the rblist 
+                // that does not exist in the checkbox list controls
+            ////testing 
+            //// NOTE 
+            //// radioButton values need to be different from each other otherwise the result 
+            //// will always be index 0, i assume it isSelected is connected to the item.value despite it being a string
+            //// Below
+            //    //(A) works
+            //    //(B) will cause selection to always be index 0
+            ////(A)
+            //for (int i = 0; i<5; i++)
+            //{
+            //    ListItem li = new ListItem();
+            //    li.Text = "option " + i.ToString();
+            //    li.Value = i.ToString();
+
+            //    userSelectionRB.Items.Add(li);
+            //}
+            ////(B)
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    ListItem li = new ListItem();
+            //    li.Text = "option " + i.ToString();
+            //    li.Value = "99";
+
+            //    userSelectionRB.Items.Add(li);
+            //}
+
+
             //add data
+            List<string> rbNextQIDList = new List<string>(); 
+            int index = 0;   // <-- first index is 0
+
             foreach (ListItem li in lic)
             {
-                userSelectionRB.Items.Add(li);
+                //save ou nextQID to list
+                rbNextQIDList.Add(li.Value);
+                ListItem item = new ListItem();
+
+                //replace value with index location in list
+                item.Text = li.Text;
+                item.Value = index.ToString();
+
+                //add to LIC
+                userSelectionRB.Items.Add(item);
+
+                //increment index
+                index++;
             }
+
+            //once complete add rbNextQIDList to handler class
+            SurveyHandler.RadioButtonNextQidList = rbNextQIDList;
+
+            //preset value to an index so it is not unselected by default
+            //userSelectionRB.SelectedIndex = 0;
 
             //show question
             ItemRadioBtn.Visible = true;
         }
 
+
         public void viewCheckBox(DataRow activeQuestionRow)
         {
 
             //set question internal data
-                //get data 
+            //get data 
             int qId = (int)activeQuestionRow["QID"];
             ListItemCollection lic = SurveyHandler.QuestionValuesDth.getListItemCollectionByColumnNameAndIntValue("QID_FK", qId);
-                //add data
-            foreach (ListItem li in lic){
+            //add data
+            foreach (ListItem li in lic) {
                 userSelectionCB.Items.Add(li);
             }
+
+            //preset value to an index so it is not unselected by default
+            userSelectionCB.SelectedIndex = 0;
 
             //show question
             ItemCheckBox.Visible = true;
@@ -438,7 +511,7 @@ namespace AITRSurvey
 
 
 
-        
+
 
 
 
@@ -451,22 +524,28 @@ namespace AITRSurvey
 
         protected void SubmitButtonTB_Click(object sender, EventArgs e)
         {
-            //validate user response
+            //validation is done with validator controls in designer
 
             //submit question data to db
+            string response = userResultTB.Text;  // user enter data TextBox
+            questionSubmissionToDataBase((int)SurveyHandler.ActiveQuestionRow["QID"],
+                                         SurveyHandler.RespondentId,
+                                         response,
+                                         SurveyHandler.IpAddress);
 
 
+            //----------- check for child questions -----------------------
             //if question textbox is not a parent question add nextQID as a child item
             int terminator = SurveyHandler.Terminator;
-            DataRow activeRow = SurveyHandler.ActiveQuestionRow;    //This row will be from the Questions Table not QuestionValues Table
-            if((string)activeRow["isParent"] == "False")
+            DataRow activeRow = SurveyHandler.ActiveQuestionRow;
+            if ((string)activeRow["isParent"] == "False")
             {
                 //check for terminators
-                if ((int)activeRow["NextQID"] != terminator) 
+                if ((int)activeRow["NextQID"] != terminator)
                 {
                     //follow same setup as CB and RB questions
-                        //questionGroup
-                        //questions   <-- in this case it will be only one question not multiple 
+                    //questionGroup
+                    //questions   <-- in this case it will be only one question not multiple 
                     List<int> questionGroup = new List<int>();
                     questionGroup.Add((int)activeRow["NextQID"]);
 
@@ -480,19 +559,46 @@ namespace AITRSurvey
             }
 
 
-            
-            
+
+
+
 
         }
 
         protected void SubmitButtonCB_Click(object sender, EventArgs e)
         {
-            //validate user response
 
-            //submit question data to db
+            //submit question data to db ---------------------------
+                // as csv answear1,answear2,answear3
+            //create csv response
+            String response = "";
+            foreach (ListItem item in userSelectionCB.Items)
+            {
+                if (item.Selected)
+                {
+                    response += item.Text + ",";
+                }
+            }
 
+            if (response.Length != 0)  //somthing was added
+            { 
+                // someItem,someItem,
+                //  - remove the comma from the last item entered
+                response = stringRemoveLastChar(response);
+            }
+            else
+            {
+                // with a check box it is possible to select nothing 
+                // if their is nothing selected just respond with...
+                response = "None"; 
+            }
 
+            questionSubmissionToDataBase((int)SurveyHandler.ActiveQuestionRow["QID"],
+                                            SurveyHandler.RespondentId,
+                                            response,
+                                            SurveyHandler.IpAddress);
 
+            //----------- check for child questions -----------------------
             ////V1
             //nextQuestionCheck();
 
@@ -541,11 +647,11 @@ namespace AITRSurvey
                     if (nextQid != terminator)  //check for terminators
                     {
                         //ensure nextQid is unique to the list
-                            // can have multiple child questions returning the same question
-                            // ensure you do not have duplicates
+                        // can have multiple child questions returning the same question
+                        // ensure you do not have duplicates
                         bool inListAlready = false;
-                        foreach (int num in childQuestionGroup){
-                            if(num == nextQid)
+                        foreach (int num in childQuestionGroup) {
+                            if (num == nextQid)
                             {
                                 inListAlready = true;
                             }
@@ -556,7 +662,7 @@ namespace AITRSurvey
                         {
                             childQuestionGroup.Add(nextQid);  //add method adds at end of list 
                         }
-                        
+
                     }
                     else
                     {
@@ -573,13 +679,46 @@ namespace AITRSurvey
 
         }
 
+
+
         protected void SubmitButtonRB_Click(object sender, EventArgs e)
         {
-            //validate user response
 
             //submit question data to db
+            // as csv answear1 but should only result to one answear
+            //create csv response
 
+            String response = "";
+            foreach (ListItem item in userSelectionRB.Items)
+            {
+                if (item.Selected)
+                {
+                    response += item.Text + ",";
+                }
+            }
+            if (response.Length != 0)  //somthing was added
+            {
+                // someItem,someItem,
+                //  - remove the comma from the last item entered
+                response = stringRemoveLastChar(response);
+            }
+            else
+            {
+                // With a radio button this should not be possible
+                // however if their is nothing selected just respond with...
+                response = "None";
+            }
+
+            questionSubmissionToDataBase((int)SurveyHandler.ActiveQuestionRow["QID"],
+                                            SurveyHandler.RespondentId,
+                                            response,
+                                            SurveyHandler.IpAddress);
+
+
+
+            ////----------- check for child questions -----------------------
             int terminator = SurveyHandler.Terminator;
+            List<string> rbActuralValues = SurveyHandler.RadioButtonNextQidList; //dont forget about this RB NextQID value list 
 
             List<int> childQuestionGroup = new List<int>();
             // loop though the users choices
@@ -587,7 +726,8 @@ namespace AITRSurvey
             {
                 if (item.Selected)  //add question / questions to childQuestionList
                 {
-                    int nextQid = Int32.Parse(item.Value);
+
+                    int nextQid = Int32.Parse(rbActuralValues[Int32.Parse(item.Value)]);
                     //check our active row to see if it has any child questions
                     if (nextQid != terminator)  //check for terminators
                     {
@@ -598,6 +738,7 @@ namespace AITRSurvey
                     {
                         //continue 
                     }
+
                 }
             }
 
@@ -606,8 +747,9 @@ namespace AITRSurvey
 
             //Test
             devStrChildUpdate();
-            
+
         }
+
 
 
 
@@ -625,6 +767,52 @@ namespace AITRSurvey
         }
 
 
+
+        public void questionSubmissionToDataBase(int questionId, int respondentId, string response, string ipAddress)
+        {
+            //setup connection for db
+            SqlConnection myConn = new SqlConnection();
+            myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
+            SqlCommand myCommand;
+            //open connection
+            myConn.Open();
+
+            //cmd
+            // dont forget your spaces in the sql cmd
+            myCommand = new SqlCommand("INSERT INTO Submission (QID_FK,RID_FK,response,ipAddress)" +
+                                       " VALUES (@QID_FK, @RID_FK, @response, @ipAddress)", myConn);
+            // add params
+            myCommand.Parameters.AddWithValue("@QID_FK", questionId);
+            myCommand.Parameters.AddWithValue("@RID_FK", respondentId);
+            myCommand.Parameters.AddWithValue("@response", response);
+            myCommand.Parameters.AddWithValue("@ipAddress", ipAddress);
+
+            //sql exec not expecting a response 
+            myCommand.ExecuteNonQuery();
+
+            //close db connection
+            myConn.Close();
+        }
+
+
+
+        public string stringRemoveLastChar(string str)
+        {
+            List<char> lc = str.ToList<char>();  //convert to char list
+            int lastIndex = str.Length - 1;  //find last index
+            lc.RemoveAt(lastIndex); //remove last index
+
+            //convert back to string 
+            //str = lc.ToString();  // this return the object type as a string
+            str = "";
+            foreach (char c in lc)
+            {
+                str += c;
+            }
+
+            int num = str.Length;
+            return str;
+        }
 
 
 
@@ -667,6 +855,14 @@ namespace AITRSurvey
         protected void HiddenSubmit_Click(object sender, EventArgs e)
         {
             // hidden submit
+        }
+
+
+        //runs after submit btn hits -- Lifecycle i guess
+        // still results to index 0 no matter user selection
+        protected void userSelectionRB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DevMessageLbl.Text = "userSelection RB Selected Index : " + userSelectionRB.SelectedIndex.ToString();
         }
     }
 }
