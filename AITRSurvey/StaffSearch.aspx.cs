@@ -44,18 +44,18 @@ namespace AITRSurvey
                 }
 
                 getFormData();
-
-                StaffSearchHandler.IdList = displayFormQuestions(StaffSearchHandler.QuestionDt, StaffSearchHandler.QuestionValuesDth, StaffSearchHandler.Terminator);
                 
                 initDb();
 
             }
 
-            // Note this is done because apparently 
-            // Dynamically generated controls do not maintain state through postback.
 
             //using our FormData maintain the question list
-            
+            // Note this is done because apparently 
+            // Dynamically generated controls do not maintain state through postback.
+            StaffSearchHandler.IdList = displayFormQuestions(StaffSearchHandler.QuestionDt, StaffSearchHandler.QuestionValuesDth, StaffSearchHandler.Terminator);
+
+
         }
 
 
@@ -167,9 +167,7 @@ namespace AITRSurvey
         //NOTES 
         // - You can not use InnerHTML and Contorls.Add togeathe you get an 
         //   error on the InnerHTML being "Cannot get inner content of DynamicForm because the contents are not literal."
-        // LABELS with </br> written into them are run as code
-
-
+        //   LABELS with </br> written into have it run as code
         public List<string> displayFormQuestions(DataTable questionDt, DataTableHandler QuestionValuesDth, int terminator)
         {
             // ------------------------------------------------
@@ -334,14 +332,22 @@ namespace AITRSurvey
 
         protected void SubmitBtn_Click(object sender, EventArgs e)
         {
+            //Test update console whil idList
             string str = "";
-
             List<string> idList = StaffSearchHandler.IdList;
             foreach (string id in idList)
             {
                 str += id + "/ ";
             }
             devConsolelbl.Text = str;
+
+
+            // create SQL stmts
+            foreach(string id in idList)
+            {
+                 
+            }
+
         }
     }
 }
