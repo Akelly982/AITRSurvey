@@ -9,26 +9,25 @@ namespace AITRSurvey
     public static class AppSession
     {
         //Staff Staff   
-        //Int RespondentId 
+        //List<int> idList
+
+        const string STAFF = "staff";
 
         public static Staff getStaff()
         {
-            return (Staff)HttpContext.Current.Session["Staff"];
+            return (Staff)HttpContext.Current.Session[STAFF];
         }
 
         public static void setStaff(Staff staff)
         {
-            HttpContext.Current.Session["Staff"] = staff;
+            HttpContext.Current.Session[STAFF] = staff;
         }
 
 
         public static void clearStaff()
         {
-            HttpContext.Current.Session["Staff"] = null;
+            HttpContext.Current.Session[STAFF] = null;
         }
-
-
-
 
 
 

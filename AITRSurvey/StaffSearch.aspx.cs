@@ -15,194 +15,302 @@ namespace AITRSurvey
 {
     public partial class StaffSearch : System.Web.UI.Page
     {
+        bool showDevView = true;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            //update staff user labels
-
-            Staff st = AppSession.getStaff();
-            StaffUsername.Text = st.Username;
-            StaffFirstName.Text = st.FirstName;
-            StaffLastName.Text = st.LastName;
-            StaffEmail.Text = st.Email;
-
-
-            initDb();
 
             // post back is false only the first time the page loads
             if (!IsPostBack)
             {
+                devConsolelbl.Visible = showDevView;  //testing sql generator
 
-                initMemberRadioButton();
-                initGenderRadioButton();
-                initNewspapersCheckBox();
-                initBanksCheckBox();
-                initBankServicesCheckBox();
+                //update staff user labels
+                Staff st = AppSession.getStaff();
+                if (st == null) //staff not set
+                {
+                    string s = "Staff Not Set";
+                    StaffUsername.Text = s;
+                    StaffFirstName.Text = s;
+                    StaffLastName.Text = s;
+                    StaffEmail.Text = s;
+                }
+                else
+                {
+                    StaffUsername.Text = st.Username;
+                    StaffFirstName.Text = st.FirstName;
+                    StaffLastName.Text = st.LastName;
+                    StaffEmail.Text = st.Email;
+                }
+
+                getFormData();
+
+                StaffSearchHandler.IdList = displayFormQuestions(StaffSearchHandler.QuestionDt, StaffSearchHandler.QuestionValuesDth, StaffSearchHandler.Terminator);
+                
+                initDb();
+
             }
 
+            // Note this is done because apparently 
+            // Dynamically generated controls do not maintain state through postback.
 
+            //using our FormData maintain the question list
+            
         }
 
 
-        void initMemberRadioButton()
+        void getFormData()
         {
-            String[] arr = { "All Users", "Members", "Non Members" };
+            //DynamicForm
 
 
-            // Add all items to the selection list
-            for (int i = 0; i < arr.Length; i++)
+            //init db connection
+            SqlConnection myConn = new SqlConnection();
+            myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
+            SqlCommand myCommand;
+
+
+            //get db dt question, questionValues
+
+            // ----------
+            // Questions
+            // ----------
+            myConn.Open(); // establish the connection to the db
+            myCommand = new SqlCommand("SELECT QID,QTID_FK,questionText,NextQID,isParent FROM Questions", myConn);
+
+            SqlDataReader myReader;
+            myReader = myCommand.ExecuteReader();   //capture your data 
+
+            // prepare your data table 
+            DataTable questionDt = new DataTable();
+
+            questionDt.Columns.Add("QID", System.Type.GetType("System.Int32"));
+            questionDt.Columns.Add("QTID_FK", System.Type.GetType("System.Int32"));
+            questionDt.Columns.Add("questionText", System.Type.GetType("System.String"));
+            questionDt.Columns.Add("NextQID", System.Type.GetType("System.Int32"));
+            questionDt.Columns.Add("isParent", System.Type.GetType("System.String"));
+
+            // row by row add to the data table 
+            DataRow currentRow;
+            while (myReader.Read())
             {
-                ListItem li = new ListItem();
-                li.Text = arr[i];
-                li.Value = i.ToString();    // value has to be in the form of a String
+                currentRow = questionDt.NewRow();
 
-                MemberRadioButtonList.Items.Add(li);
-                MemberRadioButtonList.SelectedIndex = 0;
+                // can use column name or index
+                currentRow["QID"] = myReader["QID"];
+                currentRow["QTID_FK"] = myReader["QTID_FK"];
+                currentRow["questionText"] = myReader["questionText"].ToString();
+                currentRow["NextQID"] = myReader["NextQID"];
+                currentRow["isParent"] = myReader["isParent"];    //db data type is bit, but successfully comes through as string as "False" or "True"
+
+                questionDt.Rows.Add(currentRow);
             }
+
+            //close db connection
+            myConn.Close();  // dont forget to close your db
+
+
+            // -----------------
+            // Question Values
+            // -----------------
+            myConn.Open(); // establish the connection to the db
+
+            myCommand = new SqlCommand("SELECT QVID, QID_FK, text, NextQID FROM QuestionValues", myConn);
+            myReader = myCommand.ExecuteReader();   //capture your data 
+
+            // prepare your data table 
+            DataTable questionValuesDt = new DataTable();
+
+            questionValuesDt.Columns.Add("QVID", System.Type.GetType("System.Int32"));
+            questionValuesDt.Columns.Add("QID_FK", System.Type.GetType("System.Int32"));
+            questionValuesDt.Columns.Add("text", System.Type.GetType("System.String"));
+            questionValuesDt.Columns.Add("NextQID", System.Type.GetType("System.Int32"));
+
+            // row by row add to the data table
+            //currentRow already set above
+            while (myReader.Read())
+            {
+                currentRow = questionValuesDt.NewRow();
+
+                // can use column name or index
+                currentRow["QVID"] = myReader["QVID"];
+                currentRow["QID_FK"] = myReader["QID_FK"];
+                currentRow["text"] = myReader["text"].ToString();
+                currentRow["NextQID"] = myReader["NextQID"];
+
+                questionValuesDt.Rows.Add(currentRow);
+            }
+
+            //close db connection
+            myConn.Close();  // dont forget to close your db
+
+
+            //get terminator
+            int terminator = (int)questionDt.Rows[0]["QID"];
+
+
+            //QuestionDt  remove the terminator row
+            questionDt.Rows.RemoveAt(0);
+
+            //set questionValues to dtHandler
+            DataTableHandler questionValuesDth = new DataTableHandler(questionValuesDt);
+
+            //set all to handler class
+            StaffSearchHandler.Terminator = terminator;
+            StaffSearchHandler.QuestionDt = questionDt;
+            StaffSearchHandler.QuestionValuesDth = questionValuesDth;
+        
         }
 
-        void initGenderRadioButton()
+
+
+        //NOTES 
+        // - You can not use InnerHTML and Contorls.Add togeathe you get an 
+        //   error on the InnerHTML being "Cannot get inner content of DynamicForm because the contents are not literal."
+        // LABELS with </br> written into them are run as code
+
+
+        public List<string> displayFormQuestions(DataTable questionDt, DataTableHandler QuestionValuesDth, int terminator)
         {
-            String[] arr = { "Other", "Male", "Female" };
+            // ------------------------------------------------
+            // Display each Question and child selection items
+            // ------------------------------------------------
 
+            //list to hold all question id connections
+            List<string> idList = new List<string>();
 
-            // Add all items to the selection list
-            for (int i = 0; i < arr.Length; i++)
+            bool showQuestionType = true;
+            foreach (DataRow row in questionDt.Rows)
             {
-                ListItem li = new ListItem();
-                li.Text = arr[i];
-                li.Value = i.ToString();    // value has to be in the form of a String
 
-                GenderRadioButtonList.Items.Add(li);
-                GenderRadioButtonList.SelectedIndex = 0;
+                
+                //GET ID
+                int currentId = ((int)row["QID"]);
+                idList.Add(currentId.ToString()); // save ID
+
+
+                //SETUP PARENT
+                // create generic html element 
+                // create outer html
+                System.Web.UI.HtmlControls.HtmlGenericControl outerDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
+                outerDiv.Attributes.Add("runat", "server");
+
+                Label questionLbl = new Label();
+                //add question text
+                string questionStr = "Q" + ((int)row["QID"]).ToString() + " / " + (string)row["questionText"];
+                if (showQuestionType)
+                {
+                    questionStr += " / QType: " + ((int)row["QTID_FK"]).ToString();
+                }
+                questionLbl.Text = questionStr;
+
+                //add to outer div
+                outerDiv.Controls.Add(questionLbl);
+
+
+                //create inner html
+                System.Web.UI.HtmlControls.HtmlGenericControl innerDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
+                innerDiv.Attributes.Add("runat", "server");
+
+                //SETUP QUESTION RESULTS
+                // determin our userSelected data points
+                if ((int)row["QTID_FK"] == 2 || (int)row["QTID_FK"] == 3)  //if radio btn or checkBox
+                {
+                    
+                    // get our child dt
+                    DataTable childDt = QuestionValuesDth.getDataTableByColumnNameAndIntValue("QID_FK", (int)row["QID"]);
+
+                    CheckBoxList cbl = new CheckBoxList();   //needs text / value
+                    cbl.Attributes.Add("runat", "server");
+                    foreach (DataRow childRow in childDt.Rows)
+                    {
+                        ListItem li = new ListItem();
+                        li.Text = (string)childRow["text"];
+                        li.Value = (string)childRow["QVID"].ToString();
+
+                        cbl.Items.Add(li);
+                    }
+                    cbl.ID = currentId.ToString();
+
+                    //attach to innerDiv
+                    innerDiv.Controls.Add(cbl);
+                }
+                else
+                {
+                    TextBox tb = new TextBox();
+                    tb.Attributes.Add("runat", "server");
+                    tb.ID = currentId.ToString();
+
+                    //attach to inner div
+                    innerDiv.Controls.Add(tb);
+                }
+
+                //attach innerDiv to outerDiv
+                outerDiv.Controls.Add(innerDiv);
+
+                //Append outerDiv to parent Div
+                DynamicForm.Controls.Add(outerDiv);
             }
+
+            DynamicForm.DataBind();
+
+
+
+            return idList;
         }
 
-        void initBanksCheckBox()
-        {
-            String[] arr = { "CentralWealth", "BankNorth", "EastPac" };
+
+        
 
 
-            // Add all items to the selection list
-            for (int i = 0; i < arr.Length; i++)
-            {
-                ListItem li = new ListItem();
-                li.Text = arr[i];
-                li.Value = i.ToString();    // value has to be in the form of a String
-
-                BanksCheckBoxList.Items.Add(li);
-            }
-        }
-
-        void initBankServicesCheckBox()
-        {
-            String[] arr = { "Loans", "Mortage", "Credit Cards" };
-
-
-            // Add all items to the selection list
-            for (int i = 0; i < arr.Length; i++)
-            {
-                ListItem li = new ListItem();
-                li.Text = arr[i];
-                li.Value = i.ToString();    // value has to be in the form of a String
-
-                BankServicesCheckBoxList.Items.Add(li);
-            }
-        }
-
-        void initNewspapersCheckBox()
-        {
-            String[] arr = { "Daily News", "Morning Rise News", "Open Source News" };
-
-
-            // Add all items to the selection list
-            for (int i = 0; i < arr.Length; i++)
-            {
-                ListItem li = new ListItem();
-                li.Text = arr[i];
-                li.Value = i.ToString();    // value has to be in the form of a String
-
-                NewspapersCheckBoxList.Items.Add(li);
-            }
-        }
+        
 
 
 
 
         void initDb()
         {
-            //sequence
-                // open connection
-                // query the data 
-                // read the data 
-                // set the data 
-                // close connection
 
             // data list reference code from javapoint.com
             // https://www.javatpoint.com/asp-net-datalist#:~:text=The%20ASP.NET%20DataList%20control,or%20a%20table%20from%20database.
 
-
-            // below is based of inclass code from Kriss_M
-            // using our db
+            // init db submissions
             SqlConnection myConn;
             myConn = new SqlConnection();
-
-            // connection using a standard const 
             myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
-
-
             myConn.Open(); // establish the connection to the db
 
-            SqlCommand myCommand;
-            myCommand = new SqlCommand("SELECT * FROM tempTable", myConn);    // setup your CMD and identify your connection
 
+            SqlCommand myCommand;
+            myCommand = new SqlCommand("SELECT SID,QID_FK,RID_FK,response,dateAdded,ipAddress FROM Submission", myConn);    // setup your CMD and identify your connection
+            
+            
             SqlDataReader myReader;
             myReader = myCommand.ExecuteReader();   //capture your data 
-
-
             // prepare your data table 
-            DataTable dt = new DataTable();                   // dont forget int32
+            DataTable dt = new DataTable();
 
-            //V1
-            //dt.Columns.Add("ID", System.Type.GetType("System.String"));
-            //dt.Columns.Add("FirstName", System.Type.GetType("System.String"));
-            //dt.Columns.Add("Lastname", System.Type.GetType("System.String"));
-
-
-            //V2
-            // add dt Column names dynamically on first loop of myReader 
-            // myReader needs to be at a row position to read column names else you get an error.
-            // This is why it is within the below loop.
+            //setup table
+            dt.Columns.Add("SID", System.Type.GetType("System.Int32"));
+            dt.Columns.Add("QID_FK", System.Type.GetType("System.Int32"));
+            dt.Columns.Add("RID_FK", System.Type.GetType("System.Int32"));
+            dt.Columns.Add("response", System.Type.GetType("System.String"));
+            dt.Columns.Add("dateAdded", System.Type.GetType("System.String"));
+            dt.Columns.Add("ipAddress", System.Type.GetType("System.String"));
 
 
-            bool firstLoop = true;
             // row by row add to the data table 
             DataRow currentRow;
             while (myReader.Read())
             {
                 currentRow = dt.NewRow();
 
-                if (firstLoop)
-                {
-                    
-                    for (int i = 0; i < myReader.FieldCount; i++)
-                    {
-                        dt.Columns.Add(myReader.GetName(i), System.Type.GetType("System.String"));
-
-                        //testing
-                        /*Response.Write("<br />");
-                        Response.Write(i.ToString() + " / " + myReader.GetName(i));
-                        Response.Write("<br />");*/
-                    }
-                    firstLoop = false;
-                }
-
-                // currentRow is in connection to you dt object names / columns / rows from above
-                // myReader data is in connection to your db names / columns / rows
-                currentRow["ID"] = myReader[0].ToString();
-                currentRow["FirstName"] = myReader[1].ToString();
-                currentRow[2] = myReader["LastName"].ToString();
-
+                currentRow["SID"] = myReader["SID"].ToString();
+                currentRow["QID_FK"] = myReader["QID_FK"].ToString();
+                currentRow["RID_FK"] = myReader["RID_FK"].ToString();
+                currentRow["response"] = myReader["response"];
+                currentRow["dateAdded"] = myReader["dateAdded"];
+                currentRow["ipAddress"] = myReader["ipAddress"];
 
                 dt.Rows.Add(currentRow);
             }
@@ -217,10 +325,23 @@ namespace AITRSurvey
             
         }
 
+
         protected void LogoutBtn_Click(object sender, EventArgs e)
         {
             AppSession.clearStaff();  // reset staff from session
             Response.Redirect("Login.aspx");
+        }
+
+        protected void SubmitBtn_Click(object sender, EventArgs e)
+        {
+            string str = "";
+
+            List<string> idList = StaffSearchHandler.IdList;
+            foreach (string id in idList)
+            {
+                str += id + "/ ";
+            }
+            devConsolelbl.Text = str;
         }
     }
 }

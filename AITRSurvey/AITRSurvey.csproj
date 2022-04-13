@@ -140,6 +140,7 @@
     <Compile Include="StaffSearch.aspx.designer.cs">
       <DependentUpon>StaffSearch.aspx</DependentUpon>
     </Compile>
+    <Compile Include="StaffSearchHandler.cs" />
     <Compile Include="SurveyEnd.aspx.cs">
       <DependentUpon>SurveyEnd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
