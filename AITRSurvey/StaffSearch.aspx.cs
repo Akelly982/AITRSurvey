@@ -52,8 +52,17 @@ namespace AITRSurvey
             //using our FormData maintain the question list
             // Note this is done because apparently 
             // Dynamically generated controls do not maintain state through postback.
-            StaffSearchHandler.IdList = displayFormQuestions(StaffSearchHandler.QuestionDt, StaffSearchHandler.QuestionValuesDth, StaffSearchHandler.Terminator);
-            updateIdListHolder(StaffSearchHandler.IdList);
+            displayFormQuestions(StaffSearchHandler.QuestionDt, StaffSearchHandler.QuestionValuesDth, StaffSearchHandler.Terminator);
+            updateListHolders(StaffSearchHandler.IdList,StaffSearchHandler.ItemTypeList);
+            
+            //Test update console whil idList
+            string str = "";
+            List<string> idList = StaffSearchHandler.IdList;
+            foreach (string id in idList)
+            {
+                str += id + " / ";
+            }
+            devConsolelbl.Text = str;
 
         }
 
@@ -67,28 +76,39 @@ namespace AITRSurvey
         // ----------------
         //  functions
         // ---------------
-        void updateIdListHolder(List<string> mylist)
+        void updateListHolders(List<string> myIdList, List<string> myItemTypeList)
         {
             //create csv as value in dom element
-                //idListHolder.Value = 
+            //idListHolder.Value = 
 
+            idListHolder.Value = createCsvStringFromListString(myIdList);
+            itemTypeListHolder.Value = createCsvStringFromListString(myItemTypeList);
+            
+           
+        }
+
+
+        string createCsvStringFromListString(List<string> listString)
+        {
             //create temp str
             string csvStr = "";
-            foreach (string id in mylist)
+            foreach (string str in listString)
             {
-                csvStr += id + ",";
+                csvStr += str + ",";
             }
 
             //remove last comma from str
-            if(csvStr.Length != 0)
+            if (csvStr.Length != 0)
             {
                 csvStr = stringRemoveLastChar(csvStr);
-                idListHolder.Value = csvStr;
+               
             }
             else
             {
-                idListHolder.Value = "Error";
+                csvStr = "Error Empty";
             }
+
+            return csvStr;
         }
 
 
@@ -220,7 +240,7 @@ namespace AITRSurvey
         // - You can not use InnerHTML and Contorls.Add togeathe you get an 
         //   error on the InnerHTML being "Cannot get inner content of DynamicForm because the contents are not literal."
         //   LABELS with </br> written into have it run as code
-        public List<string> displayFormQuestions(DataTable questionDt, DataTableHandler QuestionValuesDth, int terminator)
+        public void displayFormQuestions(DataTable questionDt, DataTableHandler QuestionValuesDth, int terminator)
         {
             // ------------------------------------------------
             // Display each Question and child selection items
@@ -228,15 +248,20 @@ namespace AITRSurvey
 
             //list to hold all question id connections
             List<string> idList = new List<string>();
+            List<string> typeList = new List<string>();
+
+            List<TextBox> controlsList = new List<TextBox>();
 
             bool showQuestionType = true;
             foreach (DataRow row in questionDt.Rows)
             {
 
                 
-                //GET ID
+                //GET ID / item type
                 int currentId = ((int)row["QID"]);
+                int currentQTID = ((int)row["QTID_FK"]);
                 idList.Add(currentId.ToString()); // save ID
+                typeList.Add(currentQTID.ToString());
 
 
                 //SETUP PARENT
@@ -270,26 +295,50 @@ namespace AITRSurvey
                     // get our child dt
                     DataTable childDt = QuestionValuesDth.getDataTableByColumnNameAndIntValue("QID_FK", (int)row["QID"]);
 
-                    CheckBoxList cbl = new CheckBoxList();   //needs text / value
-                    cbl.Attributes.Add("runat", "server");
+                    //create checkBox
+                    //CheckBoxList cbl = new CheckBoxList();   //needs text / value
+                    //cbl.Attributes.Add("runat", "server");
+                    //foreach (DataRow childRow in childDt.Rows)
+                    //{
+                    //    ListItem li = new ListItem();
+                    //    li.Text = (string)childRow["text"];
+                    //    li.Value = (string)childRow["QVID"].ToString();
+
+                    //    cbl.Items.Add(li);
+                    //}
+                    //cbl.ID = currentId.ToString();
+
+                    string answearStr = "Possible Answears: ";
+                    //create TextBox and show possible answears
                     foreach (DataRow childRow in childDt.Rows)
                     {
-                        ListItem li = new ListItem();
-                        li.Text = (string)childRow["text"];
-                        li.Value = (string)childRow["QVID"].ToString();
+                        
+                        answearStr += (string)childRow["text"] + " /";
 
-                        cbl.Items.Add(li);
                     }
-                    cbl.ID = currentId.ToString();
+
+                    Label answearlb = new Label();
+                    answearlb.Text = answearStr + "<br/>";
+
+                    TextBox tb = new TextBox();
+                    tb.Attributes.Add("runat", "server");
+                    tb.ID = currentId.ToString();
+
+                    //add control to control list
+                    controlsList.Add(tb);
 
                     //attach to innerDiv
-                    innerDiv.Controls.Add(cbl);
+                    innerDiv.Controls.Add(answearlb);
+                    innerDiv.Controls.Add(tb);
                 }
                 else
                 {
                     TextBox tb = new TextBox();
                     tb.Attributes.Add("runat", "server");
                     tb.ID = currentId.ToString();
+
+                    //add control to control list
+                    controlsList.Add(tb);
 
                     //attach to inner div
                     innerDiv.Controls.Add(tb);
@@ -305,8 +354,11 @@ namespace AITRSurvey
             DynamicForm.DataBind();
 
 
-
-            return idList;
+            //update StaffSearchHandler
+            StaffSearchHandler.IdList = idList;
+            StaffSearchHandler.ItemTypeList = typeList;
+            StaffSearchHandler.ControlTbList = controlsList;
+            
         }
 
 
@@ -332,7 +384,7 @@ namespace AITRSurvey
 
 
             SqlCommand myCommand;
-            myCommand = new SqlCommand("SELECT SID,QID_FK,RID_FK,response,dateAdded,ipAddress FROM Submission", myConn);    // setup your CMD and identify your connection
+            myCommand = new SqlCommand("SELECT s.SID,s.QID_FK,s.RID_FK,s.response,s.dateAdded,s.ipAddress FROM Respondent r, Questions q, Submission s WHERE s.RID_FK = r.RID AND s.QID_FK = q.QID", myConn);    // setup your CMD and identify your connection
             
             
             SqlDataReader myReader;
@@ -384,21 +436,49 @@ namespace AITRSurvey
 
         protected void SubmitBtn_Click(object sender, EventArgs e)
         {
-            //Test update console whil idList
-            string str = "";
+
+            List<TextBox> controlTbList = StaffSearchHandler.ControlTbList;
             List<string> idList = StaffSearchHandler.IdList;
-            foreach (string id in idList)
-            {
-                str += id + "/ ";
-            }
-            devConsolelbl.Text = str;
+            int index = 0;
 
-
-            // create SQL stmts
-            foreach(string id in idList)
+            foreach (TextBox tbc in controlTbList)
             {
-                 
+                //Get current questionId
+                string qidStr = idList[index];
+                
+                
+
             }
+
+            //CheckBoxList cbl = new CheckBoxList();
+            //TextBox tb = new TextBox();
+            //int cblCounter = 0;
+            //int tbCounter = 0;
+            //string whereStmtBuild = "";
+            //String stmt = "";
+            //List<WebControl> wcList = StaffSearchHandler.ControlList;
+            //foreach (WebControl wc in wcList)
+            //{
+
+            //    if (wc.GetType() == cbl.GetType())
+            //    {
+            //        //cblCounter++;
+            //        cbl = wc;
+            //        foreach (ListItem item in wc.)
+            //        {
+            //            if (item.Selected)
+            //            {
+            //                response += item.Text + ",";
+            //            }
+            //        }
+
+            //    }
+            //    else
+            //    {
+            //        tbCounter++;
+            //    }
+            //}
+
 
         }
     }

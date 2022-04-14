@@ -33,7 +33,8 @@
             <asp:GridView ID="DataGridView" runat="server"></asp:GridView> 
         </div>
         <div runat="server"> 
-            <input id="idListHolder" type="hidden" value="Hello" runat="server"/> 
+            <input id="idListHolder" type="hidden" value="dynamic data" runat="server"/> 
+            <input id="itemTypeListHolder" type="hidden" value="dynamic data" runat="server"/> 
         </div>
         <%-- Ensure script loads after page data --%>
         <div>
