@@ -44,7 +44,6 @@ namespace AITRSurvey
                 }
 
                 getFormData();
-                
                 initDb();
 
             }
@@ -54,8 +53,61 @@ namespace AITRSurvey
             // Note this is done because apparently 
             // Dynamically generated controls do not maintain state through postback.
             StaffSearchHandler.IdList = displayFormQuestions(StaffSearchHandler.QuestionDt, StaffSearchHandler.QuestionValuesDth, StaffSearchHandler.Terminator);
+            updateIdListHolder(StaffSearchHandler.IdList);
+
+        }
 
 
+
+
+
+
+
+
+        // ----------------
+        //  functions
+        // ---------------
+        void updateIdListHolder(List<string> mylist)
+        {
+            //create csv as value in dom element
+                //idListHolder.Value = 
+
+            //create temp str
+            string csvStr = "";
+            foreach (string id in mylist)
+            {
+                csvStr += id + ",";
+            }
+
+            //remove last comma from str
+            if(csvStr.Length != 0)
+            {
+                csvStr = stringRemoveLastChar(csvStr);
+                idListHolder.Value = csvStr;
+            }
+            else
+            {
+                idListHolder.Value = "Error";
+            }
+        }
+
+
+        public string stringRemoveLastChar(string str)
+        {
+            List<char> lc = str.ToList<char>();  //convert to char list
+            int lastIndex = str.Length - 1;  //find last index
+            lc.RemoveAt(lastIndex); //remove last index
+
+            //convert back to string 
+            //str = lc.ToString();  // this return the object type as a string
+            str = "";
+            foreach (char c in lc)
+            {
+                str += c;
+            }
+
+            int num = str.Length;
+            return str;
         }
 
 

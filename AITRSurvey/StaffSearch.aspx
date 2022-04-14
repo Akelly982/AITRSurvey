@@ -32,6 +32,13 @@
         <div style="text-align: center">
             <asp:GridView ID="DataGridView" runat="server"></asp:GridView> 
         </div>
+        <div runat="server"> 
+            <input id="idListHolder" type="hidden" value="Hello" runat="server"/> 
+        </div>
+        <%-- Ensure script loads after page data --%>
+        <div>
+            <script src="StaffSearch.js" type="text/javascript"></script>
+        </div>
        </form>
 </body>
 </html>

@@ -75,6 +75,7 @@
     <Content Include="SampleSurveyRB.aspx" />
     <Content Include="SampleSurveyTB.aspx" />
     <Content Include="StaffSearch.aspx" />
+    <Content Include="StaffSearch.js" />
     <Content Include="SurveyEnd.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
