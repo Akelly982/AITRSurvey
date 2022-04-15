@@ -18,20 +18,45 @@
                 <asp:Label ID="StaffEmail" runat="server" Text="email"></asp:Label>
                 <asp:Button ID="LogoutBtn" runat="server" Text="Log Out" OnClick="LogoutBtn_Click" />
         </div>
+        <div style="text-align: center">
+            <asp:Label ID="devConsolelbl" runat="server" Text="Dev Console Lbl"></asp:Label>
+        </div>
         <br />
-        <%-- dynamic form --%>
-        <div id="DynamicForm" runat="server">
+        <%-- dynamic question data  --%>
+        <div id="DynamicQuestionData" runat="server">
+            
+        </div>
+        <br />
+        <%-- groupRespondent search --%>
+        <%-- dynamic qid selector --%>
+        <div id="DynamicQidSelector" runat="server">
             
         </div>
         <br />
         <div style="text-align: center">
-            <asp:Button ID="SubmitBtn" runat="server" Text="Submit" OnClick="SubmitBtn_Click" />
+            <asp:Label ID="Label2" runat="server" Text="Where Response Like: "></asp:Label>
+            <asp:TextBox ID="GroupRespondentResponseTextBox" runat="server"></asp:TextBox>
+            <asp:Button ID="GroupRespondentsSubmitBtn" runat="server" Text="Submit" OnClick="GroupRespondentsSubmitBtn_Click" />
             <br />
-            <asp:Label ID="devConsolelbl" runat="server" Text="Dev Console Lbl"></asp:Label>
         </div>
         <div style="text-align: center">
-            <asp:GridView ID="DataGridView" runat="server"></asp:GridView> 
+            <asp:GridView ID="GroupRespondentGridView" runat="server"></asp:GridView> 
         </div>
+        <br/>
+        <%-- find respondent search --%>
+        <div id="findRespondentData" runat="server">
+            <br />
+            <asp:Label ID="FindRespondentTitle" runat="server" Text="Find a respondent:"></asp:Label>
+            <div>
+                <asp:Label ID="FindRespondentLabel" runat="server" Text="RID:"></asp:Label>
+                <asp:TextBox ID="FindRespondentTextBox" runat="server"></asp:TextBox>
+                <asp:Button ID="FindRespondentSubmitButton" runat="server" Text="Submit" OnClick="FindRespondentSubmitButton_Click" />
+                <asp:Button ID="FindRespondentShowAllSubmitButton" runat="server" Text="Show All" OnClick="FindRespondentShowAllSubmitButton_Click"/>
+            </div>
+            <br />
+            <asp:GridView ID="FindRespondentGridView" runat="server"></asp:GridView>
+        </div>
+        <br/>
         <div runat="server"> 
             <input id="idListHolder" type="hidden" value="dynamic data" runat="server"/> 
             <input id="itemTypeListHolder" type="hidden" value="dynamic data" runat="server"/> 
