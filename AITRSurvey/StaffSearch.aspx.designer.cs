@@ -132,6 +132,24 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Button GroupRespondentsSubmitBtn;
 
         /// <summary>
+        /// GroupRespondentLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label GroupRespondentLbl;
+
+        /// <summary>
+        /// ErrorGroupRespondentLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ErrorGroupRespondentLbl;
+
+        /// <summary>
         /// GroupRespondentGridView control.
         /// </summary>
         /// <remarks>
@@ -159,13 +177,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Label FindRespondentTitle;
 
         /// <summary>
-        /// FindRespondentLabel control.
+        /// FindRespondentTextBoxLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label FindRespondentLabel;
+        protected global::System.Web.UI.WebControls.Label FindRespondentTextBoxLbl;
 
         /// <summary>
         /// FindRespondentTextBox control.
@@ -193,6 +211,24 @@ namespace AITRSurvey
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button FindRespondentShowAllSubmitButton;
+
+        /// <summary>
+        /// FindRespondentLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label FindRespondentLbl;
+
+        /// <summary>
+        /// ErrorFindRespondentLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ErrorFindRespondentLbl;
 
         /// <summary>
         /// FindRespondentGridView control.

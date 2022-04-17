@@ -33,27 +33,31 @@
             
         </div>
         <br />
-        <div style="text-align: center">
+        <div>
             <asp:Label ID="Label2" runat="server" Text="Where Response Like: "></asp:Label>
             <asp:TextBox ID="GroupRespondentResponseTextBox" runat="server"></asp:TextBox>
             <asp:Button ID="GroupRespondentsSubmitBtn" runat="server" Text="Submit" OnClick="GroupRespondentsSubmitBtn_Click" />
             <br />
-        </div>
-        <div style="text-align: center">
+            <asp:Label ID="GroupRespondentLbl" runat="server" Text=""></asp:Label>
+            <br/>
+            <asp:Label ID="ErrorGroupRespondentLbl" runat="server" Text=""></asp:Label>
             <asp:GridView ID="GroupRespondentGridView" runat="server"></asp:GridView> 
         </div>
+            
         <br/>
         <%-- find respondent search --%>
         <div id="findRespondentData" runat="server">
             <br />
             <asp:Label ID="FindRespondentTitle" runat="server" Text="Find a respondent:"></asp:Label>
             <div>
-                <asp:Label ID="FindRespondentLabel" runat="server" Text="RID:"></asp:Label>
+                <asp:Label ID="FindRespondentTextBoxLbl" runat="server" Text="RID:"></asp:Label>
                 <asp:TextBox ID="FindRespondentTextBox" runat="server"></asp:TextBox>
                 <asp:Button ID="FindRespondentSubmitButton" runat="server" Text="Submit" OnClick="FindRespondentSubmitButton_Click" />
                 <asp:Button ID="FindRespondentShowAllSubmitButton" runat="server" Text="Show All" OnClick="FindRespondentShowAllSubmitButton_Click"/>
             </div>
-            <br />
+            <asp:Label ID="FindRespondentLbl" runat="server" Text=""></asp:Label>
+            <br/>
+            <asp:Label ID="ErrorFindRespondentLbl" runat="server" Text=""></asp:Label>
             <asp:GridView ID="FindRespondentGridView" runat="server"></asp:GridView>
         </div>
         <br/>

@@ -15,7 +15,8 @@ namespace AITRSurvey
 {
     public partial class StaffSearch : System.Web.UI.Page
     {
-        bool showDevView = true;
+        bool showDevView = false;
+        bool showQuestionTypeText = false;
         string initialFindRespondentId = "75";
         string initalGroupRespondentQid = "100"; //first parent question 
 
@@ -244,7 +245,7 @@ namespace AITRSurvey
         // show question information at top of page so the the end user knows what they are asking for
         void displayQuestionData(DataTable questionDt, DataTableHandler questionValuesDth)
         {
-            bool showQuestionType = true;
+            bool showQuestionType = this.showQuestionTypeText;
 
             foreach (DataRow row in questionDt.Rows)
             {
@@ -298,7 +299,7 @@ namespace AITRSurvey
                     foreach (DataRow childRow in childDt.Rows)
                     {
 
-                        answearStr += (string)childRow["text"] + " /";
+                        answearStr += (string)childRow["text"] + " / ";
 
                     }
                     // remove the last " /" in string
@@ -479,8 +480,13 @@ namespace AITRSurvey
         {
 
             //-------------------------------------
-            // initalize FindRespondent GridView 
+            // set Show all FindRespondent GridView 
             //-------------------------------------
+
+            //show search message
+            FindRespondentLbl.Text = "Search: Show All";
+            //clear error message
+            ErrorFindRespondentLbl.Text = "";
 
             // data list reference code from javapoint.com
             // https://www.javatpoint.com/asp-net-datalist#:~:text=The%20ASP.NET%20DataList%20control,or%20a%20table%20from%20database.
@@ -548,8 +554,13 @@ namespace AITRSurvey
         {
 
             //-------------------------------------
-            // initalize FindRespondent GridView 
+            // set FindRespondent GridView 
             //-------------------------------------
+
+            //show search message
+            FindRespondentLbl.Text = "Search RID: " + findRespondentId;
+            //clear error message
+            ErrorFindRespondentLbl.Text = "";
 
             // data list reference code from javapoint.com
             // https://www.javatpoint.com/asp-net-datalist#:~:text=The%20ASP.NET%20DataList%20control,or%20a%20table%20from%20database.
@@ -603,6 +614,12 @@ namespace AITRSurvey
                 dt.Rows.Add(currentRow);
             }
 
+            //if no rows returned
+            if (dt.Rows.Count == 0)
+            {
+                
+                ErrorFindRespondentLbl.Text = "Rows returned = 0";
+            }
 
             //GridView1 is our grid view ID from the designer
             FindRespondentGridView.DataSource = dt;
@@ -617,8 +634,14 @@ namespace AITRSurvey
         {
 
             //-------------------------------------
-            // initalize GroupRespondent GridView 
+            // set GroupRespondent GridView 
             //-------------------------------------
+
+            // show search message
+            GroupRespondentLbl.Text = "Search Where QID = " + qid + " AND response LIKE '%" + response + "%'";
+            //clear error msg
+            ErrorGroupRespondentLbl.Text = "";
+            
 
             // init db submissions
             SqlConnection myConn;
@@ -671,6 +694,12 @@ namespace AITRSurvey
                 dt.Rows.Add(currentRow);
             }
 
+            //if no rows returned
+                //show error message
+            if(dt.Rows.Count == 0)
+            {
+                ErrorGroupRespondentLbl.Text = "Rows returned = 0";
+            }
 
             //GridView1 is our grid view ID from the designer
             GroupRespondentGridView.DataSource = dt;
