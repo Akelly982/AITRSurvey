@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AkStyle.css" />
     <Content Include="Default.aspx" />
     <Content Include="DynamicSurvey.aspx" />
     <Content Include="Login.aspx" />

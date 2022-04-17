@@ -26,30 +26,30 @@ namespace AITRSurvey
             // post back is false only the first time the page loads
             if (!IsPostBack)
             {
-                devConsolelbl.Visible = this.showDevView;  //testing sql generator
+                DevConsole.Visible = this.showDevView;
 
                 //update staff user labels
                 Staff st = AppSession.getStaff();
                 if (st == null) //staff not set
                 {
                     string s = "Staff Not Set";
-                    StaffUsername.Text = s;
-                    StaffFirstName.Text = s;
-                    StaffLastName.Text = s;
+                    //StaffUsername.Text = s;
+                    //StaffFirstName.Text = s;
+                    //StaffLastName.Text = s;
                     StaffEmail.Text = s;
                 }
                 else
                 {
-                    StaffUsername.Text = st.Username;
-                    StaffFirstName.Text = st.FirstName;
-                    StaffLastName.Text = st.LastName;
+                    //StaffUsername.Text = st.Username;
+                    //StaffFirstName.Text = st.FirstName;
+                    //StaffLastName.Text = st.LastName;
                     StaffEmail.Text = st.Email;
                 }
                 
                 getFormData();
                 setFindRespondentGridView(this.initialFindRespondentId);
                 setGroupRespondentGridView(this.initalGroupRespondentQid, "");
-
+                updateQuestionRadioButtonList(StaffSearchHandler.QuestionDt);
             }
 
 
@@ -58,7 +58,7 @@ namespace AITRSurvey
             // Dynamically generated controls do not maintain state through postback;
 
             displayQuestionData(StaffSearchHandler.QuestionDt,StaffSearchHandler.QuestionValuesDth);
-            createQuestionSelector(StaffSearchHandler.QuestionDt);
+            //createQuestionSelector(StaffSearchHandler.QuestionDt);
             
 
 
@@ -81,8 +81,8 @@ namespace AITRSurvey
             //create csv as value in dom element
             //idListHolder.Value = 
 
-            idListHolder.Value = createCsvStringFromListString(myIdList);
-            itemTypeListHolder.Value = createCsvStringFromListString(myItemTypeList);
+            //idListHolder.Value = createCsvStringFromListString(myIdList);
+            //itemTypeListHolder.Value = createCsvStringFromListString(myItemTypeList);
             
            
         }
@@ -271,6 +271,7 @@ namespace AITRSurvey
                 // create outer html
                 System.Web.UI.HtmlControls.HtmlGenericControl outerDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
                 outerDiv.Attributes.Add("runat", "server");
+                outerDiv.Attributes.Add("class", "staffSearchOuterDiv");
 
                 Label questionLbl = new Label();
                 //add question text
@@ -284,12 +285,15 @@ namespace AITRSurvey
                 //add to outer div
                 outerDiv.Controls.Add(questionLbl);
 
-                //create inner html
-                System.Web.UI.HtmlControls.HtmlGenericControl innerDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
-                innerDiv.Attributes.Add("runat", "server");
+
 
                 if ((int)row["QTID_FK"] == 2 || (int)row["QTID_FK"] == 3) //if should have question values being type check box or radio button
                 {
+                    //create inner html
+                    System.Web.UI.HtmlControls.HtmlGenericControl innerDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
+                    innerDiv.Attributes.Add("runat", "server");
+                    innerDiv.Attributes.Add("class", "staffSearchInnerDiv");
+
                     //SETUP CHILD
                     // get our child dt
                     DataTable childDt = questionValuesDth.getDataTableByColumnNameAndIntValue("QID_FK", (int)row["QID"]);
@@ -310,19 +314,20 @@ namespace AITRSurvey
 
                     //attach to innerDiv
                     innerDiv.Controls.Add(answearlb);
+
+                    //ATTACH THE DATA
+                    // innerDiv -> outerDiv -> parentDiv 
+                    //attach innerDiv to outerDiv
+                    outerDiv.Controls.Add(innerDiv);
+
                 }
 
 
-                //ATTACH THE DATA
-                // innerDiv -> outerDiv -> parentDiv 
-                //attach innerDiv to outerDiv
-                outerDiv.Controls.Add(innerDiv);
-
                 //add the final break after innerDiv within outerDiv
                 //you can cheat by hiding it in a label
-                Label lb = new Label();
-                lb.Text = "<br/>";
-                outerDiv.Controls.Add(lb);
+                    //Label lb = new Label();
+                    //lb.Text = "<br/>";
+                    //outerDiv.Controls.Add(lb);
 
                 //Append outerDiv to parent Div
                 DynamicQuestionData.Controls.Add(outerDiv);
@@ -333,146 +338,163 @@ namespace AITRSurvey
 
        
         //create the GroupRespondent QID Radio button selector 
-        void createQuestionSelector(DataTable questionDt)
+        void OLD_createQuestionSelector(DataTable questionDt)
         {
-            //create question selector
-            System.Web.UI.HtmlControls.HtmlGenericControl questionsCheckBoxDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            questionsCheckBoxDiv.Attributes.Add("runat", "server");
+            ////create question selector
+            //System.Web.UI.HtmlControls.HtmlGenericControl questionsRadioButtonDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            //questionsRadioButtonDiv.Attributes.Add("runat", "server");
 
-            //create checkBox
-            RadioButtonList questionRbl = new RadioButtonList();   //needs text / value
-            questionRbl.Attributes.Add("runat", "server");
+            ////create rb
+            //RadioButtonList questionRbl = new RadioButtonList();   //needs text / value
+            //questionRbl.Attributes.Add("runat", "server");
 
+            //foreach (DataRow row in questionDt.Rows)
+            //{
+
+            //    ListItem li = new ListItem();
+            //    li.Text = (string)row["QID"].ToString();
+            //    li.Value = (string)row["QID"].ToString();
+            //    questionRbl.Items.Add(li);
+
+            //}
+            ////add question to list
+            //questionsRadioButtonDiv.Controls.Add(questionRbl);
+            ////Append outerDiv to parent Div
+            //DynamicQidSelector.Controls.Add(questionsRadioButtonDiv);
+
+            //StaffSearchHandler.QuestionRbl = questionRbl;
+        }
+
+        void updateQuestionRadioButtonList(DataTable questionDt)
+        {
+            //prebuilt using aspx designer
+                //QidSelectorRadioButtonList
+            
             foreach (DataRow row in questionDt.Rows)
             {
 
                 ListItem li = new ListItem();
                 li.Text = (string)row["QID"].ToString();
                 li.Value = (string)row["QID"].ToString();
-                questionRbl.Items.Add(li);
+                QidSelectorRadioButtonList.Items.Add(li);
 
             }
-            //add question checkBox to
-            questionsCheckBoxDiv.Controls.Add(questionRbl);
-            //Append outerDiv to parent Div
-            DynamicQidSelector.Controls.Add(questionsCheckBoxDiv);
 
-            StaffSearchHandler.QuestionRbl = questionRbl;
         }
 
 
         void OLD_createQuestionData(DataTable questionDt, DataTableHandler questionValuesDth)
         {
 
-            bool showQuestionType = true;
-            //list to hold all question id connections
-            List<string> idList = new List<string>();
-            List<string> typeList = new List<string>();
-            List<TextBox> controlsList = new List<TextBox>();
+            //bool showQuestionType = true;
+            ////list to hold all question id connections
+            //List<string> idList = new List<string>();
+            //List<string> typeList = new List<string>();
+            //List<TextBox> controlsList = new List<TextBox>();
 
-            foreach (DataRow row in questionDt.Rows)
-            {
-
-
-                //GET ID / item type
-                int currentId = ((int)row["QID"]);
-                int currentQTID = ((int)row["QTID_FK"]);
-                idList.Add(currentId.ToString()); // save ID
-                typeList.Add(currentQTID.ToString());
+            //foreach (DataRow row in questionDt.Rows)
+            //{
 
 
-                //SETUP PARENT
-                // create generic html element 
-                // create outer html
-                System.Web.UI.HtmlControls.HtmlGenericControl outerDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
-                outerDiv.Attributes.Add("runat", "server");
-
-                Label questionLbl = new Label();
-                //add question text
-                string questionStr = "Q" + ((int)row["QID"]).ToString() + " / " + (string)row["questionText"];
-                if (showQuestionType)
-                {
-                    questionStr += " / QType: " + ((int)row["QTID_FK"]).ToString();
-                }
-                questionLbl.Text = questionStr;
-
-                //add to outer div
-                outerDiv.Controls.Add(questionLbl);
+            //    //GET ID / item type
+            //    int currentId = ((int)row["QID"]);
+            //    int currentQTID = ((int)row["QTID_FK"]);
+            //    idList.Add(currentId.ToString()); // save ID
+            //    typeList.Add(currentQTID.ToString());
 
 
-                //create inner html
-                System.Web.UI.HtmlControls.HtmlGenericControl innerDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
-                innerDiv.Attributes.Add("runat", "server");
+            //    //SETUP PARENT
+            //    // create generic html element 
+            //    // create outer html
+            //    System.Web.UI.HtmlControls.HtmlGenericControl outerDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            //    outerDiv.Attributes.Add("runat", "server");
 
-                //SETUP QUESTION RESULTS
-                // determin our userSelected data points
-                if ((int)row["QTID_FK"] == 2 || (int)row["QTID_FK"] == 3)  //if radio btn or checkBox
-                {
+            //    Label questionLbl = new Label();
+            //    //add question text
+            //    string questionStr = "Q" + ((int)row["QID"]).ToString() + " / " + (string)row["questionText"];
+            //    if (showQuestionType)
+            //    {
+            //        questionStr += " / QType: " + ((int)row["QTID_FK"]).ToString();
+            //    }
+            //    questionLbl.Text = questionStr;
 
-                    // get our child dt
-                    DataTable childDt = questionValuesDth.getDataTableByColumnNameAndIntValue("QID_FK", (int)row["QID"]);
+            //    //add to outer div
+            //    outerDiv.Controls.Add(questionLbl);
 
-                    //create checkBox
-                    //CheckBoxList cbl = new CheckBoxList();   //needs text / value
-                    //cbl.Attributes.Add("runat", "server");
-                    //foreach (DataRow childRow in childDt.Rows)
-                    //{
-                    //    ListItem li = new ListItem();
-                    //    li.Text = (string)childRow["text"];
-                    //    li.Value = (string)childRow["QVID"].ToString();
 
-                    //    cbl.Items.Add(li);
-                    //}
-                    //cbl.ID = currentId.ToString();
+            //    //create inner html
+            //    System.Web.UI.HtmlControls.HtmlGenericControl innerDiv = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            //    innerDiv.Attributes.Add("runat", "server");
 
-                    string answearStr = "Possible Answears: ";
-                    //create TextBox and show possible answears
-                    foreach (DataRow childRow in childDt.Rows)
-                    {
+            //    //SETUP QUESTION RESULTS
+            //    // determin our userSelected data points
+            //    if ((int)row["QTID_FK"] == 2 || (int)row["QTID_FK"] == 3)  //if radio btn or checkBox
+            //    {
 
-                        answearStr += (string)childRow["text"] + " /";
+            //        // get our child dt
+            //        DataTable childDt = questionValuesDth.getDataTableByColumnNameAndIntValue("QID_FK", (int)row["QID"]);
 
-                    }
+            //        //create checkBox
+            //        //CheckBoxList cbl = new CheckBoxList();   //needs text / value
+            //        //cbl.Attributes.Add("runat", "server");
+            //        //foreach (DataRow childRow in childDt.Rows)
+            //        //{
+            //        //    ListItem li = new ListItem();
+            //        //    li.Text = (string)childRow["text"];
+            //        //    li.Value = (string)childRow["QVID"].ToString();
 
-                    Label answearlb = new Label();
-                    answearlb.Text = answearStr + "<br/>";
+            //        //    cbl.Items.Add(li);
+            //        //}
+            //        //cbl.ID = currentId.ToString();
 
-                    TextBox tb = new TextBox();
-                    tb.Attributes.Add("runat", "server");
-                    tb.ID = currentId.ToString();
+            //        string answearStr = "Possible Answears: ";
+            //        //create TextBox and show possible answears
+            //        foreach (DataRow childRow in childDt.Rows)
+            //        {
 
-                    //add control to control list
-                    controlsList.Add(tb);
+            //            answearStr += (string)childRow["text"] + " /";
 
-                    //attach to innerDiv
-                    innerDiv.Controls.Add(answearlb);
-                    innerDiv.Controls.Add(tb);
-                }
-                else
-                {
-                    TextBox tb = new TextBox();
-                    tb.Attributes.Add("runat", "server");
-                    tb.ID = currentId.ToString();
+            //        }
 
-                    //add control to control list
-                    controlsList.Add(tb);
+            //        Label answearlb = new Label();
+            //        answearlb.Text = answearStr + "<br/>";
 
-                    //attach to inner div
-                    innerDiv.Controls.Add(tb);
-                }
+            //        TextBox tb = new TextBox();
+            //        tb.Attributes.Add("runat", "server");
+            //        tb.ID = currentId.ToString();
 
-                //attach innerDiv to outerDiv
-                outerDiv.Controls.Add(innerDiv);
+            //        //add control to control list
+            //        controlsList.Add(tb);
 
-                //Append outerDiv to parent Div
-                DynamicQidSelector.Controls.Add(outerDiv);
+            //        //attach to innerDiv
+            //        innerDiv.Controls.Add(answearlb);
+            //        innerDiv.Controls.Add(tb);
+            //    }
+            //    else
+            //    {
+            //        TextBox tb = new TextBox();
+            //        tb.Attributes.Add("runat", "server");
+            //        tb.ID = currentId.ToString();
 
-                //update StaffSearchHandler
-                StaffSearchHandler.IdList = idList;
-                StaffSearchHandler.ItemTypeList = typeList;
-                StaffSearchHandler.ControlTbList = controlsList;
+            //        //add control to control list
+            //        controlsList.Add(tb);
 
-            }
+            //        //attach to inner div
+            //        innerDiv.Controls.Add(tb);
+            //    }
+
+            //    //attach innerDiv to outerDiv
+            //    outerDiv.Controls.Add(innerDiv);
+
+            //    //Append outerDiv to parent Div
+            //    DynamicQidSelector.Controls.Add(outerDiv);
+
+            //    //update StaffSearchHandler
+            //    StaffSearchHandler.IdList = idList;
+            //    StaffSearchHandler.ItemTypeList = typeList;
+            //    StaffSearchHandler.ControlTbList = controlsList;
+
+            //}
         }
 
         //set data source for findRespondent grid view  ---- show all stmt---
@@ -776,7 +798,7 @@ namespace AITRSurvey
         {
 
             //get qid
-            RadioButtonList questionRbl = StaffSearchHandler.QuestionRbl;
+            RadioButtonList questionRbl = QidSelectorRadioButtonList;
             //check for selected QID <-- radio button so should be only one
             string selectedQid = "";
             foreach (ListItem item in questionRbl.Items)

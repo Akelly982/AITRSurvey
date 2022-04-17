@@ -24,40 +24,13 @@ namespace AITRSurvey
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// Label1 control.
+        /// pageTitlelbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
-
-        /// <summary>
-        /// StaffUsername control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label StaffUsername;
-
-        /// <summary>
-        /// StaffFirstName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label StaffFirstName;
-
-        /// <summary>
-        /// StaffLastName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label StaffLastName;
+        protected global::System.Web.UI.WebControls.Label pageTitlelbl;
 
         /// <summary>
         /// StaffEmail control.
@@ -78,6 +51,15 @@ namespace AITRSurvey
         protected global::System.Web.UI.WebControls.Button LogoutBtn;
 
         /// <summary>
+        /// DevConsole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DevConsole;
+
+        /// <summary>
         /// devConsolelbl control.
         /// </summary>
         /// <remarks>
@@ -85,6 +67,15 @@ namespace AITRSurvey
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label devConsolelbl;
+
+        /// <summary>
+        /// IndexLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label IndexLabel;
 
         /// <summary>
         /// DynamicQuestionData control.
@@ -96,13 +87,22 @@ namespace AITRSurvey
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DynamicQuestionData;
 
         /// <summary>
-        /// DynamicQidSelector control.
+        /// groupRespondentTitleLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DynamicQidSelector;
+        protected global::System.Web.UI.WebControls.Label groupRespondentTitleLabel;
+
+        /// <summary>
+        /// QidSelectorRadioButtonList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList QidSelectorRadioButtonList;
 
         /// <summary>
         /// Label2 control.
@@ -238,23 +238,5 @@ namespace AITRSurvey
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView FindRespondentGridView;
-
-        /// <summary>
-        /// idListHolder control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden idListHolder;
-
-        /// <summary>
-        /// itemTypeListHolder control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden itemTypeListHolder;
     }
 }

@@ -4,71 +4,89 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Staff Search</title>
+    <link rel="stylesheet" href="AkStyle.css" />
 </head>
 <body>
     <form id="form1" runat="server">
-        <div style="text-align: center">
-               <asp:Label ID="Label1" runat="server" Text="Staff Search"></asp:Label>
+        <div class="topBarRightStaffSearch">
+            <div class="flexCentered">
+                <asp:Label ID="pageTitlelbl" class="title" runat="server" Text="Staff Search"></asp:Label>
+            </div>
+            <div class="flexCentered">
+                <asp:Label ID="StaffEmail" class="textColorLight staffSearchUserEmailLabel" runat="server" Text="email"></asp:Label>
+                <asp:Button ID="LogoutBtn" class="btnSizeStandard btnColorWarning" runat="server" Text="Log Out" OnClick="LogoutBtn_Click" />
+            </div>
         </div>
-        <div style="text-align: center">
-                <asp:Label ID="StaffUsername" runat="server" Text="user"></asp:Label>
-                <asp:Label ID="StaffFirstName" runat="server" Text="first"></asp:Label>
-                <asp:Label ID="StaffLastName" runat="server" Text="last"></asp:Label>
-                <asp:Label ID="StaffEmail" runat="server" Text="email"></asp:Label>
-                <asp:Button ID="LogoutBtn" runat="server" Text="Log Out" OnClick="LogoutBtn_Click" />
-        </div>
-        <div style="text-align: center">
+        <div id="DevConsole" runat="server">
             <asp:Label ID="devConsolelbl" runat="server" Text="Dev Console Lbl"></asp:Label>
         </div>
-        <br />
-        <%-- dynamic question data  --%>
-        <div id="DynamicQuestionData" runat="server">
+        <div class="staffSearchContainer">
+            <div class="spacer1"></div>
+
+            <%-- dynamic question data  --%>                
+            <div class="staffSearchInnerContainer">
+                <div class="flexCentered">
+                    <asp:Label ID="IndexLabel" class="title" runat="server" Text="Question Index"></asp:Label>
+                </div>
+                <div id="DynamicQuestionData" class="staffSearchQuestionData" runat="server">
             
-        </div>
-        <br />
-        <%-- groupRespondent search --%>
-        <%-- dynamic qid selector --%>
-        <div id="DynamicQidSelector" runat="server">
-            
-        </div>
-        <br />
-        <div>
-            <asp:Label ID="Label2" runat="server" Text="Where Response Like: "></asp:Label>
-            <asp:TextBox ID="GroupRespondentResponseTextBox" runat="server"></asp:TextBox>
-            <asp:Button ID="GroupRespondentsSubmitBtn" runat="server" Text="Submit" OnClick="GroupRespondentsSubmitBtn_Click" />
-            <br />
-            <asp:Label ID="GroupRespondentLbl" runat="server" Text=""></asp:Label>
-            <br/>
-            <asp:Label ID="ErrorGroupRespondentLbl" runat="server" Text=""></asp:Label>
-            <asp:GridView ID="GroupRespondentGridView" runat="server"></asp:GridView> 
-        </div>
-            
-        <br/>
-        <%-- find respondent search --%>
-        <div id="findRespondentData" runat="server">
-            <br />
-            <asp:Label ID="FindRespondentTitle" runat="server" Text="Find a respondent:"></asp:Label>
-            <div>
-                <asp:Label ID="FindRespondentTextBoxLbl" runat="server" Text="RID:"></asp:Label>
-                <asp:TextBox ID="FindRespondentTextBox" runat="server"></asp:TextBox>
-                <asp:Button ID="FindRespondentSubmitButton" runat="server" Text="Submit" OnClick="FindRespondentSubmitButton_Click" />
-                <asp:Button ID="FindRespondentShowAllSubmitButton" runat="server" Text="Show All" OnClick="FindRespondentShowAllSubmitButton_Click"/>
+                </div>
             </div>
-            <asp:Label ID="FindRespondentLbl" runat="server" Text=""></asp:Label>
-            <br/>
-            <asp:Label ID="ErrorFindRespondentLbl" runat="server" Text=""></asp:Label>
-            <asp:GridView ID="FindRespondentGridView" runat="server"></asp:GridView>
+            <div class="spacer1"></div>
+
+            <%-- groupRespondent search --%>            <%-- dynamic qid selector --%>
+            <div class="staffSearchInnerContainer">
+                <div class="flexCentered">
+                        <asp:Label ID="groupRespondentTitleLabel" class="title" runat="server" Text="Find a respondent group:"></asp:Label>
+                    </div>
+                <div class="qidSelector">
+                    <asp:RadioButtonList ID="QidSelectorRadioButtonList" runat="server" BorderStyle="None" RepeatDirection="Horizontal" RepeatLayout="Flow" Height="10px" RepeatColumns="15" style="margin-bottom: 0px">
+                    </asp:RadioButtonList>
+                </div>  
+                <div class="staffSearchTextRow">
+                    <asp:Label ID="Label2" runat="server" Text="Where Response Like: "></asp:Label>
+                    <asp:TextBox ID="GroupRespondentResponseTextBox" runat="server"></asp:TextBox>
+                    <asp:Button ID="GroupRespondentsSubmitBtn" runat="server" Text="Submit" OnClick="GroupRespondentsSubmitBtn_Click" />
+                </div>
+                <div class="staffSearchTextRow">
+                    <asp:Label ID="GroupRespondentLbl" runat="server" Text=""></asp:Label>
+                </div>
+                <div class="staffSearchTextRow">
+                    <asp:Label class="textColorError" ID="ErrorGroupRespondentLbl" runat="server" Text=""></asp:Label>
+                    <asp:GridView class="staffSearchGridView" ID="GroupRespondentGridView" runat="server"></asp:GridView> 
+                </div>
+            </div>
+            <div class="spacer1"></div>
+
+            <%-- find respondent search --%>
+            <div class="staffSearchInnerContainer">
+                <div id="findRespondentData" runat="server">
+                    <div class="flexCentered">
+                        <asp:Label ID="FindRespondentTitle" class="title" runat="server" Text="Find a respondent:"></asp:Label>
+                    </div>
+                    <div class="staffSearchTextRow">
+                        <asp:Label ID="FindRespondentTextBoxLbl" runat="server" Text="RID:"></asp:Label>
+                        <asp:TextBox ID="FindRespondentTextBox" runat="server"></asp:TextBox>
+                        <asp:Button ID="FindRespondentSubmitButton" runat="server" Text="Submit" OnClick="FindRespondentSubmitButton_Click" />
+                        <asp:Button ID="FindRespondentShowAllSubmitButton" runat="server" Text="Show All" OnClick="FindRespondentShowAllSubmitButton_Click"/>
+                    </div>
+                    <div class="staffSearchTextRow">
+                        <asp:Label ID="FindRespondentLbl" runat="server" Text=""></asp:Label>
+                    </div>
+                    <asp:Label class="textColorError" ID="ErrorFindRespondentLbl" runat="server" Text=""></asp:Label>
+                    <asp:GridView class="staffSearchGridView" ID="FindRespondentGridView" runat="server"></asp:GridView>
+                </div>
+            </div>
+            <div class="spacer3"></div>
+            <%-- Hidden content for old JavaScript --%>            <%--<div runat="server"> 
+                <input id="idListHolder" type="hidden" value="dynamic data" runat="server"/> 
+                <input id="itemTypeListHolder" type="hidden" value="dynamic data" runat="server"/> 
+            </div>--%>
         </div>
-        <br/>
-        <div runat="server"> 
-            <input id="idListHolder" type="hidden" value="dynamic data" runat="server"/> 
-            <input id="itemTypeListHolder" type="hidden" value="dynamic data" runat="server"/> 
-        </div>
-        <%-- Ensure script loads after page data --%>
-        <div>
+        <%-- Ensure script loads after page data --%>        <%--<div>
             <script src="StaffSearch.js" type="text/javascript"></script>
-        </div>
+        </div>--%>
        </form>
 </body>
 </html>

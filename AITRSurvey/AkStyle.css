@@ -1,0 +1,230 @@
+﻿:root {
+    /*Generated color Combo */
+    --color1: #4f345a;
+    --color2: #5d4e6d;
+    --color3: #8fa998;
+    --color4: #9cbfa7;
+    --color5: #c9f299;
+
+    --testColor: blue;
+    --backgroundColor: var(--color3);
+    --primary: var(--color4);
+    --primaryPlus: var(--color5);
+    --secondary: var(--color2);
+    --secondaryPlus: var(--color1);
+
+    --textColorLight: #e8e8e8;
+    --textColorDark: #3b3b3b;
+    --textColorError: #ff4c4c;
+
+    --gridViewBackground: #e8e8e8;
+}
+
+/*body element*/
+body{
+    margin: 0px;
+    background-color: var(--backgroundColor)
+}
+
+
+/* -------------------- */
+
+
+.title{
+    color: var(--textColorLight);
+    font-size: 20px; 
+    font-weight: bold;
+}
+
+.centerPanelContainer{
+    height:800px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.centerPanel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--primary);
+    width: 200px;
+    height: 300px;
+
+    border-radius: 10px;
+    border-width: 5px;
+    border-style: dashed;
+    border-color: var(--secondary);
+    padding: 15px;
+}
+
+.staffSearchUserEmailLabel{
+    padding-right: 10px;
+    color: var(--textColorDark);
+}
+
+.topBarRightStaffSearch {
+    background-color: var(--primary);
+    display: grid;
+    grid-template-columns: 70% 30%;
+    grid-template-rows: 50px;
+}
+
+
+
+
+/*-------------------------------*/
+/*-------------------------------*/
+/*  staff Search Page */
+/*------------------------------*/
+.staffSearchContainer{
+    margin: 0px 30px 0px 30px;
+}
+
+/*
+    outerDiv.Attributes.Add("class", "staffSearchOuterDiv");
+    //WITH CHILD ITEMS
+    //<div class="staffSearchOuterDiv"> //outerDiv
+        // <Label > QID 100 / what is your favourite color ? </label >
+        // < div class="staffSearchInnerDiv" > //innerDivDiv
+            // <Label > Possible answaer: green, red, blue </label >
+        // </ div >
+    //</div >
+
+    //WITHOUT CHILD ITEMS (TEXT BOX Question Type)
+    //<div class="staffSearchOuterDiv"> //outerDiv
+    // <Label > QID 100 / what is your favourite color ? </label >
+    //</div >
+*/
+
+
+.staffSearchInnerContainer {
+    background-color: var(--primary);
+    border-radius: 10px;
+    padding: 20px 30px 20px 30px;
+}
+
+.staffSearchQuestionData {
+
+    display: flex;
+    flex-direction: column;
+    color: var(--textColorDark);
+}
+
+
+.staffSearchOuterDiv {
+    padding: 10px 0px 10px 0px;
+    
+}
+
+.staffSearchInnerDiv{
+
+}
+
+.qidSelector {
+    margin: 10px 0px 10px 0px;
+}
+
+.staffSearchTextRow{
+    padding: 5px 0px 5px 0px;
+    color: var(--textColorDark);
+}
+
+.staffSearchGridView{
+    background-color: var(--gridViewBackground)
+}
+/*--------------------*/
+/*--------------------*/
+/*  resuable classes  */
+/*--------------------*/
+.spacer1 {
+    height: 30px;
+}
+.spacer2 {
+    height: 60px;
+}
+.spacer3 {
+    height: 100px;
+}
+.textColorDark {
+    color: var(--textColorDark);
+}
+
+.textColorLight {
+    color: var(--textColorLight);
+}
+
+.textColorError {
+    color: var(--textColorError);
+}
+
+.loginPanelItem{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 5px 0px 5px 0px;
+}
+
+.submitAndErrorMsg {
+    padding: 10px 0px 10px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.topBarRight {
+    background-color: var(--primary);
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: 50px;
+}
+
+.topBarLeft {
+    background-color: var(--primary);
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 50px;
+}
+
+.btnColorSuccess{
+    background-color: var(--primaryPlus);
+    border: none;
+    border-radius: 4px;
+    color: var(--textColorDark);
+}
+
+.btnColorInfo {
+    background-color: var(--color2);
+    border: none;
+    border-radius: 4px;
+    color: var(--textColorLight);
+}
+
+.btnColorWarning {
+    background-color: var(--color1);
+    border: none;
+    border-radius: 4px;
+    color: var(--textColorLight);
+}
+
+.btnSizeStandard{
+    height: 40px;
+    min-width: 30px;
+}
+
+.flexCentered{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flexCenteredTest {
+    background-color: var(--testColor);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

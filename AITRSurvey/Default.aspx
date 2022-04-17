@@ -4,18 +4,23 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Home</title>
+    <link rel="stylesheet" href="AkStyle.css" />
 </head>
 <body>
     <form id="form1" runat="server">
-        <div style="text-align: center">
-            <asp:Label ID="titleLabel" runat="server" Text="Home" style="text-align: left"></asp:Label>
+        <div class="topBarRight">
+            <div class="flexCentered">
+                <asp:Label ID="titleLabel" class="title" runat="server" Text="Home" style="text-align: left"></asp:Label>
+            </div>
+            <div class="flexCentered" >
+                    <asp:Button ID="AdminLoginBtn" class="btnSizeStandard btnColorInfo" runat="server" Text="Admin Login" OnClick="AdminLoginBtn_Click" />
+            </div>
         </div>
-        <div style="text-align: right">
-            <asp:Button ID="AdminLoginBtn" runat="server" Text="adminLogin" style="text-align: center" OnClick="AdminLoginBtn_Click" />
-        </div>
-        <div style="text-align: center; height: 500px; display: flex; align-items: center; justify-content: center">
-            <asp:Button ID="RunSurveyBtn" runat="server" Text="runSurvey" OnClick="RunSurveyBtn_Click" />
+        <div class="centerPanelContainer">
+            <div class="centerPanel">
+                <asp:Button ID="RunSurveyBtn" class="btnSizeStandard btnColorSuccess" runat="server" Text="runSurvey" OnClick="RunSurveyBtn_Click" />
+            </div>
         </div>
     </form>
 </body>
