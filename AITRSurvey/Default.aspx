@@ -9,13 +9,16 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="topBarRight">
-            <div class="flexCentered">
+        <div class="topBar">
+            <div class="topBarItemMid">
                 <asp:Label ID="titleLabel" class="title" runat="server" Text="Home" style="text-align: left"></asp:Label>
             </div>
-            <div class="flexCentered" >
+            <div class="topBarItemRight" >
                     <asp:Button ID="AdminLoginBtn" class="btnSizeStandard btnColorInfo" runat="server" Text="Admin Login" OnClick="AdminLoginBtn_Click" />
             </div>
+            <%--<div class="topBarItemLeft" >
+                    <asp:Button ID="Button1" class="btnSizeStandard btnColorInfo" runat="server" Text="Some btn" />
+            </div>--%>
         </div>
         <div class="centerPanelContainer">
             <div class="centerPanel">

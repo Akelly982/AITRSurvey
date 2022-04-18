@@ -9,7 +9,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="topBarLeft">
+        <div class="topBar">
             <div class="flexCentered">
                 <asp:Button class="btnSizeStandard btnColorWarning" ID="ReturnBtn" runat="server" Text="Return" OnClick="ReturnBtn_Click" />
             </div>

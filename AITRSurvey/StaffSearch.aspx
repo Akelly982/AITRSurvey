@@ -9,11 +9,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="topBarRightStaffSearch">
-            <div class="flexCentered">
+        <div class="topBar">
+            <div class="topBarItemMid">
                 <asp:Label ID="pageTitlelbl" class="title" runat="server" Text="Staff Search"></asp:Label>
             </div>
-            <div class="flexCentered">
+            <div class="topBarItemRight">
                 <asp:Label ID="StaffEmail" class="textColorLight staffSearchUserEmailLabel" runat="server" Text="email"></asp:Label>
                 <asp:Button ID="LogoutBtn" class="btnSizeStandard btnColorWarning" runat="server" Text="Log Out" OnClick="LogoutBtn_Click" />
             </div>

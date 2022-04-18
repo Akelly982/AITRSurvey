@@ -135,6 +135,25 @@ body{
 .staffSearchGridView{
     background-color: var(--gridViewBackground)
 }
+
+
+
+.surveyTitleContainer {
+    
+}
+
+.surveyTitle{
+    width: 200px;
+    height: 50px;
+    color: var(--textColorLight);
+    background-color: var(--primary);
+
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 /*--------------------*/
 /*--------------------*/
 /*  resuable classes  */
@@ -148,6 +167,18 @@ body{
 .spacer3 {
     height: 100px;
 }
+.spacer4 {
+    height: 200px;
+}
+
+.spacer5 {
+    height: 300px;
+}
+
+.spacer6 {
+    height: 400px;
+}
+
 .textColorDark {
     color: var(--textColorDark);
 }
@@ -174,6 +205,38 @@ body{
     flex-direction: column;
     justify-content: center;
 }
+
+.topBarItemLeft {
+    grid-area: left;
+    justify-self: center;
+    align-self: center;
+}
+
+.topBarItemRight {
+    grid-area: right;
+    justify-self: center;
+    align-self: center;
+}
+
+.topBarItemMid {
+    grid-area: mid;
+    justify-self: center;
+    align-self: center;
+}
+
+.topBar {
+    background-color: var(--primary);
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    grid-template-rows: 50px;
+    grid-template-areas: 
+        "left mid right";
+}
+
+.testBkg{
+    background-color: var(--testColor);
+}
+
 
 .topBarRight {
     background-color: var(--primary);
