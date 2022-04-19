@@ -9,21 +9,28 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="topBar">
-            <div class="topBarItemMid">
-                <asp:Label ID="pageTitlelbl" class="title" runat="server" Text="Staff Search"></asp:Label>
+
+        <div class="spacer2"></div>
+        <div class="flexCentered">
+            <div class="topBar">
+                <div class="topBarItemMid">
+                    <asp:Label ID="pageTitlelbl" class="title" runat="server" Text="Staff Search"></asp:Label>
+                </div>
+                <div class="topBarItemRight">
+                    <asp:Button ID="LogoutBtn" class="btnSizeStandard btnColorWarning" runat="server" Text="Log Out" OnClick="LogoutBtn_Click" />
+                </div>
+                <div class="topBarItemLeft">
+                    <asp:Label ID="StaffEmail" class="textColorLight staffSearchUserEmailLabel" runat="server" Text="email"></asp:Label>
+                </div>
             </div>
-            <div class="topBarItemRight">
-                <asp:Label ID="StaffEmail" class="textColorLight staffSearchUserEmailLabel" runat="server" Text="email"></asp:Label>
-                <asp:Button ID="LogoutBtn" class="btnSizeStandard btnColorWarning" runat="server" Text="Log Out" OnClick="LogoutBtn_Click" />
+            <div id="DevConsole" runat="server">
+                <asp:Label ID="devConsolelbl" runat="server" Text="Dev Console Lbl"></asp:Label>
             </div>
         </div>
-        <div id="DevConsole" runat="server">
-            <asp:Label ID="devConsolelbl" runat="server" Text="Dev Console Lbl"></asp:Label>
-        </div>
+        
+
         <div class="staffSearchContainer">
             <div class="spacer1"></div>
-
             <%-- dynamic question data  --%>                
             <div class="staffSearchInnerContainer">
                 <div class="flexCentered">

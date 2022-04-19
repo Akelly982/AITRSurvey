@@ -9,29 +9,37 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="topBar">
-            <div class="flexCentered">
-                <asp:Button class="btnSizeStandard btnColorWarning" ID="ReturnBtn" runat="server" Text="Return" OnClick="ReturnBtn_Click" />
-            </div>
-            <div class="flexCentered">
-                <asp:Label class="title" ID="TitleLabel" runat="server" style="font-weight: 700; " Text="Staff Login"></asp:Label>
+
+        <div class="spacer4"></div>
+        <div class="flexCentered">
+            <div class="topBar">
+                <div class="flexCentered">
+                    <asp:Button class="btnSizeStandard btnColorWarning" ID="ReturnBtn" runat="server" Text="Return" OnClick="ReturnBtn_Click" />
+                </div>
+                <div class="flexCentered">
+                    <asp:Label class="title" ID="TitleLabel" runat="server" style="font-weight: 700; " Text="Staff Login"></asp:Label>
+                </div>
             </div>
         </div>
-        <div class="centerPanelContainer">
-            <div class="centerPanel">
-                <div class="loginPanelItem">
-                    <asp:Label ID="UsernameLabel" runat="server" Text="Username:"></asp:Label>
-                    <asp:TextBox ID="UsernameTextBox" runat="server"></asp:TextBox>
-                </div>
-                <div class="loginPanelItem">
-                    <asp:Label ID="PasswordLabel" runat="server" Text="Password:"></asp:Label>
-                    <asp:TextBox ID="PasswordTextbox" runat="server"></asp:TextBox>
-                </div>
-                <div class="loginPanelItem">
-                    <asp:Button class="btnSizeStandard btnColorSuccess" ID="LoginSubmitButton" runat="server" Text="Submit" OnClick="LoginSubmitButton_Click" />
-                </div>
-                <div class="loginPanelItem">
-                    <asp:Label class="loginErrorMsg textColorError" ID="ErrMsg" runat="server" Text=""></asp:Label>
+
+        <div class="spacer2"></div>
+        <div class="flexCentered">
+            <div class="centerPanelContainer">
+                <div class="loginContainer">
+                    <div class="loginPanelItem">
+                        <asp:Label ID="UsernameLabel" runat="server" Text="Username:"></asp:Label>
+                        <asp:TextBox ID="UsernameTextBox" runat="server"></asp:TextBox>
+                    </div>
+                    <div class="loginPanelItem">
+                        <asp:Label ID="PasswordLabel" runat="server" Text="Password:"></asp:Label>
+                        <asp:TextBox ID="PasswordTextbox" runat="server"></asp:TextBox>
+                    </div>
+                    <div class="loginPanelItem">
+                        <asp:Button class="btnSizeStandard btnColorSuccess" ID="LoginSubmitButton" runat="server" Text="Submit" OnClick="LoginSubmitButton_Click" />
+                    </div>
+                    <div class="loginPanelItem">
+                        <asp:Label class="loginErrorMsg textColorError" ID="ErrMsg" runat="server" Text=""></asp:Label>
+                    </div>
                 </div>
             </div>
         </div>
