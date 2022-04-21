@@ -15,7 +15,7 @@ namespace AITRSurvey
 {
     public partial class StaffSearch : System.Web.UI.Page
     {
-        bool showDevView = false;
+        bool showDevView = true;
         bool showQuestionTypeText = false;
         string initialFindRespondentId = "75";
         string initalGroupRespondentQid = "100"; //first parent question 
@@ -32,7 +32,7 @@ namespace AITRSurvey
                 Staff st = AppSession.getStaff();
                 if (st == null) //staff not set
                 {
-                    string s = "Staff Not Set";
+                    string s = "StaffNotSet@email.com";
                     //StaffUsername.Text = s;
                     //StaffFirstName.Text = s;
                     //StaffLastName.Text = s;
@@ -50,6 +50,8 @@ namespace AITRSurvey
                 setFindRespondentGridView(this.initialFindRespondentId);
                 setGroupRespondentGridView(this.initalGroupRespondentQid, "");
                 updateQuestionRadioButtonList(StaffSearchHandler.QuestionDt);
+
+                devConsolelbl.Text = "Dev Console Label";   //<-- otherwise it is left set to inital sql cmd String
             }
 
 
@@ -519,9 +521,14 @@ namespace AITRSurvey
             myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
             myConn.Open(); // establish the connection to the db
 
+            //s.SID descending will show us the newest respondent submission 
+            string sqlString = "SELECT s.SID, s.RID_FK, q.QID, q.questionText, s.response, s.dateAdded, s.ipAddress " +
+                               " FROM Submission s, Questions q " +
+                               " WHERE s.QID_FK = q.QID" +
+                               " ORDER BY s.SID DESC";
 
             SqlCommand myCommand;
-            myCommand = new SqlCommand("SELECT s.SID, s.RID_FK, q.QID, q.questionText, s.response, s.dateAdded, s.ipAddress FROM Submission s, Questions q WHERE s.QID_FK = q.QID", myConn);    // setup your CMD and identify your connection
+            myCommand = new SqlCommand(sqlString, myConn);    // setup your CMD and identify your connection
 
             SqlDataReader myReader;
             myReader = myCommand.ExecuteReader();   //capture your data 
@@ -569,6 +576,9 @@ namespace AITRSurvey
 
             myConn.Close();  // dont forget to close your db
 
+            //update devConsoleLbl with actural sql cmd
+            devConsolelbl.Text = sqlString;
+
         }
 
         // set data source for findRespondent grid view
@@ -593,9 +603,14 @@ namespace AITRSurvey
             myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
             myConn.Open(); // establish the connection to the db
 
+            // s.SID ascending will get the respondents submission in question order
+            string sqlString = "SELECT s.SID, s.RID_FK, q.QID, q.questionText, s.response, s.dateAdded, s.ipAddress " +
+                                "FROM Submission s, Questions q " +
+                                "WHERE s.QID_FK = q.QID AND RID_FK = " + findRespondentId + 
+                                " ORDER BY s.SID ASC";
 
             SqlCommand myCommand;
-            myCommand = new SqlCommand("SELECT s.SID, s.RID_FK, q.QID, q.questionText, s.response, s.dateAdded, s.ipAddress FROM Submission s, Questions q WHERE s.QID_FK = q.QID AND RID_FK = " + findRespondentId , myConn);    // setup your CMD and identify your connection
+            myCommand = new SqlCommand(sqlString, myConn);    // setup your CMD and identify your connection
             
             SqlDataReader myReader;
             myReader = myCommand.ExecuteReader();   //capture your data 
@@ -649,6 +664,9 @@ namespace AITRSurvey
 
             myConn.Close();  // dont forget to close your db
 
+            //update devConsoleLbl with actural sql cmd
+            devConsolelbl.Text = sqlString;
+
         }
 
         //set data source for group respondent grid view
@@ -671,12 +689,16 @@ namespace AITRSurvey
             myConn.ConnectionString = AppConstants.DB_CONNECT_STR;
             myConn.Open(); // establish the connection to the db
 
-            SqlCommand myCommand;
-            myCommand = new SqlCommand("SELECT s.SID, s.RID_FK, q.QID, q.questionText, s.response, " +
+            
+            //find by QID and response LIKE '%somthing%'
+            string sqlString = "SELECT s.SID, s.RID_FK, q.QID, q.questionText, s.response, " +
                                         "s.dateAdded, s.ipAddress FROM Submission s, Questions q " +
                                         "WHERE s.QID_FK = q.QID " +
                                         "AND q.QID = " + qid +
-                                        " AND s.response LIKE '%" + response + "'", myConn);    // setup your CMD and identify your connection
+                                        " AND s.response LIKE '%" + response + "%'";
+
+            SqlCommand myCommand;
+            myCommand = new SqlCommand(sqlString, myConn);    // setup your CMD and identify your connection
             SqlDataReader myReader;
             myReader = myCommand.ExecuteReader();   //capture your data 
 
@@ -729,6 +751,8 @@ namespace AITRSurvey
 
             myConn.Close();  // dont forget to close your db
 
+            //update devConsoleLbl with actural sql cmd
+            devConsolelbl.Text = sqlString;
         }
 
 

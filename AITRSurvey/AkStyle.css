@@ -140,6 +140,23 @@ body{
     background-color: var(--gridViewBackground)
 }
 
+.staffSearchDevConsoleContainer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.staffSearchEmailLabelContainer {
+    padding: 10px 20px 10px 20px;
+    min-width: 200px;
+    max-width: 400px;
+    border-radius: var(--borderRadiusStandard);
+    background-color: var(--primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 
 
 .surveyTitle {
@@ -286,6 +303,7 @@ body{
     grid-template-rows: 60px;
     grid-template-areas: "left mid right";
 }
+
 
 .testBkg{
     background-color: var(--testColor);

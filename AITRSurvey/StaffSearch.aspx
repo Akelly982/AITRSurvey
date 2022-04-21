@@ -19,12 +19,17 @@
                 <div class="topBarItemRight">
                     <asp:Button ID="LogoutBtn" class="btnSizeStandard btnColorWarning" runat="server" Text="Log Out" OnClick="LogoutBtn_Click" />
                 </div>
-                <div class="topBarItemLeft">
-                    <asp:Label ID="StaffEmail" class="textColorLight staffSearchUserEmailLabel" runat="server" Text="email"></asp:Label>
-                </div>
+                
             </div>
-            <div id="DevConsole" runat="server">
-                <asp:Label ID="devConsolelbl" runat="server" Text="Dev Console Lbl"></asp:Label>
+        </div>
+
+        <div class="spacer1"></div>
+        <div class="flexCentered">
+            <div class="staffSearchEmailLabelContainer">
+                <asp:Label ID="StaffEmail" class="textColorLight" runat="server" Text="email"></asp:Label>
+                <div id="DevConsole" class="staffSearchDevConsoleContainer" runat="server">
+                    <asp:Label ID="devConsolelbl" class="textColorLight" runat="server" Text="Dev Console Lbl"></asp:Label>
+                </div>
             </div>
         </div>
         
