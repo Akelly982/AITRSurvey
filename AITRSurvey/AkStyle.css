@@ -24,9 +24,11 @@
 }
 
 /*body element*/
-body{
+body {
     margin: 0px;
     background-color: var(--backgroundColor)
+    /*background-image: url('ImageContent/pexels-photo.jpeg');*/
+
 }
 
 
