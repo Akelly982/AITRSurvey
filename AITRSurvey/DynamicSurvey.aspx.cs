@@ -14,7 +14,7 @@ namespace AITRSurvey
     public partial class DynamicSurvey : System.Web.UI.Page
     {
         //Show DEV TEST CONSOLE
-        bool devConsoleVisibility = true;
+        bool devConsoleVisibility = false;
 
 
 

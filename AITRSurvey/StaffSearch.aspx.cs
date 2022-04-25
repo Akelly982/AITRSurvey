@@ -15,7 +15,7 @@ namespace AITRSurvey
 {
     public partial class StaffSearch : System.Web.UI.Page
     {
-        bool showDevView = true;
+        bool showDevView = false;
         bool showQuestionTypeText = false;
         string initialFindRespondentId = "75";
         string initalGroupRespondentQid = "100"; //first parent question 
