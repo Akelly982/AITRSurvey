@@ -16,6 +16,13 @@ namespace AITRSurvey
         //Show DEV TEST CONSOLE
         bool devConsoleVisibility = false;
 
+        const int ITEM_TEXTBOX = 1;
+        const int ITEM_RADIOBUTTON = 2;
+        const int ITEM_CHECKBOX = 3;
+        const int ITEM_TEXTBOX_PHONE = 4;
+        const int ITEM_TEXTBOX_EMAIL = 5;
+        const int ITEM_TEXTBOX_DATE = 6;
+        const int ITEM_TEXTBOX_POSTCODE = 7;
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -272,6 +279,18 @@ namespace AITRSurvey
 
                     //Pop/Remove question from questionGroup
                     SurveyHandler.ChildQuestionsList[questionGroupIndex].RemoveAt(questionIndex);
+
+                    //if questionGroup is now empty 
+                    //pop the question group
+                    if(childQuestionList[questionGroupIndex].Count == 0)
+                    {
+                        childQuestionList.RemoveAt(questionGroupIndex);
+                    }
+                    else
+                    {
+                        //still has children to process
+                    }
+                    
                 }
 
 
@@ -343,23 +362,48 @@ namespace AITRSurvey
             //1 == TextBox
             //2 == RadioBtn
             //3 == CheckBox
+            //4 == TextBox_Phone
+            //5 == TextBox_Email
+            //6 == TextBox_Date
+            //7 == TextBox_PostCode
+
 
             //Determine question Type
             switch ((int)activeQuestionRow["QTID_FK"])
             {
-                case 1:
+                case ITEM_TEXTBOX:
                     //TextBox
                     viewTextBox(activeQuestionRow);
                     break;
 
-                case 2:
+                case ITEM_RADIOBUTTON:
                     //RadioBtn
                     viewRadioButton(activeQuestionRow);
                     break;
 
-                case 3:
+                case ITEM_CHECKBOX:
                     //CheckBox
                     viewCheckBox(activeQuestionRow);
+                    break;
+
+                case ITEM_TEXTBOX_PHONE:
+                    //TextBox
+                    viewTextBoxPhone(activeQuestionRow);
+                    break;
+
+                case ITEM_TEXTBOX_EMAIL:
+                    //TextBox
+                    viewTextBoxEmail(activeQuestionRow);
+                    break;
+
+                case ITEM_TEXTBOX_DATE:
+                    //TextBox
+                    viewTextBoxDate(activeQuestionRow);
+                    break;
+
+                case ITEM_TEXTBOX_POSTCODE:
+                    //TextBox
+                    viewTextBoxPostCode(activeQuestionRow);
                     break;
 
                 default:
@@ -371,18 +415,58 @@ namespace AITRSurvey
 
         public void hideAllQuestionsAndClear()
         {
+            //turn all visiblitiys off
             ItemTextBox.Visible = false;
             ItemRadioBtn.Visible = false;
             ItemCheckBox.Visible = false;
+            ItemTextBoxDate.Visible = false;
+            ItemTextBoxEmail.Visible = false;
+            ItemTextBoxPhone.Visible = false;
+            ItemTextBoxPostCode.Visible = false;
 
+            //clear textbox fields
             userResultTB.Text = "";
+            userResultTBDate.Text = "";
+            userResultTBEmail.Text = "";
+            userResultTBPhone.Text = "";
+            userResultTBPostCode.Text = "";
+            //empty item lists rb / cb
             userSelectionCB.Items.Clear();
             userSelectionRB.Items.Clear();
         }
 
         public void turnOffAllValidators()
         {
+            //checks is textbox is not empty
             textBoxRequiredFieldValidator.Enabled = false;
+    
+            // checks with regular expressions
+            //phone
+            textBoxPhoneREV.Enabled = false;
+            textBoxPhoneEmptyREV.Enabled = false;
+            //email
+            textBoxEmailREV.Enabled = false;
+            textBoxEmailEmptyREV.Enabled = false;
+            //date
+            textBoxDateREV.Enabled = false;
+            textBoxDateEmptyREV.Enabled = false;
+            //postcode 
+            textBoxPostCodeREV.Enabled = false;
+            textBoxPostCodeEmptyREV.Enabled = false;
+
+
+            //validator visibility to avoid style issues
+                //otherwise you get issuess in your style
+            textBoxRequiredFieldValidator.Visible = false;
+            textBoxPhoneREV.Visible = false;
+            textBoxPhoneEmptyREV.Visible = false;
+            textBoxEmailREV.Visible = false;
+            textBoxEmailEmptyREV.Visible = false;
+            textBoxDateREV.Visible = false;
+            textBoxDateEmptyREV.Visible = false;
+            textBoxPostCodeREV.Visible = false;
+            textBoxPostCodeEmptyREV.Visible = false;
+
         }
 
         public void devConsoleGridUpdate(DataRow activeRow)
@@ -413,9 +497,12 @@ namespace AITRSurvey
             //show question
             ItemTextBox.Visible = true;
 
-            //turn on validator
+            //show validator and enable
+            textBoxRequiredFieldValidator.Visible = true;
             textBoxRequiredFieldValidator.Enabled = true;
         }
+
+
 
 
         public void viewRadioButton(DataRow activeQuestionRow)
@@ -511,7 +598,58 @@ namespace AITRSurvey
 
 
 
+        
+        //--------------------------------------
+        // additonal text box views with regex 
+        //--------------------------------------
 
+        public void viewTextBoxPhone(DataRow activeQuestionRow)
+        {
+            //show question
+            ItemTextBoxPhone.Visible = true;
+
+            //show connected validators and enable
+            textBoxPhoneEmptyREV.Visible = true;
+            textBoxPhoneREV.Visible = true;
+            textBoxPhoneEmptyREV.Enabled = true;
+            textBoxPhoneREV.Enabled = true;
+        }
+
+        public void viewTextBoxEmail(DataRow activeQuestionRow)
+        {
+            //show question
+            ItemTextBoxEmail.Visible = true;
+
+            //show connected validators and enable
+            textBoxEmailEmptyREV.Visible = true;
+            textBoxEmailREV.Visible = true;
+            textBoxEmailEmptyREV.Enabled = true;
+            textBoxEmailREV.Enabled = true;
+        }
+
+        public void viewTextBoxDate(DataRow activeQuestionRow)
+        {
+            //show question
+            ItemTextBoxDate.Visible = true;
+
+            //show connected validators and enable
+            textBoxDateEmptyREV.Visible = true;
+            textBoxDateREV.Visible = true;
+            textBoxDateEmptyREV.Enabled = true;
+            textBoxDateREV.Enabled = true;
+        }
+
+        public void viewTextBoxPostCode(DataRow activeQuestionRow)
+        {
+            //show question
+            ItemTextBoxPostCode.Visible = true;
+
+            //show connected validators and enable
+            textBoxPostCodeEmptyREV.Visible = true;
+            textBoxPostCodeREV.Visible = true;
+            textBoxPostCodeEmptyREV.Enabled = true;
+            textBoxPostCodeREV.Enabled = true;
+        }
 
 
 
@@ -528,6 +666,55 @@ namespace AITRSurvey
 
             //submit question data to db
             string response = userResultTB.Text;  // user enter data TextBox
+            submitTextBox(response);
+
+        }
+
+        protected void SubmitButtonPhoneTB_Click(object sender, EventArgs e)
+        {
+            //validation is done with validator controls in designer
+
+            //submit question data to db
+            string response = userResultTBPhone.Text;  // user enter data TextBox
+            submitTextBox(response);
+
+        }
+
+        protected void SubmitButtonEmailTB_Click(object sender, EventArgs e)
+        {
+            //validation is done with validator controls in designer
+
+            //submit question data to db
+            string response = userResultTBEmail.Text;  // user enter data TextBox
+            submitTextBox(response);
+
+        }
+
+        protected void SubmitButtonDateTB_Click(object sender, EventArgs e)
+        {
+            //validation is done with validator controls in designer
+
+            //submit question data to db
+            string response = userResultTBDate.Text;  // user enter data TextBox
+            submitTextBox(response);
+
+        }
+
+        protected void SubmitButtonPostCodeTB_Click(object sender, EventArgs e)
+        {
+            //validation is done with validator controls in designer
+
+            //submit question data to db
+            string response = userResultTBPostCode.Text;  // user enter data TextBox
+            submitTextBox(response);
+
+        }
+
+
+
+        //shared between all text box's
+        public void submitTextBox(string response)
+        {
             questionSubmissionToDataBase((int)SurveyHandler.ActiveQuestionRow["QID"],
                                          SurveyHandler.RespondentId,
                                          response,
@@ -557,13 +744,9 @@ namespace AITRSurvey
                 }
 
             }
-
-
-
-
-
-
         }
+
+
 
         protected void SubmitButtonCB_Click(object sender, EventArgs e)
         {
@@ -671,8 +854,9 @@ namespace AITRSurvey
                 }
             }
 
-            //Add our list of childQuestions to the Su
-            SurveyHandler.ChildQuestionsList.Add(childQuestionGroup);
+
+            //if not an empty list of ints add to survey handler question list
+            checkChildQuestionList(childQuestionGroup);
 
             //Test
             devStrChildUpdate();
@@ -683,7 +867,6 @@ namespace AITRSurvey
 
         protected void SubmitButtonRB_Click(object sender, EventArgs e)
         {
-
             //submit question data to db
             // as csv answear1 but should only result to one answear
             //create csv response
@@ -742,8 +925,9 @@ namespace AITRSurvey
                 }
             }
 
-            //Add our list of childQuestions to the Su
-            SurveyHandler.ChildQuestionsList.Add(childQuestionGroup);
+
+            //if not an empty list of ints add to survey handler question list
+            checkChildQuestionList(childQuestionGroup);
 
             //Test
             devStrChildUpdate();
@@ -751,14 +935,30 @@ namespace AITRSurvey
         }
 
 
+        /// <summary>
+        ///  Take child question group and if not empty add it to our overall childQuestionList
+        /// </summary>
+        /// <param name="childQuestionGroup"> A list of integers representing child questions of the active question </param>
+        public void checkChildQuestionList(List<int> childQuestionGroup)
+        {
+            //if not empty
+            if (childQuestionGroup.Count != 0)
+            {
+                //add to handler list of child question lists
+                SurveyHandler.ChildQuestionsList.Add(childQuestionGroup);
+            }
+        }
 
 
+        /// <summary>
+        /// takes the shared child question list and writes it out the the devConsole
+        /// </summary>
         public void devStrChildUpdate()
         {
             string devStr = "";
             foreach (List<int> questionGroup in SurveyHandler.ChildQuestionsList)  //list
             {
-                foreach (int question in questionGroup) // integer
+                foreach (int question in questionGroup)  //integer
                 {
                     devStr += " /" + question.ToString();
                 }

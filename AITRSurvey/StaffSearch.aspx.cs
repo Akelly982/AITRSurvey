@@ -245,6 +245,11 @@ namespace AITRSurvey
 
 
         // show question information at top of page so the the end user knows what they are asking for
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="questionDt"></param>
+        /// <param name="questionValuesDth"></param>
         void displayQuestionData(DataTable questionDt, DataTableHandler questionValuesDth)
         {
             bool showQuestionType = this.showQuestionTypeText;

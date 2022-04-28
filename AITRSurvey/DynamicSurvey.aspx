@@ -26,16 +26,6 @@
                 </div>
                  <%-- Dynamic question  --%>
                 <div id="SurveyContainer" runat="server">
-                    <%-- TextBox Item --%>
-                    <div id="ItemTextBox" runat="server">
-                        <div style="text-align: center">
-                            <asp:TextBox ID="userResultTB" runat="server" Height="200px" Width="400px" MaxLength="300" TextMode="MultiLine"></asp:TextBox>
-                        </div>
-                        <br />
-                        <div style="text-align: center">
-                            <asp:Button ID="SubmitButtonTB" runat="server" Text="Submit" Width="200px" OnClick="SubmitButtonTB_Click" />
-                        </div>
-                    </div>
                     <%-- CheckBox Item --%>
                     <div id="ItemCheckBox" runat="server">
                         <div>
@@ -57,11 +47,76 @@
                             <asp:Button ID="SubmitButtonRB" runat="server" Text="Submit" Width="200px" OnClick="SubmitButtonRB_Click"/>
                         </div>
                     </div>
+                    <%-- TextBox Default item --%>
+                    <div id="ItemTextBox" runat="server">
+                        <div style="text-align: center">
+                            <asp:TextBox ID="userResultTB" runat="server" Height="200px" Width="400px" MaxLength="300" TextMode="MultiLine"></asp:TextBox>
+                        </div>
+                        <br />
+                        <div style="text-align: center">
+                            <asp:Button ID="SubmitButtonTB" runat="server" Text="Submit" Width="200px" OnClick="SubmitButtonTB_Click" />
+                        </div>
+                    </div>
+                    <%-- Additional textBox to run with specific reg expressions --%>
+                    <%-- TextBox Phone item --%>
+                    <div id="ItemTextBoxPhone" runat="server">
+                        <div style="text-align: center">
+                            <asp:TextBox ID="userResultTBPhone" runat="server" Height="200px" Width="400px" MaxLength="300" TextMode="MultiLine"></asp:TextBox>
+                        </div>
+                        <br />
+                        <div style="text-align: center">
+                            <asp:Button ID="SubmitButtonTBPhone" runat="server" Text="Submit" Width="200px" OnClick="SubmitButtonPhoneTB_Click" />
+                        </div>
+                    </div>
+                    <%-- TextBox Email item --%>
+                    <div id="ItemTextBoxEmail" runat="server">
+                        <div style="text-align: center">
+                            <asp:TextBox ID="userResultTBEmail" runat="server" Height="200px" Width="400px" MaxLength="300" TextMode="MultiLine"></asp:TextBox>
+                        </div>
+                        <br />
+                        <div style="text-align: center">
+                            <asp:Button ID="SubmitButtonTBEmail" runat="server" Text="Submit" Width="200px" OnClick="SubmitButtonEmailTB_Click" />
+                        </div>
+                    </div>
+                    <%-- TextBox Date item --%>
+                    <div id="ItemTextBoxDate" runat="server">
+                        <div style="text-align: center">
+                            <asp:TextBox ID="userResultTBDate" runat="server" Height="200px" Width="400px" MaxLength="300" TextMode="MultiLine"></asp:TextBox>
+                        </div>
+                        <br />
+                        <div style="text-align: center">
+                            <asp:Button ID="SubmitButtonTBDate" runat="server" Text="Submit" Width="200px" OnClick="SubmitButtonDateTB_Click" />
+                        </div>
+                    </div>
+                    <%-- TextBox PostCode item --%>
+                    <div id="ItemTextBoxPostCode" runat="server">
+                        <div style="text-align: center">
+                            <asp:TextBox ID="userResultTBPostCode" runat="server" Height="200px" Width="400px" MaxLength="300" TextMode="MultiLine"></asp:TextBox>
+                        </div>
+                        <br />
+                        <div style="text-align: center">
+                            <asp:Button ID="SubmitButtonTBPostCode" runat="server" Text="Submit" Width="200px" OnClick="SubmitButtonPostCodeTB_Click" />
+                        </div>
+                    </div>
                 </div>
-                <div style="text-align: center">
+                <div style="text-align: center" class="validatorContainer">
+                    <div class="spacer0"></div>
+                    <%-- default textbox not empty validator --%>
                     <asp:RequiredFieldValidator ID="textBoxRequiredFieldValidator" runat="server" ControlToValidate="userResultTB" Enabled="False" ErrorMessage="Input field is empty"></asp:RequiredFieldValidator>
-                    <br />
-                    <br />
+                    <%-- regex textbox validators and their empty validator --%>
+                    <%-- phone --%>
+                    <asp:RequiredFieldValidator ID="textBoxPhoneEmptyREV" runat="server" ControlToValidate="userResultTBPhone" Enabled="False" ErrorMessage="Input field is empty"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="textBoxPhoneREV" runat="server" ErrorMessage="Error Phone number: 123-123-1234" ControlToValidate="userResultTBPhone" ValidationExpression="[0-9]{3}-[0-9]{3}-[0-9]{4}"></asp:RegularExpressionValidator>
+                    <%-- email --%>
+                    <asp:RequiredFieldValidator ID="textBoxEmailEmptyREV" runat="server" ControlToValidate="userResultTBEmail" Enabled="False" ErrorMessage="Input field is empty"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="textBoxEmailREV" runat="server" ErrorMessage="Error Email: name@email.com" ControlToValidate="userResultTBEmail" ValidationExpression="([a-z0-9])+\@+([a-z0-9])+(.com)"></asp:RegularExpressionValidator>
+                    <%-- date --%>
+                    <asp:RequiredFieldValidator ID="textBoxDateEmptyREV" runat="server" ControlToValidate="userResultTBDate" Enabled="False" ErrorMessage="Input field is empty"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="textBoxDateREV" runat="server" ErrorMessage="Error Date: yyyy-mm-dd" ControlToValidate="userResultTBDate" ValidationExpression="[0-9]{4}-([0-1]{1})([0-9]{1})-([0-3]{1})([0-9]{1})"></asp:RegularExpressionValidator>
+                    <%-- post code --%>
+                    <asp:RequiredFieldValidator ID="textBoxPostCodeEmptyREV" runat="server" ControlToValidate="userResultTBPostCode" Enabled="False" ErrorMessage="Input field is empty"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="textBoxPostCodeREV" runat="server" ErrorMessage="Error PostCode: 1234" ControlToValidate="userResultTBPostCode" ValidationExpression="[0-9]{4}"></asp:RegularExpressionValidator>
+                    <div class="spacer1"></div>
                 </div>
             </div>
         </div>

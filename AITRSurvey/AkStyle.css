@@ -1,4 +1,6 @@
 ﻿:root {
+    --testColor: blue;
+
     /*Generated color Combo */
     --color1: #4f345a;
     --color2: #5d4e6d;
@@ -6,7 +8,6 @@
     --color4: #9cbfa7;
     --color5: #c9f299;
 
-    --testColor: blue;
     --backgroundColor: var(--color3);
     --primary: var(--color4);
     --primaryPlus: var(--color5);
@@ -18,7 +19,6 @@
     --textColorError: #ff4c4c;
 
     --gridViewBackground: #e8e8e8;
-
     --borderRadiusStandard: 10px;
     --borderRadiusSmall: 5px;
 }
@@ -78,14 +78,19 @@ body {
     grid-template-rows: 50px;
 }
 
-
-
+.validatorContainer{
+    color: var(--textColorError);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 /*-------------------------------*/
 /*-------------------------------*/
 /*  staff Search Page */
 /*------------------------------*/
-.staffSearchContainer{
+.staffSearchContainer {
     margin: 0px 60px 0px 60px;
 }
 
@@ -220,6 +225,8 @@ body {
 .surveyEndContainerItem{
     padding: 5px 0px 5px 0px;
 }
+
+
 /*--------------------*/
 /*--------------------*/
 /*  resuable classes  */
@@ -234,6 +241,10 @@ body {
     color: var(--textColorLight);
     font-size: 16px;
     font-weight: bold;
+}
+
+.spacer0 {
+    height: 15px;
 }
 
 .spacer1 {
