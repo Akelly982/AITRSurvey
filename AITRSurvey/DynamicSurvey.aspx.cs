@@ -570,7 +570,7 @@ namespace AITRSurvey
             SurveyHandler.RadioButtonNextQidList = rbNextQIDList;
 
             //preset value to an index so it is not unselected by default
-            //userSelectionRB.SelectedIndex = 0;
+            userSelectionRB.SelectedIndex = 0;
 
             //show question
             ItemRadioBtn.Visible = true;

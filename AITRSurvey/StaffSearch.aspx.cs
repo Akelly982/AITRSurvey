@@ -387,6 +387,8 @@ namespace AITRSurvey
 
             }
 
+            QidSelectorRadioButtonList.SelectedIndex = 0;
+
         }
 
 
@@ -813,15 +815,27 @@ namespace AITRSurvey
 
         protected void FindRespondentSubmitButton_Click(object sender, EventArgs e)
         {
+            //clear and previous errors
+            ErrorFindRespondentLbl.Text = "";
+
             string inputRid = "";
             if(FindRespondentTextBox.Text.Length != 0){
                 inputRid = FindRespondentTextBox.Text;
+
+                //update gridView
+                setFindRespondentGridView(inputRid);
+
+            }
+            else
+            {
+                ErrorFindRespondentLbl.Text = "Error no RID entered.";
             }
 
-            //update gridView
-            setFindRespondentGridView(inputRid);
+            
 
         }
+
+
 
         protected void GroupRespondentsSubmitBtn_Click(object sender, EventArgs e)
         {
