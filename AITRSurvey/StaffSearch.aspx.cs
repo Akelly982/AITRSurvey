@@ -113,7 +113,12 @@ namespace AITRSurvey
             return csvStr;
         }
 
-        // remove x num chars from the end of a string returning a string
+        /// <summary>
+        ///    remove x num chars from the end of a string returning a string
+        /// </summary>
+        /// <param name="str"> the string you want to edit </param>
+        /// <param name="numCharRemove"> the int number of characters to remove from the end</param>
+        /// <returns></returns>
         public string stringRemoveLastNumChars(string str, int numCharRemove)
         {
             List<char> lc = str.ToList<char>();  //convert to char list
@@ -139,7 +144,9 @@ namespace AITRSurvey
             return str;
         }
 
-        //gets question data tables and terminator value
+        /// <summary>
+        ///     //gets question data tables and terminator value
+        /// </summary>
         void getFormData()
         {
             //DynamicForm
@@ -246,10 +253,12 @@ namespace AITRSurvey
 
         // show question information at top of page so the the end user knows what they are asking for
         /// <summary>
-        /// 
+        ///        Using a data table of both our questions and questionValues
+        ///        show our active list of questions and their possible answear if
+        ///        it is of question type check box or radio button 
         /// </summary>
-        /// <param name="questionDt"></param>
-        /// <param name="questionValuesDth"></param>
+        /// <param name="questionDt"> A data table consiting of our question sql table</param>
+        /// <param name="questionValuesDth"> A data table consiting of our questionValues sql table</param>
         void displayQuestionData(DataTable questionDt, DataTableHandler questionValuesDth)
         {
             bool showQuestionType = this.showQuestionTypeText;
@@ -372,6 +381,12 @@ namespace AITRSurvey
             //StaffSearchHandler.QuestionRbl = questionRbl;
         }
 
+
+        /// <summary>
+        ///     using the question data table create a radio button list element for QID selector under
+        ///     find respondent group
+        /// </summary>
+        /// <param name="questionDt"> a data table of our questions sql table</param>
         void updateQuestionRadioButtonList(DataTable questionDt)
         {
             //prebuilt using aspx designer
@@ -506,7 +521,9 @@ namespace AITRSurvey
             //}
         }
 
-        //set data source for findRespondent grid view  ---- show all stmt---
+        /// <summary>
+        ///     set data source for findRespondent grid view  ---- show all sql stmt---
+        /// </summary>
         void setShowAllFindRespondentGridView()
         {
 
@@ -588,7 +605,11 @@ namespace AITRSurvey
 
         }
 
-        // set data source for findRespondent grid view
+        /// <summary>
+        ///     set data source for findRespondent grid view
+        ///     taking in the user requested respondent id  - RID
+        /// </summary>
+        /// <param name="findRespondentId"> as data type string a respondent ID number</param>
         void setFindRespondentGridView(string findRespondentId)
         {
 
@@ -676,7 +697,15 @@ namespace AITRSurvey
 
         }
 
-        //set data source for group respondent grid view
+
+        /// <summary>
+        ///     set data source for group respondent grid view
+        ///     takes in the the selected question and respones,
+        ///     search a QID where RESPONSE LIKE %somthing%
+        /// </summary>
+        /// <param name="qid"> A string consiting of the QID number we are looking at  </param>
+        /// <param name="response"> A string consiting of a specific value we are looking for 
+        ///                         within a response, this can be an empty string which will show all responses</param>
         void setGroupRespondentGridView(string qid, string response)
         {
 
@@ -771,6 +800,9 @@ namespace AITRSurvey
         // EVENTS
         // -----------------------------
 
+        /// <summary>
+        ///     clear user session data and return to login page
+        /// </summary>
         protected void LogoutBtn_Click(object sender, EventArgs e)
         {
             AppSession.clearStaff();  // reset staff from session
@@ -811,8 +843,10 @@ namespace AITRSurvey
 
         }
 
-        
 
+        /// <summary>
+        ///    FindRespondent Submit - process user input and update UI
+        /// </summary>
         protected void FindRespondentSubmitButton_Click(object sender, EventArgs e)
         {
             //clear and previous errors
@@ -836,7 +870,9 @@ namespace AITRSurvey
         }
 
 
-
+        /// <summary>
+        ///     GroupRespondents Submit - process user input and update UI
+        /// </summary>
         protected void GroupRespondentsSubmitBtn_Click(object sender, EventArgs e)
         {
 
@@ -868,6 +904,13 @@ namespace AITRSurvey
 
         }
 
+
+        /// <summary>
+        ///     FindRespondents ShowAll - update UI show all from submissions
+        ///     Note: Not all respondents finish the survey theirfore not all respondents have submissions
+        ///           submissions are made at the end of a given question how many submission a respondent has
+        ///           correlates with the number of questions answeared
+        /// </summary>
         protected void FindRespondentShowAllSubmitButton_Click(object sender, EventArgs e)
         {
             //update gridView

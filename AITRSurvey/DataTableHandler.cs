@@ -9,12 +9,12 @@ using System.Web.UI.WebControls;
 namespace AITRSurvey
 {
 
-    //manages data tables regardless of the number of columns or rows
+    // manages data tables regardless of the number of columns or rows
     // allows basic querying returning multiple rows as a seperate dt
     // or a single data row
 
     // Additionally added functionality to get my ListItemCollections for Radio buttons and Check Boxes
-
+    
     public class DataTableHandler
     {
 
@@ -26,7 +26,6 @@ namespace AITRSurvey
         }
 
 
-        
         public DataTable Dt { get => dt; set => dt = value; }
 
 
@@ -34,8 +33,17 @@ namespace AITRSurvey
         // ------ Methods ----------
         // -------------------------
 
-        // get a dt from the dt 
-            //for example where columnName == "QID_FK" and value = "200"
+        // 
+        //
+
+        /// <summary>
+        ///     get a dataTable from our this.dataTable 
+        ///     for example where columnName == "QID_FK" and value = "200"
+        ///     I did this because querying the database every time I needed data was to slow
+        /// </summary>
+        /// <param name="columnName"> the column name we are looking at within the datatable</param>
+        /// <param name="value"> the value we are looking for within the data table column</param>
+        /// <returns></returns>
         public DataTable getDataTableByColumnNameAndIntValue(string columnName, int value)
         {
 
@@ -74,7 +82,7 @@ namespace AITRSurvey
             //V3
                 //copy data table and clear all rows
                 // we should have a dt with the same column names but empty
-            DataTable tempDt = this.dt.Copy();   //saying dtable == other datatable does not seem to disconnect them may be used like a pointer
+            DataTable tempDt = this.dt.Copy();   //saying dtable = other datatable does not seem to disconnect them may be used like a pointer
             tempDt.Rows.Clear();
 
 
@@ -101,10 +109,15 @@ namespace AITRSurvey
             return tempDt;
         }
 
-        
 
-        // get a singluar row from dt 
-            // for example where columnName == "QID" and value == "100" 
+
+        /// <summary>
+        ///     get a singluar Data Row from this.DataTable 
+        ///     for example where columnName == "QID" and value == "100" 
+        /// </summary>
+        /// <param name="columnName"> the column we are looking at within the dataTable </param>
+        /// <param name="value"> the value we are looking for within the data table column </param>
+        /// <returns></returns>
         public DataRow getRowByColumnNameAndIntValue(string columnName, int value)
         {
 
@@ -131,10 +144,19 @@ namespace AITRSurvey
 
 
 
-
-
+        //WARN Note: this will not work for datatable other than questionValues due to preset column names
+        /// <summary>
+        ///     gets a datatable from this.datatable based on your column and value selections 
+        ///     then it converts the datatable to a list item collection using the preset
+        ///     column names "text" and "NextQID" from questionValues
+        ///     
+        /// </summary>
+        /// <param name="columnName">the column we are looking at within the datatable </param>
+        /// <param name="value">the value we are looking for within the given data table column</param>
+        /// <returns></returns>
         public ListItemCollection getListItemCollectionByColumnNameAndIntValue(string columnName, int value)
         {
+            // create our new lic to fill with data
             ListItemCollection lic = new ListItemCollection();
 
             //using our other method grab the dt set we need 

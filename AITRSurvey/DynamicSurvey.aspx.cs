@@ -16,6 +16,7 @@ namespace AITRSurvey
         //Show DEV TEST CONSOLE
         bool devConsoleVisibility = false;
 
+        //Constants resembeling our questionTypes and their ID's within the database
         const int ITEM_TEXTBOX = 1;
         const int ITEM_RADIOBUTTON = 2;
         const int ITEM_CHECKBOX = 3;
@@ -28,7 +29,8 @@ namespace AITRSurvey
         protected void Page_Load(object sender, EventArgs e)
         {
 
-
+            // inital data retrieval
+                // I get our sql tables and save them as data tables
             if (!IsPostBack)
             {
                 //testing console
@@ -212,6 +214,12 @@ namespace AITRSurvey
 
         }
 
+
+
+        /// <summary>
+        ///     access httpContext.Current.Request.ServerVariables and get our IP address
+        /// </summary>
+        /// <returns> a string consiting of our ip address </returns>
         public string getIpAddress()
         {
             //w3schools
@@ -225,6 +233,10 @@ namespace AITRSurvey
 
 
         //happens after button load
+        /// <summary>
+        ///     OUR MAIN LOOP
+        ///     Here we look for childQuestions and if their are none we run our parent questions.
+        /// </summary>
         protected void Page_LoadComplete(object sender, EventArgs e)
         {
             // -----------------------------------------------------
@@ -308,8 +320,16 @@ namespace AITRSurvey
         // ---------------------------------------
         // ---------- Run Questions --------------
         // ---------------------------------------
-
-
+        /// <summary>
+        ///     Here we get our parent question and run it through runQuestion just like any other question
+        ///     This is detached as a function from the pageLoad complete so that I can call the
+        ///     runParentQuestion function in 2 usecases
+        ///         1: their are no Questions in our ChildQuestionList.
+        ///         2: their is a questionGroup but it is has no question children remaining.
+        /// </summary>
+        /// <param name="parentQuestionId"> An integer holding the QID</param>
+        /// <param name="terminator">An integer holding our terminator value used to show end points to sub questions</param>
+        /// <param name="questionDth">The sql questions table held as a datatable within my dataTableHandler class </param>
         public void runParentQuestion(int parentQuestionId, int terminator, DataTableHandler questionDth)
         {
 
@@ -336,7 +356,17 @@ namespace AITRSurvey
             }
         }
 
-
+        /// <summary>
+        ///     using the currentRow / currentQuestionRow from the questionsDT we show the respective question type and data to the user
+        ///     This is the bread and butter of our application
+        ///         clear/hide previous question data 
+        ///         show user current question data
+        ///         determine question type
+        ///             fill question type with its required data
+        ///         
+        ///         wait for user response as specified by question type
+        /// </summary>
+        /// <param name="currentRow"> A dataTable Row from our questions DataTable with our current question data</param>
         public void runQuestion(DataRow currentRow)
         {
             devConsoleGridUpdate(currentRow);
@@ -413,6 +443,10 @@ namespace AITRSurvey
 
         }
 
+
+        /// <summary>
+        ///   hides all question types and clear for potential reuse later
+        /// </summary>
         public void hideAllQuestionsAndClear()
         {
             //turn all visiblitiys off
@@ -435,6 +469,10 @@ namespace AITRSurvey
             userSelectionRB.Items.Clear();
         }
 
+
+        /// <summary>
+        ///     turn off all validators
+        /// </summary>
         public void turnOffAllValidators()
         {
             //checks is textbox is not empty
@@ -469,6 +507,13 @@ namespace AITRSurvey
 
         }
 
+
+        /// <summary>
+        ///    gets information regarding our active question row and display to devConsole
+        ///    should show our active questions question and question values tables for help
+        ///    understanding our system's thought process
+        /// </summary>
+        /// <param name="activeRow"> Our active data row  holding our question data</param>
         public void devConsoleGridUpdate(DataRow activeRow)
         {
 
@@ -481,6 +526,13 @@ namespace AITRSurvey
             devQuestionValuesGridView.DataBind();
         }
 
+
+        /// <summary>
+        ///     all questions have a questionId and a questionText
+        ///     this sets the labels displaying it to the user.
+        /// </summary>
+        /// <param name="questionText"> a string representing the question text</param>
+        /// <param name="questionId"> holds the questions QID </param>
         public void assignQuestionTitles(string questionText, int questionId)
         {
             QuestionNumLbl.Text = "Q" + questionId.ToString();
@@ -491,7 +543,13 @@ namespace AITRSurvey
 
 
 
-        //Build question to be shown within the SurveyContainer
+        //view for the selected question to be shown within the SurveyContainer
+        /// <summary>
+        ///     show the given questionItem to the user
+        ///     and activate validators
+        ///         not empty
+        /// </summary>
+        /// <param name="activeQuestionRow"> dataRow of our active question from the question data table</param>
         public void viewTextBox(DataRow activeQuestionRow)
         {
             //show question
@@ -504,7 +562,18 @@ namespace AITRSurvey
 
 
 
-
+        /// <summary>
+        ///     using our active row qid we search for its connected questionValues
+        ///     we get these as a listItemCollection and add them to our RadioButtonList.
+        ///     
+        ///     Side Note: it is important for radio buttons that the value is not the same as other list items
+        ///     otherwise you get an error where no matter what you select its the top choice.
+        ///     To get around this for multiple radiobuttons with the same NextQId I index to a list and compare
+        ///     it againts our radioButtionList later.    <---- you will find remenants of this is the SurveyHandler class
+        ///     
+        /// 
+        /// </summary>
+        /// <param name="activeQuestionRow"> dataRow of our active question from the question data table</param>
         public void viewRadioButton(DataRow activeQuestionRow)
         {
 
@@ -576,7 +645,14 @@ namespace AITRSurvey
             ItemRadioBtn.Visible = true;
         }
 
-
+        /// <summary>
+        ///     using our active row qid we search for its connected questionValues
+        ///     we get these as a listItemCollection and add them to our CheckBox.
+        ///     
+        ///     Note: checkbox does not have issue with multiple same values (hence it is more staight forward)
+        ///  
+        /// </summary>
+        /// <param name="activeQuestionRow"> dataRow of our active question from the question data table</param>
         public void viewCheckBox(DataRow activeQuestionRow)
         {
 
@@ -598,11 +674,18 @@ namespace AITRSurvey
 
 
 
-        
+
         //--------------------------------------
         // additonal text box views with regex 
         //--------------------------------------
 
+        /// <summary>
+        ///     show the given questionItem to the user
+        ///     and activate validators
+        ///         not empty
+        ///         regex
+        /// </summary>
+        /// <param name="activeQuestionRow"> dataRow of our active question from the question data table</param>
         public void viewTextBoxPhone(DataRow activeQuestionRow)
         {
             //show question
@@ -615,6 +698,13 @@ namespace AITRSurvey
             textBoxPhoneREV.Enabled = true;
         }
 
+        /// <summary>
+        ///     show the given questionItem to the user
+        ///     and activate validators
+        ///         not empty
+        ///         regex
+        /// </summary>
+        /// <param name="activeQuestionRow"> dataRow of our active question from the question data table</param>
         public void viewTextBoxEmail(DataRow activeQuestionRow)
         {
             //show question
@@ -627,6 +717,13 @@ namespace AITRSurvey
             textBoxEmailREV.Enabled = true;
         }
 
+        /// <summary>
+        ///     show the given questionItem to the user
+        ///     and activate validators
+        ///         not empty
+        ///         regex
+        /// </summary>
+        /// <param name="activeQuestionRow"> dataRow of our active question from the question data table</param>
         public void viewTextBoxDate(DataRow activeQuestionRow)
         {
             //show question
@@ -639,6 +736,13 @@ namespace AITRSurvey
             textBoxDateREV.Enabled = true;
         }
 
+        /// <summary>
+        ///     show the given questionItem to the user
+        ///     and activate validators
+        ///         not empty
+        ///         regex
+        /// </summary>
+        /// <param name="activeQuestionRow"> dataRow of our active question from the question data table</param>
         public void viewTextBoxPostCode(DataRow activeQuestionRow)
         {
             //show question
@@ -660,6 +764,11 @@ namespace AITRSurvey
         // ---- EVENTS ---------------------
         // ---------------------------------
 
+
+        /// <summary>
+        ///     submit for standard text box
+        ///     Note: all textboxes share the same submitTextBoxFunction
+        /// </summary>
         protected void SubmitButtonTB_Click(object sender, EventArgs e)
         {
             //validation is done with validator controls in designer
@@ -670,6 +779,10 @@ namespace AITRSurvey
 
         }
 
+        /// <summary>
+        ///     submit for standard text box
+        ///     Note: all textboxes share the same submitTextBoxFunction
+        /// </summary>
         protected void SubmitButtonPhoneTB_Click(object sender, EventArgs e)
         {
             //validation is done with validator controls in designer
@@ -680,6 +793,10 @@ namespace AITRSurvey
 
         }
 
+        /// <summary>
+        ///     submit for standard text box
+        ///     Note: all textboxes share the same submitTextBoxFunction
+        /// </summary>
         protected void SubmitButtonEmailTB_Click(object sender, EventArgs e)
         {
             //validation is done with validator controls in designer
@@ -690,6 +807,10 @@ namespace AITRSurvey
 
         }
 
+        /// <summary>
+        ///     submit for standard text box
+        ///     Note: all textboxes share the same submitTextBoxFunction
+        /// </summary>
         protected void SubmitButtonDateTB_Click(object sender, EventArgs e)
         {
             //validation is done with validator controls in designer
@@ -700,6 +821,10 @@ namespace AITRSurvey
 
         }
 
+        /// <summary>
+        ///     submit for standard text box
+        ///     Note: all textboxes share the same submitTextBoxFunction
+        /// </summary>
         protected void SubmitButtonPostCodeTB_Click(object sender, EventArgs e)
         {
             //validation is done with validator controls in designer
@@ -713,6 +838,15 @@ namespace AITRSurvey
 
 
         //shared between all text box's
+        /// <summary>
+        ///     takes the users text box response input and submits it to the database in connection to
+        ///     activeQID, usersRID, and their given usersIpAddress
+        ///     
+        ///     if NextQID != terminator
+        ///         determins if the textbox question is a parent question or not 
+        ///             if not the NextQID is added to the childQuestionList as a QuestionGroup with one NextQID int value
+        /// </summary>
+        /// <param name="response"> A string representing the users input </param>
         public void submitTextBox(string response)
         {
             questionSubmissionToDataBase((int)SurveyHandler.ActiveQuestionRow["QID"],
@@ -747,7 +881,18 @@ namespace AITRSurvey
         }
 
 
-
+        /// <summary>
+        ///     loops through the checkbox items to find the users selection if any or multiple.
+        ///     with this we create a CSV string of all the users selections creating their response string
+        ///     this is then submitted to the submissions table within the database. 
+        ///     In connection to activeQID, usersRID and usersIpAdress.  
+        ///     
+        ///     for each item selected if NextQID is not the terminator
+        ///     add item selected NextQID to QuestionGroup
+        ///     if questionGroup not empty
+        ///     append QuestionGroup to ChildQuestionList
+        ///    
+        /// </summary>
         protected void SubmitButtonCB_Click(object sender, EventArgs e)
         {
 
@@ -864,7 +1009,30 @@ namespace AITRSurvey
         }
 
 
-
+        /// <summary>
+        ///     loops through the Radio Button items to find the users selection.
+        ///         Should only be one item
+        ///     with this we create a CSV string of all the users selections creating their response string
+        ///     this is then submitted to the submissions table within the database. 
+        ///     In connection to activeQID, usersRID and usersIpAdress.  
+        ///     
+        ///     Note: 
+        ///         items in Radio button list have text and value
+        ///             text: represtents the user shown choice
+        ///             value: value represents a string index position for List<string> radioButtonNextQidList from surveyHandler
+        ///         This is how i get around multiple rb items sharing the same NextQID value.
+        ///         so for the selected item within the radio button list get value an use it
+        ///         as the index position in radioButtonNextQIDList
+        ///         
+        ///    once you have sorted out the above
+        ///    
+        ///    loop
+        ///     if selected item != terminator value 
+        ///         add NextQID to questionGroup
+        ///         if questionGroup != empty 
+        ///         append questionGroup to ChildQuestionList
+        ///    
+        /// </summary>
         protected void SubmitButtonRB_Click(object sender, EventArgs e)
         {
             //submit question data to db
@@ -936,7 +1104,7 @@ namespace AITRSurvey
 
 
         /// <summary>
-        ///  Take child question group and if not empty add it to our overall childQuestionList
+        ///     Take child question group and if not empty add it to our overall childQuestionList
         /// </summary>
         /// <param name="childQuestionGroup"> A list of integers representing child questions of the active question </param>
         public void checkChildQuestionList(List<int> childQuestionGroup)
@@ -951,7 +1119,7 @@ namespace AITRSurvey
 
 
         /// <summary>
-        /// takes the shared child question list and writes it out the the devConsole
+        ///     takes the shared child question list and writes it out the the devConsole
         /// </summary>
         public void devStrChildUpdate()
         {
@@ -967,7 +1135,13 @@ namespace AITRSurvey
         }
 
 
-
+        /// <summary>
+        ///     using the required data submit the question results to the database
+        /// </summary>
+        /// <param name="questionId"> the relevent Question ID QID</param>
+        /// <param name="respondentId">the given Respondent ID RID</param>
+        /// <param name="response">the users response as a string pottentially a csv string if multiple answears </param>
+        /// <param name="ipAddress"> the users IP address </param>
         public void questionSubmissionToDataBase(int questionId, int respondentId, string response, string ipAddress)
         {
             //setup connection for db
@@ -995,7 +1169,11 @@ namespace AITRSurvey
         }
 
 
-
+        /// <summary>
+        ///     remove 1 character from the end of a string
+        /// </summary>
+        /// <param name="str"> the string to alter</param>
+        /// <returns></returns>
         public string stringRemoveLastChar(string str)
         {
             List<char> lc = str.ToList<char>();  //convert to char list
@@ -1058,7 +1236,7 @@ namespace AITRSurvey
         }
 
 
-        //runs after submit btn hits -- Lifecycle i guess
+        // runs after submit btn hits -- Lifecycle i guess
         // still results to index 0 no matter user selection
         protected void userSelectionRB_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -18,6 +18,15 @@ namespace AITRSurvey
 
         }
 
+
+        /// <summary>
+        ///   handle the user login process
+        ///   validation is handled by the designer using validators
+        ///   query db agains staff username and password
+        ///     if result == success
+        ///     update session with staff / user data
+        ///     redirect to staffSearch Page
+        /// </summary>
         protected void LoginSubmitButton_Click(object sender, EventArgs e)
         {
             
@@ -108,6 +117,10 @@ namespace AITRSurvey
 
         }
 
+
+        /// <summary>
+        ///  redirect user back to the home / default page
+        /// </summary>
         protected void ReturnBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("Default.aspx");

@@ -109,7 +109,7 @@
                     <asp:RegularExpressionValidator ID="textBoxPhoneREV" runat="server" ErrorMessage="Error Phone number: 123-123-1234" ControlToValidate="userResultTBPhone" ValidationExpression="[0-9]{3}-[0-9]{3}-[0-9]{4}"></asp:RegularExpressionValidator>
                     <%-- email --%>
                     <asp:RequiredFieldValidator ID="textBoxEmailEmptyREV" runat="server" ControlToValidate="userResultTBEmail" Enabled="False" ErrorMessage="Input field is empty"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="textBoxEmailREV" runat="server" ErrorMessage="Error Email: name@email.com" ControlToValidate="userResultTBEmail" ValidationExpression="([a-z0-9])+\@+([a-z0-9])+(.com)"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="textBoxEmailREV" runat="server" ErrorMessage="Error Email: name@email.com" ControlToValidate="userResultTBEmail" ValidationExpression="([a-zA-Z0-9])+\@+([a-zA-Z0-9])+(.com)"></asp:RegularExpressionValidator>
                     <%-- date --%>
                     <asp:RequiredFieldValidator ID="textBoxDateEmptyREV" runat="server" ControlToValidate="userResultTBDate" Enabled="False" ErrorMessage="Input field is empty"></asp:RequiredFieldValidator>
                     <asp:RegularExpressionValidator ID="textBoxDateREV" runat="server" ErrorMessage="Error Date: yyyy-mm-dd" ControlToValidate="userResultTBDate" ValidationExpression="[0-9]{4}-([0-1]{1})([0-9]{1})-([0-3]{1})([0-9]{1})"></asp:RegularExpressionValidator>

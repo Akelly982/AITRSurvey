@@ -14,11 +14,18 @@ namespace AITRSurvey
 
         }
 
+        /// <summary>
+        ///     redirect user to our survey 
+        /// </summary>
         protected void RunSurveyBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("DynamicSurvey.aspx");
         }
 
+
+        /// <summary>
+        ///     redirect user to our login page for staff users 
+        /// </summary>
         protected void AdminLoginBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("Login.aspx");
